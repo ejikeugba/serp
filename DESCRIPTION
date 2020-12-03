@@ -1,0 +1,26 @@
+Package: serp 
+Type: Package
+Title: Smooth Effects on Response Penalty for CLM
+Version: 0.1.1
+Author: Ejike R. Ugba [aut, cre]
+Maintainer: Ejike R. Ugba <ejike.ugba@outlook.com>
+Description: A regularization method for the cumulative link models (CLM). With  
+            the 'smooth-effect-on-response penalty' (SERP), a smooth transition
+            is made from the general cumulative model with subject-specific 
+            effects to a coarser form of the same model, resulting to global 
+            effects within categories of the general model. By maximizing 
+            a serp penalized log-likelihood rather than the usual non-penalized
+            likelihood, the problem of model unidentifiability, for instance,
+            common in the cumulative ordinal models is reversed. Moreover, in 
+            situations were the general cumulative model suffers convergence 
+            failure SERP is bound to succeed.
+License: GPL-2
+depends:
+  R (>= 4.0.3)
+Imports: 
+  ordinal (>= 2019.4.25),
+  stats(>= 3.6.1)
+Encoding: UTF-8
+LazyData: True
+RoxygenNote: 7.1.1
+URL: https://github.com/ejikeugba/serp

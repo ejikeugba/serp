@@ -7,7 +7,7 @@
 \method{print}{serp}(x, ...)
 }
 \arguments{
-\item{x}{A serp object.}
+\item{x}{An object of class serp.}
 
 \item{...}{additional arguments.}
 }

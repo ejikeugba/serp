@@ -7,7 +7,7 @@
 \method{logLik}{serp}(object, ...)
 }
 \arguments{
-\item{object}{A "serp" object.}
+\item{object}{An object of class serp.}
 
 \item{...}{additional arguments.}
 }

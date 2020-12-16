@@ -7,7 +7,7 @@
 \method{summary}{serp}(object, ...)
 }
 \arguments{
-\item{object}{A "serp" object.}
+\item{object}{An object of class serp.}
 
 \item{...}{Not used. Additional summary arguments.}
 }

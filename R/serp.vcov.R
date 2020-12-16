@@ -2,7 +2,7 @@
 #'
 #' Provides the Variance covariance matrix of an object of class serp.
 #'
-#' @param object A serp object.
+#' @param object An object of class serp.
 #' @param ... additional arguments.
 #' @seealso
 #' \code{\link{serp}}

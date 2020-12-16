@@ -7,16 +7,16 @@
 serp(formula, link = c("logit", "probit","loglog", "cloglog", "cauchit"),
             slope = c("penalize", "parallel", "unparallel", "partial"),
             tuning = c("deviance","cv","manual","finite"), reverse = FALSE,
-            lambdagrid=NULL, globalvar = NULL, data, subset, weights=NULL,
-            weight.type = c("analytic", "frequency"), na.action=NULL,
-            lambda = NULL, contrasts = NULL, control = list(), ...)
+            lambdagrid=NULL, cverror=c("brier", "logloss"), globalvar = NULL, data,
+            subset, weights=NULL, weight.type = c("analytic", "frequency"),
+            na.action=NULL, lambda = NULL, contrasts = NULL, control = list(), ...)
 }
 \arguments{
 \item{formula}{regression formula of the form: response ~ predictors. The response should be a factor (ordered).}
 
 \item{link}{specifies the link function for the cumulative link model including: logit, probit, complementary log-log, cloglog, cauchit.}
 
-\item{slope}{"penalize" for penalized unparallel coefficient terms, "unparallel" , "parallel" and "partial" for unpenalized non-parallel, "parallel" and "partial" coefficient terms respectively.}
+\item{slope}{specifies the form of coefficients in the model, with "penalize" denoting the penalized coefficients, "unparallel" , "parallel" and "partial" denoting the unpenalized non-parallel, "parallel" and "partial" coefficients respectively.}
 
 \item{tuning}{specifies the method of choosing an optimal shrinkage parameter, including: deviance, cv, manual and finite. i.e., the lambda value along parameter shrinkage path at which the residual deviance of model is minimal or at which the cross-validated prediction error (brier score) is minimal, or alternatively, a user supplied lambda. The "finite" tuning is used to locate the lambda value for which the fit's log-Likelihood is finite.}
 
@@ -24,7 +24,9 @@ serp(formula, link = c("logit", "probit","loglog", "cloglog", "cauchit"),
 
 \item{lambdagrid}{optional user supplied lambda grid for cv and deviance tuning methods. Negative range of values are not allowed, instead (0, Inf). With large number of predictors and cases in the model, iterations run faster over a short grid interval, i.e., the shorter the grid length the faster iteration.}
 
-\item{globalvar}{specifies variables to be assigned global effects when \code{slope} is set to \code{partial}. Variables are specified as a formula with an empty left hand side, for instance, globalvar = ~predictors.}
+\item{cverror}{chooses the performance metric for cv tuning, with the brier score used by default.}
+
+\item{globalvar}{specifies variables to be assigned global effects during penalization or when \code{slope} is set to \code{partial}. Variables are specified as a formula with an empty left hand side, for instance, globalvar = ~predictors.}
 
 \item{data}{optional data frame explaining the variables used in the formula.}
 
@@ -55,10 +57,12 @@ An object of class "serp" with the components listed below. Other model discript
   \item{converged}{a character vector of fit convergence status.}
   \item{contrasts}{(where relevant) the contrasts used in the model.}
   \item{control}{list of control parameters from \code{serp.control}.}
+  \item{cverror}{the performance metric used for cv tuning.}
   \item{deviance}{the residual deviance.}
   \item{edf}{the (effective) number of degrees of freedom used by the model}
   \item{fitted.values}{the fitted probabilities.}
   \item{gradient}{a column vector of gradients for the coefficients at the model convergence.}
+  \item{globalvar}{variable(s) in model treated as global effect(s)}
   \item{Hessian}{the hessian matrix for the coefficients at the model convergence.}
   \item{iter}{the number of interactions before convergence or non-convergence.}
   \item{lambda}{an optimal shrinkage parameter for the penalized slope via minimum residual deviance, cross-validation or user-supplied.}
@@ -75,10 +79,10 @@ An object of class "serp" with the components listed below. Other model discript
 }
 }
 \description{
-Fits cumulative link model (CLM) with smooth-effect-on-response penalty (SERP)
-via Newton Raphson algorithm. SERP enables the regularization of the parameter space
-between the general cumulative model and the restricted cumulative model,
-resulting in all subject-specific effects shrinked to global effects.
+Fits cumulative link model (CLM) with the smooth-effect-on-response penalty (SERP)
+via Newton-Raphson algorithm. SERP enables the regularization of the parameter space
+between the general and the restricted cumulative models, resulting in all subject-specific
+effects being shrunk to global effects.
 }
 \details{
 The \code{serp} function fits the cumulative link model (CLM)
@@ -138,72 +142,65 @@ towards a common global effect.
 ## Penalized cumulative logit model of the wine dataset. The optimal
 ## tuning parameter corresponds to minimum deviance on a continuous
 ## grid from 0 to a specified maximum value.
-
 f1 <- serp(rating ~ temp + contact, slope = "penalize",
            reverse = T, link = "logit", tuning = "deviance",
            data = wine)
 summary(f1)
 
-
 ## A user-specified discrete lambda grid for obtainning the optimal
 ## tuning parameter is allowed for the "cv" and "deviance" tunings.
-
 f2 = serp(rating ~ temp + contact, slope = "penalize",
           reverse = T, link = "logit", tuning = "deviance",
           lambdagrid = seq(0,5,length.out = 50), data = wine)
 f2
 head(predict(f2))
 
-
 ## Tuning based on a k-fold cross validation, with k-fold
-## ranging from 2 and 10. Default being k = 5.
-
+## ranging from 2 and 10, with k = 5 as default.
 f3 <- serp(rating ~ temp + contact, slope = "penalize",
            reverse = F, link = "logit", tuning = "cv",
            data = wine)
 coef(f3)
 
+## Tuning could be done for a subset of all the variables in
+## the model resulting in a penalized partial proportional odds
+## model
+f4 <- serp(rating ~ temp + contact, slope = "penalize",
+           reverse = T, link = "logit", tuning = "deviance",
+           globalvar = ~ temp, data = wine)
+summary(f4)
 
 ## The "finite" tuning determines the point along parameter
 ## shrinkage at which an initially non-finite maximum
-## log-likelihood becomes finite. The general model is
+## log-likelihood turns finite. The general model is
 ## returned by default if log-likelihood initially exists.
-
-f4 <- serp(rating ~ temp + contact, slope = "penalize",
+f5 <- serp(rating ~ temp + contact, slope = "penalize",
            reverse = T, link = "logit", tuning = "finite",
            data = wine)
-summary(f4)
-
+summary(f5)
 
 ## Manual tuning with a user supplied lambda value is also
 ## possible.
-
-f5 <- serp(rating ~ temp + contact, slope = "penalize",
+f6 <- serp(rating ~ temp + contact, slope = "penalize",
            reverse = T, link = "logit", tuning = "manual",
            lambda = 43, data = wine)
-f5
-
+f6
 
 ## The unpenalized non-proportional odds model.
-
-f6 <- serp(rating ~ temp + contact, slope = "unparallel",
+f7 <- serp(rating ~ temp + contact, slope = "unparallel",
            reverse = T, link = "logit", data = wine)
-summary(f6)
-
-
-## The unpenalized proportional odds model.
-
-f7 <-  serp(rating ~ temp + contact, slope = "parallel",
-            reverse = T, link = "logit", data = wine)
 summary(f7)
 
+## The unpenalized proportional odds model.
+f8 <-  serp(rating ~ temp + contact, slope = "parallel",
+            reverse = T, link = "logit", data = wine)
+summary(f8)
 
 ## The unpenalized partial proportional odds model.
-
-f8 <- serp(rating ~ temp + contact, globalvar = ~ temp,
+f9 <- serp(rating ~ temp + contact, globalvar = ~ temp,
            slope = "partial", reverse = T, link = "logit",
            data = wine)
-summary(f8)
+summary(f9)
 }
 
 }

@@ -1,4 +1,4 @@
-# Internal functions
+# SERP internal functions
 formxL <- function(x, nL, slope, globalvar, m, vnull, ...)
 {
   Xdt <- function(x, nL)
@@ -29,9 +29,8 @@ formxL <- function(x, nL, slope, globalvar, m, vnull, ...)
       col.glo <- c(1L, which(xnames %in% subn))
       specifc <- setdiff(col.num, col.glo[-1L])
       if(!dim(x)[1L] == 1L)
-        xs <- x[,specifc]
-      else
-        xs <- subset(x, select = specifc)
+        xs <- x[,specifc]      else
+          xs <- subset(x, select = specifc)
       nv <- dim(xs)[2]
       lq <- as.vector(t(matrix(1:(nv * (nL-1)), nv, nL-1)))
       xx <- xs[u, ]
@@ -40,9 +39,8 @@ formxL <- function(x, nL, slope, globalvar, m, vnull, ...)
       cname <- unique(colnames(xL1)[colnames(xL1) != ""])
       colnames(xL1) <- rep(cname, each = nL-1)
       if (!dim(x)[1] == 1L)
-        xg <- x[,col.glo]
-      else
-        xg <- subset(x, select = col.glo)
+        xg <- x[,col.glo]       else
+          xg <- subset(x, select = col.glo)
       nv <- dim(xg)[2]
       xx <- xg[u, ]
       h2 <- rbind(xx)[rep(1, nL-1), ,drop = FALSE]
@@ -69,9 +67,18 @@ formxL <- function(x, nL, slope, globalvar, m, vnull, ...)
   xL
 }
 
-PenMx <- function(lamv, delta, nL, slope)
+PenMx <- function(lamv, delta, nL, slope, m, globalvar, mslope, tuning)
 {
-  nvar <- length(delta)-(nL-1)
+  if (mslope == 'penalize' && !is.null(globalvar)){
+    xnam <- colnames(m)
+    gb <- unlist(globalvar)
+    var.num <- seq_len(length(xnam))
+    var.glo <- which(xnam %in% gb)
+
+    nvar <- (nL-1) * (length(xnam) - 1)
+  }
+  else
+    nvar <- length(delta)-(nL-1)
   diagx <- rep(-1, nvar-1)
   mt <- diag(-1, nrow = nvar-1, ncol = nvar)
   mt <- 1*((row(mt) == col(mt) - (1)) + 0)
@@ -86,6 +93,13 @@ PenMx <- function(lamv, delta, nL, slope)
   Dx <- t(mt) %*% mt
   pM <- rbind(matrix(0, nL-1, nvar+nL-1),
               cbind(matrix(0, nvar, nL-1), Dx))
+  if (mslope == 'penalize' && !is.null(globalvar)){
+    smx <- matrix(1L:ncol(pM), ncol = nL-1, byrow=T)
+    hmx <- smx[,-ncol(smx)]
+    pM[c(smx[var.glo, ]), c(smx[var.glo, ])] <- 0
+    pM <- pM[-c(hmx[var.glo, ]), -c(hmx[var.glo, ])]
+    slope <- 'penalize'
+  }
   if (slope=="parallel" || slope=="partial") lamv <- 0
   py1 <- lamv * pM
   py2 <- lamv * pM %*% delta
@@ -93,24 +107,22 @@ PenMx <- function(lamv, delta, nL, slope)
   list(infopen=py1, scorepen=py2, logpen=py3)
 }
 
-prlg <- function(delta, xMat, obs,
-                 yMtx, penx, linkf, control, wt){
+prlg <- function(delta, xMat, obs, yMtx, penx, linkf,
+                 control, wt, intLogL=TRUE)
+{
   hh <- xMat %*% delta
   invlink <- 1 - apply(hh, 1, linkf$pfun)
   ieta <- cbind(1,matrix(invlink, nrow=obs, byrow=TRUE))
-  if(dim(ieta)[1L]==1L)
-    pr <- prob <- c(ieta[, -ncol(ieta)] - ieta[, -1], ieta[,dim(ieta)[2L]])
+  prob <- pr <- if (dim(ieta)[1L]==1L)
+    c(ieta[, -ncol(ieta)] - ieta[, -1], ieta[,dim(ieta)[2L]])
   else
-    pr <- prob <- cbind(ieta[, -ncol(ieta)] - ieta[, -1], ieta[,dim(ieta)[2L]] )
-  np <- any(pr<0)
-
-  double.eps <- sqrt(.Machine$double.xmin)
-  pr[pr <= double.eps] <- double.eps
-  llik <- suppressWarnings(sum(wt * yMtx * log(pr)))
-  llik2 <- suppressWarnings(sum(wt * yMtx * log(prob)))
-
+    cbind(ieta[, -ncol(ieta)] - ieta[, -1], ieta[,dim(ieta)[2L]] )
+  np <- any(pr < 0)
+  pr[pr <= control$minP] <- control$minP
+  l.pr <- suppressWarnings(if(intLogL) log(pr) else log(prob))
+  llik <- sum(wt * yMtx * l.pr)
   lk <- llik + penx$logpen
-  list(pr=pr, llik=lk, negprob=np, prob=prob, llik2=llik2)
+  list(pr=pr, llik=lk, negprob=np, prob=prob)
 }
 
 checkArg <- function (mcall, scall, argnames)
@@ -120,7 +132,8 @@ checkArg <- function (mcall, scall, argnames)
     stop("Model needs a formula", call. = FALSE)
   nd <- list(m1=names(mcall), m2=names(scall))
   nd <- setdiff(nd$m1, nd$m2)
-  if (length(nd) > 1) stop("unassigned value in serp function.", call. = FALSE)
+  if (length(nd) > 1)
+    stop("unassigned value in serp function.", call. = FALSE)
   check <- argnames %in% names(formals(cat))
   if (any(!check)) anyerr <- TRUE else anyerr <- FALSE
   if (length(check)>1)
@@ -132,18 +145,234 @@ checkArg <- function (mcall, scall, argnames)
   if (anyerr) stop(err, call. = FALSE)
 }
 
-startv <- function(link, linkf, globalvar, x, yFreq, xMat, nL, nv, slope)
+startv <- function(link, linkf, globalvar, x,
+                   yFreq, xMat, nL, nv, slope)
 {
   ut <- linkf$qfun(cumsum(yFreq[-nL]))
-  if (link == "cauchit") ut <- tan(pi*(cumsum(yFreq[-nL]) - 0.5))
-  if (slope == "parallel") ibeta <- c(ut, rep(0, nv))
-  if (slope == "partial") ibeta <- c(ut, rep(0, ncol(xMat)-(nL-1L)))
-  if (slope == "unparallel" || slope == "penalize") ibeta <- c(ut, rep(0, nv * (nL - 1)))
+  if (link == "cauchit")
+    ut <- tan(pi*(cumsum(yFreq[-nL]) - 0.5))
+  if (slope == "parallel")
+    ibeta <- c(ut, rep(0, nv))
+  if (slope == "partial")
+    ibeta <- c(ut, rep(0, ncol(xMat)-(nL-1L)))
+  if (slope == "unparallel" || slope == "penalize")
+    ibeta <- c(ut, rep(0, nv * (nL - 1)))
   ibeta
 }
 
+levformat <- function (pr, digits)
+  paste(format(pr * 1e2, scientific = FALSE,
+               trim = F, digits = digits),"%")
+
+etfun <- function(eta, nL, linkf)
+{
+  mt <- diag(-1, nrow = nL-1)
+  mt <- -1*((row(mt) == col(mt) + (1)) + 0)
+  diag(mt) <- rep(1, nL-1)
+  et <- rep(linkf$dfun(eta), each=length(eta)) * mt
+  et
+}
+
+pGumbel <- function (q, loc = 0, scale = 1, lower.tail = TRUE)
+{
+  q <- (q - loc)/scale
+  p <- exp(-exp(q))
+  if (lower.tail)
+    1 - p
+  else p
+}
+
+dGumbel <- function (x, loc = 0, scale = 1, log = FALSE)
+{
+  x <- -(x - loc)/scale
+  d <- log(1/scale) - x - exp(-x)
+  if (!log)
+    exp(d)
+  else d
+}
+
+qGumbel <- function (p, location = 0, scale = 1,
+                     lower.tail = TRUE, max = FALSE)
+{
+  if (!lower.tail)
+    p <- 1 - p
+  if (max)
+    location - scale * log(-log(p))
+  else location + scale * log(-log(1 - p))
+}
+
+yMx <- function(y, obs, nL)
+{
+  ym <- matrix(0, nrow = obs, ncol = nL,
+               dimnames = list(NULL, levels(y)))
+  yi <- as.integer(y)
+  ym[cbind(1:obs, yi)] <- 1
+  ym
+}
+
+uMatFun <- function(pr, yMtx, linkf, nL){
+  pf <- cbind(pr, 1-rowSums(pr))
+  pf <- pf/rowSums(pf)
+  lp <- pf[, nL]
+  pr <- pf[, -nL, drop = FALSE]
+  g  <- yMtx[, nL]/lp
+  g[yMtx[, nL] == 0] <- 0
+  yp <- yMtx[, -nL, drop = FALSE]/pr
+  yp[yMtx[, -nL] == 0] <- 0
+  etaMat <- suppressWarnings(
+    t(apply(t(apply(pr,1,cumsum)), 1, linkf$qfun)))
+  uMat <- yp - g
+  uMat <- split(uMat, 1:nrow(etaMat))
+  list(uMat=uMat, etaMat=etaMat, pr=pr, lp=lp)
+}
+
+lnkfun <- function(link)
+{
+  structure(list(
+    pfun = switch(link, logit = plogis, probit = pnorm,
+                  loglog = pgumbel, cloglog = pGumbel, cauchit = pcauchy),
+    dfun = switch(link, logit = dlogis, probit = dnorm,
+                  loglog = dgumbel, cloglog = dGumbel, cauchit = dcauchy),
+    qfun = switch(link, logit = qlogis, probit = qnorm,
+                  loglog = qgumbel, cloglog = qGumbel, cauchit = qcauchy)
+  ), name = "linkfun")
+}
+
+CVserp <- function(lambda, dt, nFold, linkf, link, m,
+                   slope, globalvar, nv, reverse, vnull, control,
+                   subs, wt, cverror, mslope, tuning, coln, useout)
+{
+  Indexes <- unlist(subs, use.names = FALSE)
+  tnData  <- dt[-Indexes, ]
+  tsData  <- dt[ Indexes, ]
+  y <- as.ordered(tnData[, 1])
+  x <- model.matrix(~tnData[, -1])
+  if (is.null(dim(x))) x <- cbind(x)
+  nL1 <- nL <- nlevels(y)
+  ylev1 <- levels(y)[-nL]
+  obs  <- length(y)
+  yMtx <- yMx(y, obs, nL)
+  yFreq <- colSums(yMtx)/obs
+  x2 <- model.matrix(~tsData[, -1L])
+  if (mslope == 'penalize' && !is.null(globalvar)){
+    colnames(x) <- colnames(dt)
+    colnames(x2) <- colnames(dt)
+    slope <- "partial"
+  }
+  xlst <- formxL(x, nL, slope, globalvar, m, vnull)
+  xMat <- do.call(rbind, xlst)
+  startval <- startv(link, linkf, globalvar, x, yFreq,
+                     xMat, nL, nv, slope)
+  npar <- length(startval)
+  x <- tnData[, -1L, drop = FALSE]
+  wt <- rep(1, obs)
+  estx <- try(serp.fit(lambda, globalvar, x, y, startval, xlst,
+                       xMat, yMtx, nL, obs, npar, linkf, link,
+                       reverse, vnull, control, slope, wt, m,
+                       mslope, tuning), silent = TRUE)
+  if (!inherits(estx, "try-error")){
+    est <- estx$coef
+    est <- est.names(est, slope, globalvar,
+                     coln, x, m, npar, xMat, nL, vnull, useout)
+    if (!reverse) est <- -1L*est
+    y2 <- as.ordered(tsData[, 1L])
+    nL <- nlevels(y2)
+    ylev2 <- levels(y2)[-nL]
+    obs <- length(y2)
+    ly1 <- length(ylev1)
+    ly2 <- length(ylev2)
+    yMtx <- yMx(y2, obs, nL)
+    if (ly1 != ly2){
+      sk <- function(dff) seq(dff, length(est), (nL1 - 1))
+      sdf <- if (ly1 > ly2) setdiff(ylev1, ylev2) else setdiff(ylev2, ylev1)
+      dff <- matrix(sdf)
+      if (mslope == 'penalize' && !is.null(globalvar)){
+        est <- est[!is.na(est)]
+        nx <- names(est)
+        nm <- c(sapply(dff, grep, nx, value = F))
+        est <- est[-nm]
+      } else est <- est[ -c(apply(dff, 1, sk))]
+      if (ly1 < ly2){
+        nL <- ly1
+        yMtx <- yMx(y2, obs, nL)[,ylev1]
+      }
+    }
+    xlst <- formxL(x2, nL, slope, globalvar, m, vnull)
+    xMat <- do.call(rbind, xlst)
+    pr <- prlg(est, xMat, obs, yMtx = NULL, penx = NULL, linkf,
+               control = NULL, wt = NULL, intLogL = TRUE)$pr
+    rs <- rowSums(yMtx)
+    pm <- errorMetrics(y2, pr, type=cverror)
+  } else pm <- NA
+  pm
+}
+
+cvfun <- function(lambda, x, y, nFold, linkf, link, m,
+                  slope, globalvar, nv, reverse, vnull,
+                  control, wt, cverror, mslope, tuning,
+                  coln, useout)
+{
+  df <- cbind(y, x)
+  set.seed(111)
+  dt <- df[sample(nrow(df)), ]
+  obs <- dim(dt)[1L]
+  folds  <- cut(seq(1, obs), breaks=nFold,
+                labels=FALSE)
+  fb <- data.frame(1:obs)
+  sp <- split(fb, folds)
+  tryCatch({
+    rs <- mean(na.omit(sapply(X = sp, FUN = CVserp,
+                              lambda = lambda, dt = dt, nFold = nFold,
+                              linkf = linkf, link = link, m = m,
+                              slope = slope, globalvar = globalvar,
+                              nv = nv, reverse = reverse, vnull = vnull,
+                              control = control, wt = wt, cverror=cverror,
+                              mslope=mslope, tuning = tuning, coln=coln,
+                              useout=useout)));},
+    error=function(e) {rs <<- NA})
+  rs
+}
+
+dvfun <- function(lambda, globalvar, x, y, startval,xlst, xMat,
+                  yMtx, nL, obs, npar, linkf, link, reverse,
+                  vnull,control, slope, wt, tuning, m, mslope)
+{
+  tryCatch({
+    rr <- serp.fit(lambda, globalvar, x, y, startval,xlst, xMat,
+                   yMtx, nL, obs, npar, linkf, link, reverse,
+                   vnull,control, slope, wt, m, mslope, tuning);},
+    error=function(e) {rr <<- NA})
+  if(tuning == "finite")
+    tryCatch({
+      rd <- -2*as.numeric(rr$problik$llik);},
+      error=function(e) {rd <<- NA})
+  else
+    tryCatch({
+      rd <- rr$deviance;},
+      error=function(e) {rd <<- NA})
+  rd
+}
+
+varnames <- function(cofnames, coef, nL)
+{
+  thresh <- sprintf("(Intercept):%d", 1:(nL-1))
+  cfn <- make.unique(as.character(cofnames), sep=":" )
+  ind <- !duplicated(cofnames)
+  for (i in 1:length(cfn[ind])){
+    cfn[ind][i]<-ifelse(
+      cofnames[ind][i] %in% cofnames[duplicated(cofnames)],
+      gsub("(.*)","\\1:0", cfn[ind][i]), cfn[ind][i])}
+  mx <- sub(".*:([0-9]+)","\\1",grep(":([0-9]*)$",cfn,value=T) )
+  mn <- sub("(.*:)[0-9]+","\\1",grep(":([0-9]*)$",cfn,value=T) )
+  mxm <- as.numeric(mx)+1
+  cfn[grep(":([0-9]*)$",cfn)] <- paste0(mn,mxm)
+  names(coef) <- c(thresh, cfn)
+  coef
+}
+
 est.names <- function(coef, slope, globalvar,
-                      coln, x, m, npar, xMat, nL, vnull, useout){
+                      coln, x, m, npar, xMat, nL, vnull, useout)
+{
   if (slope == "parallel"){
     rr <- c(sprintf("(Intercept):%d", 1:(nL-1)), coln)
     if(vnull == TRUE) rr <- rr[1:(nL-1)]
@@ -179,160 +408,4 @@ est.names <- function(coef, slope, globalvar,
     if(useout) coef <- posvec[names(origvec)]
   }
   coef
-}
-
-varnames <- function(cofnames, coef, nL){
-  thresh <- sprintf("(Intercept):%d", 1:(nL-1))
-  cfn <- make.unique(as.character(cofnames), sep=":" )
-  ind <- !duplicated(cofnames)
-  for (i in 1:length(cfn[ind])){
-    cfn[ind][i]<-ifelse(cofnames[ind][i] %in% cofnames[duplicated(cofnames)], gsub("(.*)","\\1:0", cfn[ind][i]),
-                        cfn[ind][i])
-  }
-  mx <- sub(".*:([0-9]+)","\\1",grep(":([0-9]*)$",cfn,value=T) )
-  mn <- sub("(.*:)[0-9]+","\\1",grep(":([0-9]*)$",cfn,value=T) )
-  mxm <- as.numeric(mx)+1
-  cfn[grep(":([0-9]*)$",cfn)] <- paste0(mn,mxm)
-  names(coef) <- c(thresh, cfn)
-  coef
-}
-
-levformat <- function (pr, digits)
-  paste(format(pr * 1e2, scientific = FALSE, trim = F, digits = digits),"%")
-
-etfun <- function(eta, nL, linkf)
-{
-  mt <- diag(-1, nrow = nL-1)
-  mt <- -1*((row(mt) == col(mt) + (1)) + 0)
-  diag(mt) <- rep(1, nL-1)
-  et <- rep(linkf$dfun(eta), each=length(eta)) * mt
-  et
-}
-
-pGumbel <- function (q, loc = 0, scale = 1, lower.tail = TRUE)
-{
-  q <- (q - loc)/scale
-  p <- exp(-exp(q))
-  if (lower.tail)
-    1 - p
-  else p
-}
-
-dGumbel <- function (x, loc = 0, scale = 1, log = FALSE)
-{
-  x <- -(x - loc)/scale
-  d <- log(1/scale) - x - exp(-x)
-  if (!log)
-    exp(d)
-  else d
-}
-
-qGumbel <- function (p, location = 0, scale = 1, lower.tail = TRUE, max = FALSE)
-{
-  if (!lower.tail)
-    p <- 1 - p
-  if (max)
-    location - scale * log(-log(p))
-  else location + scale * log(-log(1 - p))
-}
-
-yMx <- function(y, obs, nL)
-{
-  ym <- matrix(0, nrow = obs, ncol = nL, dimnames = list(NULL, levels(y)))
-  yi <- as.integer(y)
-  ym[cbind(1:obs, yi)] <- 1
-  ym
-}
-
-lnkfun <- function(link){
-  structure(list(
-    pfun = switch(link, logit = plogis, probit = pnorm,
-                  loglog = pgumbel, cloglog = pGumbel, cauchit = pcauchy),
-    dfun = switch(link, logit = dlogis, probit = dnorm,
-                  loglog = dgumbel, cloglog = dGumbel, cauchit = dcauchy),
-    qfun = switch(link, logit = qlogis, probit = qnorm,
-                  loglog = qgumbel, cloglog = qGumbel, cauchit = qcauchy)
-  ), name = "linkfun")
-}
-
-CVserp <- function(lambda, dt, nFold, linkf, link, m,
-                   slope, globalvar, nv, reverse, vnull, control, subs, wt)
-{
-  Indexes <- unlist(subs, use.names = FALSE)
-  tnData  <- dt[-Indexes, ]
-  tsData  <- dt[ Indexes, ]
-  y <- as.ordered(tnData[, 1])
-  x <- model.matrix(~tnData[, -1])
-  if (is.null(dim(x))) x <- cbind(x)
-  nL <- nL1 <- length(levels(y))
-  ylev1 <- levels(y)[-length(levels(y))]
-  obs <- length(y)
-  yMtx <- yMx(y, obs, nL)
-  yFreq <- colSums(yMtx)/obs
-  xlst <- formxL(x, nL, slope, globalvar, m, vnull)
-  xMat <- do.call(rbind, xlst)
-  inibeta <- startv(link, linkf, globalvar, x, yFreq, xMat, nL, nv, slope)
-  npar <- length(inibeta)
-  x <- tnData[, -1L, drop = FALSE]
-  wt <- rep(1, obs)
-  estx <- serp.fit(lambda, globalvar, x, y, inibeta, xlst,
-                   xMat, yMtx, nL, obs, npar, linkf, link,
-                   reverse, vnull, control, slope, wt)
-  est <- estx$coef
-  if (!reverse) est <- -1L*est
-  y2 <- as.ordered(tsData[, 1L])
-  x2 <- model.matrix(~tsData[, -1L])
-  nL <- length(levels(y2))
-  obs <- length(y2)
-  xlst <- formxL(x2, nL, slope, globalvar, m, vnull)
-  xMat <- do.call(rbind, xlst)
-  ylev2 <- levels(y2)[-length(levels(y2))]
-  if (length(ylev1) != length(ylev2))
-  {
-    sk <- function(dff) seq(dff, length(est), (nL1 - 1))
-    dff <- matrix(setdiff(ylev1, ylev2))
-    est <- est[ -c(apply(dff, 1, sk))]
-  }
-  pr <- prlg(est, xMat, obs, yMtx = NULL, penx = NULL, linkf,
-             control = NULL, wt = NULL)$pr
-  double.eps <- sqrt(.Machine$double.xmin)
-  pr[pr <= double.eps] <- double.eps
-  yMtx <- yMx(y2, obs, nL)
-  rs <- rowSums(yMtx)
-  bs <- sum(yMtx * (1 - pr)^2 + (rs - yMtx) * pr^2) / sum(rs)
-  bs
-}
-
-cvfun <- function(lambda, x, y, nFold, linkf, link, m,
-                  slope, globalvar, nv, reverse, vnull, control, wt){
-  df <- cbind(y, x)
-  set.seed(111)
-  dt <- df[sample(nrow(df)), ]
-  obs <- dim(dt)[1L]
-  folds  <- cut(seq(1, obs), breaks=nFold, labels=FALSE)
-  fb <- data.frame(1:obs)
-  sp <- split(fb, folds)
-  tryCatch({
-    rs <- mean(sapply(X = sp, FUN = CVserp, lambda = lambda,
-                      dt = dt, nFold = nFold, linkf = linkf, link = link,
-                      m = m, slope = slope, globalvar = globalvar, nv = nv,
-                      reverse = reverse, vnull = vnull, control = control, wt = wt));},
-    error=function(e) {rs <<- NA})
-  rs
-}
-
-dvfun <- function(lambda, globalvar, x, y, inibeta,xlst, xMat,
-                  yMtx, nL, obs, npar, linkf, link, reverse,
-                  vnull,control, slope, wt, tuning){
-  tryCatch({
-    rr <- serp.fit(lambda, globalvar, x, y, inibeta,xlst, xMat,
-                   yMtx, nL, obs, npar, linkf, link, reverse,
-                   vnull,control, slope, wt);},
-    error=function(e) {rr <<- NA})
-  if(tuning == "finite")
-    tryCatch({rd <- -2*as.numeric(rr$problik$llik2);}, error=function(e) {rd <<- NA})
-  else
-    tryCatch({rd <- rr$deviance;}, error=function(e) {rd <<- NA})
-  rd
-
 }

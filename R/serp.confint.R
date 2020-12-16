@@ -2,7 +2,7 @@
 #'
 #' Provides the confidence interval of estimates of an object of class serp.
 #'
-#' @param object A serp object.
+#' @param object An object of class serp.
 #' @param parm unused argument.
 #' @param level significance level.
 #' @param ... additional arguments.
@@ -18,7 +18,8 @@
 confint.serp <- function (object, parm, level = 0.95, ...)
 {
   ### parm argument is ignored.
-  if (!inherits(object, "serp")) stop("not a \"serp\" object", call. = FALSE)
+  if (!inherits(object, "serp"))
+    stop("not a \"serp\" object", call. = FALSE)
   if (!(level > 0 && level < 1 && length(level) == 1 && is.numeric(level)))
     stop("\"clevel!\" should lie between 0 and 1", call. = FALSE)
   if (!(missing(parm) || is.null(parm)))

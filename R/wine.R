@@ -1,11 +1,11 @@
 #' Bitterness of wine
 #'
-#' The \code{wine} data set taken from from Randall(1989), presents
-#' the outcome of a factorial experiment on factors
+#' The \code{wine} dataset adopted from Randall(1989),
+#' represents the outcome of a factorial experiment on factors
 #' determining the bitterness of wine. Two treatment factors
 #' (temperature and contact) with two levels each are provided,
 #' with the rating of wine taken on a continuous scale in the interval
-#' from 0 (‘none’) to 100 (‘intense’). These were subsequently grouped
+#' from 0 (ânoneâ) to 100 (âintenseâ). These were subsequently grouped
 #' into five ordrered categories ranging from 1 = 'least bitter'
 #' to 5 = 'most bitter'. Altogether, nine different judges assessed
 #' wine from two bottles and out of the four treatment conditions,
@@ -36,7 +36,7 @@
 #' @keywords dataset
 #' @source Taken from Randall (1989).
 #' @references
-#' Randall, J (1989). The analysis of sensory data by generalised linear
+#' Randall, J (1989). The analysis of sensory data by generalized linear
 #'     model. \emph{Biometrical journal 7}, pp. 781--793.
 #'
 #' @examples

@@ -7,7 +7,7 @@
 \method{confint}{serp}(object, parm, level = 0.95, ...)
 }
 \arguments{
-\item{object}{A serp object.}
+\item{object}{An object of class serp.}
 
 \item{parm}{unused argument.}
 

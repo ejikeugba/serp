@@ -7,7 +7,7 @@
 \method{BIC}{serp}(object, ...)
 }
 \arguments{
-\item{object}{object of class 'serp'.}
+\item{object}{An object of class serp.}
 
 \item{...}{additional arguments.}
 }

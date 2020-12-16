@@ -2,7 +2,7 @@
 #'
 #' Provides an ANOVA table for comparing two or more serp objects.
 #'
-#' @param object A serp object.
+#' @param object An object of class serp.
 #' @param ... additional arguments.
 #' @param test type of test to be conducted.
 #' @return The ANOVA table of a fitted model.
@@ -16,14 +16,16 @@
 #'
 anova.serp <- function (object, ..., test = c("Chisq", "none"))
 {
-  if (!inherits(object, "serp")) stop("not a \"serp\" object", call. = FALSE)
+  if (!inherits(object, "serp"))
+    stop("not a \"serp\" object", call. = FALSE)
   test <- match.arg(test)
   dots <- list(...)
   mod <- as.list(match.call())
   mod[[1]] <- NULL
   nm <- as.character(mod)
-  if (!length(dots)) stop("no anova implementation for a single
-                          \"serp\" object", call. = FALSE)
+  if (!length(dots))
+    stop("no anova implementation for a single ",
+         "\"serp\" object", call. = FALSE)
   mlist <- list(object, ...)
   ml <- length(mlist)
   dr <- sapply(mlist, function(r) (r$nobs - length(r$coef)))
@@ -33,7 +35,8 @@ anova.serp <- function (object, ..., test = c("Chisq", "none"))
     stop("objects not of class \"serp\"", call. = FALSE)
   fv <- sapply(mlist, function(r) length(r$fitted.values))
   if (any(fv != fv[1L]))
-    stop("models were not all fitted to the same size of dataset", call. = FALSE)
+    stop("models were not all fitted to the same ",
+         "size of dataset", call. = FALSE)
   dep <- unique(sapply(mlist, function(r) paste(formula(r)[2L])))
   drs <- dr[hh]
   dev <- sapply(mlist, function(r) -2*r$logLik)

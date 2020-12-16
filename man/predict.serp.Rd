@@ -7,11 +7,11 @@
 \method{predict}{serp}(object, type = c("link", "response", "class"), newdata = NULL, ...)
 }
 \arguments{
-\item{object}{A "serp" object.}
+\item{object}{An object of class serp.}
 
 \item{type}{any of response, link or terms.}
 
-\item{newdata}{fresh dataset with all relivant variables.}
+\item{newdata}{fresh dataset with all relevant variables.}
 
 \item{...}{additional arguments.}
 }
@@ -19,7 +19,8 @@
 The object returned depends on \code{type}.
 }
 \description{
-Returns the predicted probabilities, link and class for an object of class "serp".
+Returns the predicted probabilities, link and class
+for an object of class "serp".
 }
 \examples{
 # See serp() documentation for examples.

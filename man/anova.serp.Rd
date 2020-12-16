@@ -7,7 +7,7 @@
 \method{anova}{serp}(object, ..., test = c("Chisq", "none"))
 }
 \arguments{
-\item{object}{A serp object.}
+\item{object}{An object of class serp.}
 
 \item{...}{additional arguments.}
 

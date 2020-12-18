@@ -3,15 +3,16 @@
 #' @description Calculates performance metrics of fitted categorical models,
 #' including binary and multi-categorical models.
 #'
-#' @usage errorMetrics(actual, predicted, model= c("multiclass", "binary"),
+#' @usage errorMetrics(actual, predicted,
+#'                     model= c("multiclass", "binary"),
 #'                     type= c("brier", "logloss", "misclass"),
 #'                     eps=.Machine$double.eps)
 #' @param actual vector of actual values observed
 #' @param predicted predicted probability matrix of a categorical model or a vector of fitted values for binary models.
 #' @param model specifies whether multi-categorical or binary model
 #' @param type specifies type of error metrics
-#' @param eps a near-zero value introduced only if the fitted probabilities goes beyond
-#' specified threshold. Helps to minimize the chances of running into
+#' @param eps a near-zero value introduced only if the fitted probabilities go beyond
+#' a specified threshold. It helps to minimize the chances of running into
 #' numerical problems.
 #' @return A numeric value of computed performance metric determining how
 #' good a categorical model is compare to competing models.
@@ -64,8 +65,7 @@ errorMetrics <- function(actual, predicted,
     y <- factor(y$model[,1L])
     pred_y <- obj$fitted.values
   }
-  else
-    pred_y <- predicted
+  else pred_y <- predicted
   if (!is.factor(y))
     stop("'actual' must be a factor")
   y <- droplevels(y)
@@ -80,7 +80,7 @@ errorMetrics <- function(actual, predicted,
            "dataframe of fitted values")
     if (nrow(pred_y) != obs || max(unclass(y)) != ncol(pred_y)
         || min(unclass(y)) < 0)
-      stop("levels actual observations not equal to the number of ",
+      stop("levels of actual observations not equal to the number of ",
            "columns of fitted values, or unequal ",
            "lengths of observations")
   }else{
@@ -89,7 +89,7 @@ errorMetrics <- function(actual, predicted,
     if (!is.numeric(pred_y))
       stop("supply a numeric vector of fitted values")
     if (length(pred_y) != obs)
-      stop("lengths of actual observations and fitted values unequal")
+      stop("unequal lengths of actual and fitted values")
   }
   yprob <- cbind(y, pred_y)
   if (any(is.na(pred_y))){

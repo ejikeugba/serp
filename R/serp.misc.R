@@ -29,8 +29,8 @@ formxL <- function(x, nL, slope, globalvar, m, vnull, ...)
       col.glo <- c(1L, which(xnames %in% subn))
       specifc <- setdiff(col.num, col.glo[-1L])
       if(!dim(x)[1L] == 1L)
-        xs <- x[,specifc]      else
-          xs <- subset(x, select = specifc)
+        xs <- x[,specifc]
+      else xs <- subset(x, select = specifc)
       nv <- dim(xs)[2]
       lq <- as.vector(t(matrix(1:(nv * (nL-1)), nv, nL-1)))
       xx <- xs[u, ]
@@ -39,15 +39,14 @@ formxL <- function(x, nL, slope, globalvar, m, vnull, ...)
       cname <- unique(colnames(xL1)[colnames(xL1) != ""])
       colnames(xL1) <- rep(cname, each = nL-1)
       if (!dim(x)[1] == 1L)
-        xg <- x[,col.glo]       else
-          xg <- subset(x, select = col.glo)
+        xg <- x[,col.glo]
+      else xg <- subset(x, select = col.glo)
       nv <- dim(xg)[2]
       xx <- xg[u, ]
       h2 <- rbind(xx)[rep(1, nL-1), ,drop = FALSE]
       if (!vnull)
         xL2 <- h2[,-1L, drop = FALSE]
-      else
-        xL2 <- h2
+      else xL2 <- h2
       XL3 <- cbind(xL1, xL2)
       xListi <- cbind(h1, XL3[ , order(colnames(XL3))])
     }else{
@@ -74,11 +73,9 @@ PenMx <- function(lamv, delta, nL, slope, m, globalvar, mslope, tuning)
     gb <- unlist(globalvar)
     var.num <- seq_len(length(xnam))
     var.glo <- which(xnam %in% gb)
-
     nvar <- (nL-1) * (length(xnam) - 1)
   }
-  else
-    nvar <- length(delta)-(nL-1)
+  else nvar <- length(delta)-(nL-1)
   diagx <- rep(-1, nvar-1)
   mt <- diag(-1, nrow = nvar-1, ncol = nvar)
   mt <- 1*((row(mt) == col(mt) - (1)) + 0)
@@ -115,8 +112,7 @@ prlg <- function(delta, xMat, obs, yMtx, penx, linkf,
   ieta <- cbind(1,matrix(invlink, nrow=obs, byrow=TRUE))
   prob <- pr <- if (dim(ieta)[1L]==1L)
     c(ieta[, -ncol(ieta)] - ieta[, -1], ieta[,dim(ieta)[2L]])
-  else
-    cbind(ieta[, -ncol(ieta)] - ieta[, -1], ieta[,dim(ieta)[2L]] )
+  else cbind(ieta[, -ncol(ieta)] - ieta[, -1], ieta[,dim(ieta)[2L]] )
   np <- any(pr < 0)
   pr[pr <= control$minP] <- control$minP
   l.pr <- suppressWarnings(if(intLogL) log(pr) else log(prob))
@@ -139,8 +135,7 @@ checkArg <- function (mcall, scall, argnames)
   if (length(check)>1)
     err <- sprintf("unused arguments: \"%s\"",
                    paste(argnames[!check], collapse = ", "))
-  else
-    err <- sprintf("unused argument: \"%s\"",
+  else err <- sprintf("unused argument: \"%s\"",
                    paste(argnames[!check], collapse = ", "))
   if (anyerr) stop(err, call. = FALSE)
 }
@@ -210,7 +205,8 @@ yMx <- function(y, obs, nL)
   ym
 }
 
-uMatFun <- function(pr, yMtx, linkf, nL){
+uMatFun <- function(pr, yMtx, linkf, nL)
+{
   pf <- cbind(pr, 1-rowSums(pr))
   pf <- pf/rowSums(pf)
   lp <- pf[, nL]

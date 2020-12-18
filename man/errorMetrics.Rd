@@ -4,7 +4,8 @@
 \alias{errorMetrics}
 \title{Performance metrics for categorical models}
 \usage{
-errorMetrics(actual, predicted, model= c("multiclass", "binary"),
+errorMetrics(actual, predicted,
+                    model= c("multiclass", "binary"),
                     type= c("brier", "logloss", "misclass"),
                     eps=.Machine$double.eps)
 }
@@ -17,8 +18,8 @@ errorMetrics(actual, predicted, model= c("multiclass", "binary"),
 
 \item{type}{specifies type of error metrics}
 
-\item{eps}{a near-zero value introduced only if the fitted probabilities goes beyond
-specified threshold. Helps to minimize the chances of running into
+\item{eps}{a near-zero value introduced only if the fitted probabilities go beyond
+a specified threshold. It helps to minimize the chances of running into
 numerical problems.}
 }
 \value{

@@ -92,8 +92,7 @@ summary.serp <- function(object, ...){
   cholHx <- try(chol(H), silent = TRUE)
   if (inherits(cholHx, "try-error"))
     cholHx <- covx <- diag(NA, dim(H))
-  else
-    covx   <- chol2inv(cholHx)
+  else covx   <- chol2inv(cholHx)
   coefs[, 2L] <- se.est <- sqrt(diag(covx))
   coefs[, 3L] <- z.value <- coef/se.est
   coefs[, 4L] <- pvalue  <- 2 * pnorm(abs(z.value), lower.tail = FALSE)
@@ -227,8 +226,7 @@ predict.serp <- function(object,
     xpred <- model.matrix(object$Terms, newdata)
     if (!dim(xpred)[1] == 1L)
       x <- xpred[,-1L]
-    else
-      x <- subset(xpred, select = -1)
+    else x <- subset(xpred, select = -1)
     vnull <- ifelse((dim(x)[2] == 1L), TRUE, FALSE)
     useout <- TRUE
     ym <- oldnames[1L]

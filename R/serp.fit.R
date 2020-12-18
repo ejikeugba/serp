@@ -59,13 +59,11 @@ serpfit <- function(lambda, globalvar, x, y, startval, xlst, xMat,
         }else{
           lam <- 0
           minL <- NULL
-        }
-      },
+        }},
       manual = {
         lam <- lambda
         minL <- NULL
-      }
-    )
+      })
   }else{
     lam <- 0
     minL <- NULL
@@ -89,7 +87,6 @@ serpfit <- function(lambda, globalvar, x, y, startval, xlst, xMat,
     }
     if (tuning=="finite") minL$objective <- res$logLik
   }
-
   list(res, lambda=lam, objective=minL$objective)
 }
 
@@ -153,7 +150,12 @@ serp.fit <- function(lambda, globalvar, x, y, startval, xlst,
               "Consider using penalized, parallel or ",
               "partial slope, or other link function.")
   }
-  newdelta <- if (reverse) -1 * c(newdelta) else c(newdelta)
+  if (reverse){
+    newdelta <- c(newdelta[(nL-1):1], newdelta[nL:nrow(newdelta)])
+    fv <- pfit1$prob[ ,nL:1]
+  } else fv <- pfit1$prob
+  fv <- as.data.frame(fv)
+  colnames(fv) <- levels(droplevels(y))
   if (!vnull){
     hes <- info
     gra <- score
@@ -163,7 +165,7 @@ serp.fit <- function(lambda, globalvar, x, y, startval, xlst,
     gra <- score[-nL]
     npar <- nL - 1
   }
-  list(coef= newdelta,
+  list(coef= c(newdelta),
        logLik = c(loglik),
        deviance = -2*pfit1$llik,
        aic = c(-2*loglik + 2*npar),
@@ -174,9 +176,8 @@ serp.fit <- function(lambda, globalvar, x, y, startval, xlst,
        converged = c(converged),
        edf = npar,
        iter = c(iter),
-       fitted.values = pfit1$prob,
+       fitted.values = fv,
        ylev = nL,
        link = link,
-       nobs = obs
-  )
+       nobs = obs)
 }

@@ -52,8 +52,7 @@ anova.serp <- function (object, ..., test = c("Chisq", "none"))
                     Test = prs, LRtest = ch, df = df, Prob = pv)
   names(res) <- c("Model", "no.par", "AIC", "logLik",
                   "Test", "LR.stat", "df", "Pr(Chi)")
-  if (test == "none")
-    res <- res[, -7L]
+  if (test == "none") res <- res[, -7L]
   class(res) <- c("Anova", "data.frame")
   attr(res, "heading") <- c("Likelihood ratio tests of ordinal models.",
                             paste("Response:",dep, "\n"))

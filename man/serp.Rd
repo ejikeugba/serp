@@ -18,13 +18,13 @@ serp(formula, link = c("logit", "probit","loglog", "cloglog", "cauchit"),
 
 \item{slope}{specifies the form of coefficients in the model, with "penalize" denoting the penalized coefficients, "unparallel" , "parallel" and "partial" denoting the unpenalized non-parallel, "parallel" and "partial" coefficients respectively.}
 
-\item{tuning}{specifies the method of choosing an optimal shrinkage parameter, including: deviance, cv, manual and finite. i.e., the lambda value along parameter shrinkage path at which the residual deviance of model is minimal or at which the cross-validated prediction error (brier score) is minimal, or alternatively, a user supplied lambda. The "finite" tuning is used to locate the lambda value for which the fit's log-Likelihood is finite.}
+\item{tuning}{specifies the method of choosing an optimal shrinkage parameter, including: deviance, cv, manual and finite. i.e., the lambda value along parameter shrinkage path at which the fit's residual deviance or the cross-validated prediction error is minimal, or alternatively, tuning with a user supplied lambda. The finite tuning is used to locate the lambda value for which the fit's log-Likelihood is finite.}
 
 \item{reverse}{false by default, when true the sign of the linear predictor is reversed.}
 
 \item{lambdagrid}{optional user supplied lambda grid for cv and deviance tuning methods. Negative range of values are not allowed, instead (0, Inf). With large number of predictors and cases in the model, iterations run faster over a short grid interval, i.e., the shorter the grid length the faster iteration.}
 
-\item{cverror}{chooses the performance metric for cv tuning, with the brier score used by default.}
+\item{cverror}{sets the performance metric for cv tuning, with the brier score used by default.}
 
 \item{globalvar}{specifies variables to be assigned global effects during penalization or when \code{slope} is set to \code{partial}. Variables are specified as a formula with an empty left hand side, for instance, globalvar = ~predictors.}
 
@@ -47,8 +47,9 @@ serp(formula, link = c("logit", "probit","loglog", "cloglog", "cauchit"),
 \item{...}{additional arguments.}
 }
 \value{
-An object of class "serp" with the components listed below. Other model discription methods include: \code{summary},
-\code{coef}, \code{predict}, \code{vcov}, \code{anova}, etc.
+An object of class "serp" with the components listed below.
+Other model description methods include: \code{summary},
+\code{coef}, \code{predict}, \code{vcov}, \code{anova}, \code{errorMetrics}, etc.
 \describe{
   \item{aic}{the akaike information criterion.}
   \item{bic}{the bayesian information criterion.}
@@ -94,113 +95,105 @@ variable, a simple form of the model is expressed as follows:
 \deqn{P(Y\leq r|x) = F(\delta_{0r} + x^T\delta)}
 
 where \eqn{x} is a vector of covariates, \eqn{\delta} a vector
-of regression parameters and  \eqn{F} a continuous distribution
-function. The choice of \eqn{F}, of course, results in different
-forms of the cumulative model. As observed, this assumes that the
-effect of \eqn{x} does not depend on the  category. However,
-relaxing such an assumption allows the effect of the covarites to
-vary across categories, yielding the following general cumulative
-model:
+of regression parameters and \eqn{F} a continuous distribution
+function. This model assumes that the effect of \eqn{x} does not
+depend on the  category. However, with this assumption relaxed,
+one obtains the following general cumulative model:
 
 \deqn{P(Y\leq r|x) = F(\delta_{0r} + x^T\delta_{r}),   r=1,\dots,k-1}
 
-This model has the property of stochastic ordering (McCullagh, 1980),
-which implies that  \eqn{\delta_{0r} + x^T\delta_{r-1} < \delta_{0r} + x^T\delta_{r}}
-holds for all \eqn{x} and all categories  \eqn{r}, since
-\eqn{P(Y\leq r-1|x) < P(Y\leq r|x)} must hold for all categories.
-A mixture of the two effect types can also be made, for instance,
-with the cumulative logit model, such results in the so-called
-partial proportional odds model. Assuming  \eqn{x} is partitioned
-into \eqn{x_{1}} and  \eqn{x_{2}}, for all possible link functions
-this may be expressed as follows:
+This model, however, has the stochastic ordering property
+(McCullagh, 1980), which implies that \eqn{P(Y\leq r-1|x) < P(Y\leq r|x)}
+holds for all \eqn{x} and all categories \eqn{r}. Such assumption
+is often problematic, resulting in unstable likelihoods with
+ill-conditioned parameter space during the iterative procedure.
 
-\deqn{P(Y\leq r|x) = F(\delta_{0r} + x^T_{1}\delta + x^T_{2}\delta_{r}), r=1,\dots,k-1}
-
-However, with the stochastic ordering constraint on the general
-cumulative model very often problematic, resulting in unstable
-likelihoods with ill-conditioned parameter space during the
-iterative procedure, SERP offers a means of arriving at stable
-estimates of the general model. It provides a form of regularization
-that is based on minimizing the penalized log-likelihood:
+SERP offers a means of arriving at stable estimates of the general model.
+It provides a form of regularization that is based on minimizing the
+penalized log-likelihood:
 
 \deqn{l_{p}(\delta)=l(\delta)-J_{\lambda}(\delta)}
 
-where  \eqn{l(\delta)}, is the log-likelihood of the general
-cumulative model and  \eqn{J_{\lambda}(\delta)=\lambda J(\delta)}
-the penalty function weighted by the turning parameter \eqn{\lambda}.
-Assuming an ordered categorical outcome  \eqn{Y \in \{1,\dots,k\}},
-and considering that the corresponding parameters  \eqn{\delta_{1j},\dots \delta_{k-1,j}}
+where \eqn{l(\delta)}, is the log-likelihood of the general cumulative
+model and \eqn{J_{\lambda}(\delta)=\lambda J(\delta)} the penalty
+function weighted by the turning parameter \eqn{\lambda}. Assuming an
+ordered categorical outcome \eqn{Y \in \{1,\dots,k\}}, and considering
+that the corresponding parameters \eqn{\delta_{1j},\dots \delta_{k-1,j}}
 vary smoothly over the categories, the following penalty
 (Tutz and Gertheiss, 2016),
+
 \deqn{J_{\lambda}(\delta)= \sum_{\substack{j=1}}^{p} \sum_{r=1}^{k-2} (\delta_{r+1,j}-\delta_{rj})^{2}}
+
 enables the smoothing of response categories such that all
-category-specific effects associated with the response turn
-towards a common global effect.
+category-specific effects associated with the response turn towards a
+common global effect. SERP could also be applied to a semi-parallel model
+with only the category-specific part of the model penalized.
 }
 \examples{
 \dontrun{
-## Penalized cumulative logit model of the wine dataset. The optimal
-## tuning parameter corresponds to minimum deviance on a continuous
-## grid from 0 to a specified maximum value.
+## An application of SERP to CLM is illustrated with the penalized
+## cumulative logit model of the wine dataset.
+
+## Tuning via deviance method returns the model along parameter
+## shrinkage at which the total residual deviance is minimal.
 f1 <- serp(rating ~ temp + contact, slope = "penalize",
            reverse = T, link = "logit", tuning = "deviance",
            data = wine)
 summary(f1)
 
-## A user-specified discrete lambda grid for obtainning the optimal
-## tuning parameter is allowed for the "cv" and "deviance" tunings.
+## A user-specified discrete lambda grid could be alternatively
+## used for the deviance and cv tuning.
 f2 = serp(rating ~ temp + contact, slope = "penalize",
           reverse = T, link = "logit", tuning = "deviance",
           lambdagrid = seq(0,5,length.out = 50), data = wine)
-f2
-head(predict(f2))
+summary(f2)
 
-## Tuning based on a k-fold cross validation, with k-fold
-## ranging from 2 and 10, with k = 5 as default.
+## Tuning based on a k-fold cross validation, with k = 5 as
+## default.
 f3 <- serp(rating ~ temp + contact, slope = "penalize",
            reverse = F, link = "logit", tuning = "cv",
            data = wine)
 coef(f3)
 
-## Tuning could be done for a subset of all the variables in
-## the model resulting in a penalized partial proportional odds
-## model
+## A penalized partial proportional odds model is obtained by
+## setting some variable(s) as global effects.
 f4 <- serp(rating ~ temp + contact, slope = "penalize",
            reverse = T, link = "logit", tuning = "deviance",
            globalvar = ~ temp, data = wine)
-summary(f4)
+f4
 
-## The "finite" tuning determines the point along parameter
-## shrinkage at which an initially non-finite maximum
-## log-likelihood turns finite. The general model is
-## returned by default if log-likelihood initially exists.
+## If non-finite maximum log-likelihood persists with the other
+## tuning methods, the finite tuning returns the fit along
+## parameter shrinkage at which the maximum log-likelihood
+## exists. The general model is returned by default if
+## maximum log-likelihood initially exists.
 f5 <- serp(rating ~ temp + contact, slope = "penalize",
            reverse = T, link = "logit", tuning = "finite",
            data = wine)
-summary(f5)
+predict(f5, type="response")
 
-## Manual tuning with a user supplied lambda value is also
-## possible.
+## Manual/direct tuning with a user supplied lambda value
+## is also possible.
 f6 <- serp(rating ~ temp + contact, slope = "penalize",
            reverse = T, link = "logit", tuning = "manual",
            lambda = 43, data = wine)
-f6
+predict(f6, type="link")
 
 ## The unpenalized non-proportional odds model.
 f7 <- serp(rating ~ temp + contact, slope = "unparallel",
            reverse = T, link = "logit", data = wine)
-summary(f7)
+predict(f7, type="class")
 
 ## The unpenalized proportional odds model.
 f8 <-  serp(rating ~ temp + contact, slope = "parallel",
             reverse = T, link = "logit", data = wine)
-summary(f8)
+confint(f8)
 
 ## The unpenalized partial proportional odds model.
 f9 <- serp(rating ~ temp + contact, globalvar = ~ temp,
            slope = "partial", reverse = T, link = "logit",
            data = wine)
-summary(f9)
+anova(f1, f7, f8, f9)
 }
 
 }

@@ -18,7 +18,7 @@ print.serp <- function(x, ...)
   if (!inherits(x, "serp"))
     stop("not a \"serp\" object", call. = FALSE)
   object <- x
-  cat("call:\n")
+  cat("\ncall:\n")
   print(object$call)
   if (object$slope == 'penalize'){
     tun <- object$tuning
@@ -35,7 +35,7 @@ print.serp <- function(x, ...)
       cverror <- "cv (brier)"
     if (object$tuning == "cv" && object$cverror == "logloss")
       cverror <- "cv (logloss)"
-    cat("\nPenalization details:")
+    cat("\nPenalization:")
     if (!length(colnames(object$model)[-1L]) ==
         length(object$globalvar)){
       cat("\npenalty:", "  "," SERP")
@@ -46,8 +46,8 @@ print.serp <- function(x, ...)
       cat("\nlambda:","    " , h2)
     } else cat("\nwith no subject-specific effects found, ",
                "parallel slope(s) returned\n")
+    cat("\n")
   }
-  cat("\n")
   cat("\ncoefficients:\n")
   print(object$coef)
   cat("\nloglik:", object$logLik, " ","aic:", object$aic, "\n")
@@ -130,7 +130,7 @@ print.summary.serp <- function(x, ...){
   if (!inherits(x, "summary.serp"))
     stop("not a \"serp\" object", call. = FALSE)
   object <- x
-  cat("call:\n")
+  cat("\ncall:\n")
   print(object$call)
   if (object$slope == 'penalize'){
     tun <- object$tuning
@@ -147,7 +147,7 @@ print.summary.serp <- function(x, ...){
       cverror <- "cv (brier)"
     if (object$tuning == "cv" && object$cverror == "logloss")
       cverror <- "cv (logloss)"
-    cat("\nPenalization details:")
+    cat("\nPenalization:")
     if (!length(colnames(object$model)[-1L])==length(object$globalvar)){
       cat("\npenalty:", "  "," SERP")
       cat("\ntuning:","    " , tun)
@@ -155,8 +155,9 @@ print.summary.serp <- function(x, ...){
       cat("\nvalue:","     " , h1)
       cat("\nlambda:","    " , h2)
     } else cat("\nwith no subject-specific effects found, ",
-               "parallel slope(s) returned\n")}
-  cat("\n")
+               "parallel slope(s) returned\n")
+    cat("\n")
+  }
   nL <- object$ylev
   coef <- as.data.frame(object$coef)
   df <- (object$nobs*(object$ylev-1)) - length(coef[,1L])

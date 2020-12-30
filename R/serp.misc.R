@@ -66,13 +66,18 @@ formxL <- function(x, nL, slope, globalvar, m, vnull, ...)
   xL
 }
 
-PenMx <- function(lamv, delta, nL, slope, m, globalvar, mslope, tuning)
+PenMx <- function(lamv, delta, nL, slope, m, globalvar,
+                  mslope, tuning, Terms)
 {
   if (mslope == 'penalize' && !is.null(globalvar)){
-    xnam <- colnames(m)
+    xnam <- c(colnames(m)[1], attributes(Terms)$term.labels)
+    interac <- grep(':', xnam, fixed = T)
     gb <- unlist(globalvar)
     var.num <- seq_len(length(xnam))
     var.glo <- which(xnam %in% gb)
+    if (length(interac) != 0L ) {
+      var.glo <- c(var.glo, interac)
+    }
     nvar <- (nL-1) * (length(xnam) - 1)
   }
   else nvar <- length(delta)-(nL-1)
@@ -92,7 +97,7 @@ PenMx <- function(lamv, delta, nL, slope, m, globalvar, mslope, tuning)
               cbind(matrix(0, nvar, nL-1), Dx))
   if (mslope == 'penalize' && !is.null(globalvar)){
     smx <- matrix(1L:ncol(pM), ncol = nL-1, byrow=T)
-    hmx <- smx[,-ncol(smx)]
+    hmx <- smx[,-ncol(smx), drop = FALSE]
     pM[c(smx[var.glo, ]), c(smx[var.glo, ])] <- 0
     pM <- pM[-c(hmx[var.glo, ]), -c(hmx[var.glo, ])]
     slope <- 'penalize'
@@ -105,20 +110,50 @@ PenMx <- function(lamv, delta, nL, slope, m, globalvar, mslope, tuning)
 }
 
 prlg <- function(delta, xMat, obs, yMtx, penx, linkf,
-                 control, wt, intLogL=TRUE)
+                 control, wt)
 {
   hh <- xMat %*% delta
   invlink <- 1 - apply(hh, 1, linkf$pfun)
-  ieta <- cbind(1,matrix(invlink, nrow=obs, byrow=TRUE))
-  prob <- pr <- if (dim(ieta)[1L]==1L)
-    c(ieta[, -ncol(ieta)] - ieta[, -1], ieta[,dim(ieta)[2L]])
-  else cbind(ieta[, -ncol(ieta)] - ieta[, -1], ieta[,dim(ieta)[2L]] )
+  eta <- cbind(1,matrix(invlink, nrow=obs, byrow=TRUE))
+  pr <- exact.pr <- if (dim(eta)[1L]==1L)
+    c(eta[, -ncol(eta)] - eta[, -1], eta[,dim(eta)[2L]])
+  else
+    cbind(eta[, -ncol(eta)] - eta[, -1], eta[,dim(eta)[2L]] )
   np <- any(pr < 0)
   pr[pr <= control$minP] <- control$minP
-  l.pr <- suppressWarnings(if(intLogL) log(pr) else log(prob))
-  llik <- sum(wt * yMtx * l.pr)
-  lk <- llik + penx$logpen
-  list(pr=pr, llik=lk, negprob=np, prob=prob)
+  logpr <- suppressWarnings(log(pr))
+  logL <- sum(wt * yMtx * logpr) + penx$logpen
+  exact.logpr <- suppressWarnings(log(exact.pr))
+  exact.logL <- sum(wt * yMtx * exact.logpr) + penx$logpen
+  res <- list(negprob=np,
+              logL=logL,
+              pr=pr,
+              exact.logL=exact.logL,
+              exact.pr=exact.pr)
+  res
+}
+
+ScoreInfo <- function(x, y, pr, wt, nL, yMtx, xlst, penx, linkf)
+{
+  um <- uMatFun(pr, yMtx, linkf, nL)
+  uMat <- um$uMat
+  if (is.null(attr(yMtx, "wts")))
+    wts <- rowSums(yMtx) else wts <- attr(yMtx, "wts")
+  pw <- wts/um$pr
+  ff <- wts/um$lp
+  q <- lapply(split(um$etaMat, 1:nrow(um$etaMat)), etfun, nL, linkf)
+  invmat <- lapply(split(pw, 1:nrow(pw)), diag)
+  Infx <- mapply(
+    function(invt, ff, x, q, wt){
+      inv <- invt + ff
+      w <- crossprod(q,inv) %*% q
+      fm <- wt * crossprod(x, w %*% x)
+    }, invmat, ff, xlst, q, wt, SIMPLIFY = FALSE)
+  info <- Reduce("+", Infx) + penx$infopen
+  sc <- mapply(function(q, uMat, x, wt) wt*crossprod(x, crossprod(q, uMat)),
+               q, uMat, xlst, wt, SIMPLIFY = FALSE)
+  score <- Reduce("+", sc) - penx$scorepen
+  list(score = score, info = info)
 }
 
 checkArg <- function (mcall, scall, argnames)
@@ -136,7 +171,7 @@ checkArg <- function (mcall, scall, argnames)
     err <- sprintf("unused arguments: \"%s\"",
                    paste(argnames[!check], collapse = ", "))
   else err <- sprintf("unused argument: \"%s\"",
-                   paste(argnames[!check], collapse = ", "))
+                      paste(argnames[!check], collapse = ", "))
   if (anyerr) stop(err, call. = FALSE)
 }
 
@@ -236,7 +271,8 @@ lnkfun <- function(link)
 
 CVserp <- function(lambda, dt, nFold, linkf, link, m,
                    slope, globalvar, nv, reverse, vnull, control,
-                   subs, wt, cverror, mslope, tuning, coln, useout)
+                   subs, wt, cverror, mslope, tuning, coln, useout,
+                   Terms)
 {
   Indexes <- unlist(subs, use.names = FALSE)
   tnData  <- dt[-Indexes, ]
@@ -265,7 +301,7 @@ CVserp <- function(lambda, dt, nFold, linkf, link, m,
   estx <- try(serp.fit(lambda, globalvar, x, y, startval, xlst,
                        xMat, yMtx, nL, obs, npar, linkf, link,
                        reverse, vnull, control, slope, wt, m,
-                       mslope, tuning), silent = TRUE)
+                       mslope, tuning, Terms, xtrace=FALSE), silent = TRUE)
   if (!inherits(estx, "try-error")){
     est <- estx$coef
     est <- est.names(est, slope, globalvar,
@@ -296,7 +332,7 @@ CVserp <- function(lambda, dt, nFold, linkf, link, m,
     xlst <- formxL(x2, nL, slope, globalvar, m, vnull)
     xMat <- do.call(rbind, xlst)
     pr <- prlg(est, xMat, obs, yMtx = NULL, penx = NULL, linkf,
-               control = NULL, wt = NULL, intLogL = TRUE)$pr
+               control = NULL, wt = NULL)$pr
     rs <- rowSums(yMtx)
     pm <- errorMetrics(y2, pr, type=cverror)
   } else pm <- NA
@@ -306,7 +342,7 @@ CVserp <- function(lambda, dt, nFold, linkf, link, m,
 cvfun <- function(lambda, x, y, nFold, linkf, link, m,
                   slope, globalvar, nv, reverse, vnull,
                   control, wt, cverror, mslope, tuning,
-                  coln, useout)
+                  coln, useout, Terms)
 {
   df <- cbind(y, x)
   set.seed(111)
@@ -317,36 +353,68 @@ cvfun <- function(lambda, x, y, nFold, linkf, link, m,
   fb <- data.frame(1:obs)
   sp <- split(fb, folds)
   tryCatch({
-    rs <- mean(na.omit(sapply(X = sp, FUN = CVserp,
-                              lambda = lambda, dt = dt, nFold = nFold,
-                              linkf = linkf, link = link, m = m,
-                              slope = slope, globalvar = globalvar,
-                              nv = nv, reverse = reverse, vnull = vnull,
-                              control = control, wt = wt, cverror=cverror,
-                              mslope=mslope, tuning = tuning, coln=coln,
-                              useout=useout)));},
+    rs <- sapply(X = sp, FUN = CVserp,
+                 lambda = lambda, dt = dt, nFold = nFold,
+                 linkf = linkf, link = link, m = m,
+                 slope = slope, globalvar = globalvar,
+                 nv = nv, reverse = reverse, vnull = vnull,
+                 control = control, wt = wt, cverror=cverror,
+                 mslope=mslope, tuning = tuning, coln=coln,
+                 useout=useout, Terms=Terms);},
     error=function(e) {rs <<- NA})
+  rs <- sum(na.omit(rs))/length(rs)
   rs
 }
 
-dvfun <- function(lambda, globalvar, x, y, startval,xlst, xMat,
-                  yMtx, nL, obs, npar, linkf, link, reverse,
-                  vnull,control, slope, wt, tuning, m, mslope)
+dvfun <- function(lambda, globalvar, x, y, startval,
+                  xlst, xMat, yMtx, nL, obs, npar, linkf,
+                  link, reverse, vnull,control, slope, wt,
+                  tuning, m, mslope, Terms)
 {
   tryCatch({
-    rr <- serp.fit(lambda, globalvar, x, y, startval,xlst, xMat,
-                   yMtx, nL, obs, npar, linkf, link, reverse,
-                   vnull,control, slope, wt, m, mslope, tuning);},
+    rr <- serp.fit(lambda, globalvar, x, y, startval, xlst,
+                   xMat, yMtx, nL, obs, npar, linkf, link,
+                   reverse, vnull,control, slope, wt, m,
+                   mslope, tuning, Terms, xtrace=FALSE);},
     error=function(e) {rr <<- NA})
-  if(tuning == "finite")
-    tryCatch({
-      rd <- -2*as.numeric(rr$problik$llik);},
-      error=function(e) {rd <<- NA})
-  else
-    tryCatch({
-      rd <- rr$deviance;},
-      error=function(e) {rd <<- NA})
-  rd
+  logLik <- if(tuning == "finite") rr$exact.logL else rr$logL
+  tryCatch({
+    rd <- -2*as.numeric(logLik);}, error=function(e) {rd <<- NA})
+  return(rd)
+}
+
+Trace <- function (iter, maxGrad, obj, delta, step,
+                   score, eigen, info, trc, inflector, first = FALSE,
+                   half.iter=NULL, step.type = c("modify", "adjust", "full"))
+{
+  step.type <- match.arg(step.type)
+  t1 <- sprintf("\n %3d:   %1.3e    %.5f  ",
+                iter, maxGrad, -obj)
+  if(step.type == "modify")
+    cat(if (half.iter==1L) "\nTaking modified step." else ".")
+  if(step.type == "adjust")
+    cat(paste("\nSingular Hessian at iteration", iter,
+              "inflating diagonal with",
+              formatC(inflector, digits=5, format="f")))
+  if(step.type == "full"){
+    if (first)
+      cat("iter:   max|grad|    logLik")
+    cat(t1)
+    if (trc > 1) {
+      cat("\n\tdelta: ")
+      cat(paste(formatC(delta, digits=3, format="e")))
+      cat("\n\tstep: ")
+      cat(paste(formatC(-step, digits=3, format="e")))
+    }
+    if (trc > 2) {
+      cat("\n\tgrad: ")
+      cat(paste(formatC(score, digits=3, format="e")))
+      cat("\n\teigen: ")
+      cat(paste(formatC(eigen(info, symmetric=TRUE,
+                              only.values=TRUE)$values, digits=3,
+                        format="e")))
+    }
+  }
 }
 
 varnames <- function(cofnames, coef, nL)

@@ -80,10 +80,13 @@ Other model description methods include: \code{summary},
 }
 }
 \description{
-Fits cumulative link model (CLM) with the smooth-effect-on-response penalty (SERP)
-via Newton-Raphson algorithm. SERP enables the regularization of the parameter space
-between the general and the restricted cumulative models, resulting in all subject-specific
-effects being shrunk to global effects.
+Fits cumulative link models (CLMs) with the smooth-effect-on-response
+penalty (SERP) via a modified Newton-Raphson algorithm. SERP enables the regularization
+of the parameter space between the general and the restricted cumulative models, with a
+resultant shrinkage of all subject-specific effects to global effects. The minimum deviance
+and CV tuning among others, provide the means of arriving at an optimal model in a situation
+where a user-supplied tuning value is not available. The slope argument allows for the
+selection of penalize, unparallel, parallel, or partial slope.
 }
 \details{
 The \code{serp} function fits the cumulative link model (CLM)
@@ -131,69 +134,40 @@ with only the category-specific part of the model penalized.
 }
 \examples{
 \dontrun{
-## An application of SERP to CLM is illustrated with the penalized
+## The application of SERP to CLM is illustrated with the
 ## cumulative logit model of the wine dataset.
 
-## Tuning via deviance method returns the model along parameter
+## The deviance tuning returns the model along parameter
 ## shrinkage at which the total residual deviance is minimal.
+## A user-specified discrete lambda grid could be alternatively
+## used for the deviance and cv tuning methods.
 f1 <- serp(rating ~ temp + contact, slope = "penalize",
            reverse = T, link = "logit", tuning = "deviance",
            data = wine)
 summary(f1)
 
-## A user-specified discrete lambda grid could be alternatively
-## used for the deviance and cv tuning.
-f2 = serp(rating ~ temp + contact, slope = "penalize",
-          reverse = T, link = "logit", tuning = "deviance",
-          lambdagrid = seq(0,5,length.out = 50), data = wine)
-summary(f2)
-
-## Tuning based on a k-fold cross validation, with k = 5 as
-## default.
-f3 <- serp(rating ~ temp + contact, slope = "penalize",
-           reverse = F, link = "logit", tuning = "cv",
-           data = wine)
-coef(f3)
-
-## A penalized partial proportional odds model is obtained by
-## setting some variable(s) as global effects.
-f4 <- serp(rating ~ temp + contact, slope = "penalize",
-           reverse = T, link = "logit", tuning = "deviance",
-           globalvar = ~ temp, data = wine)
-f4
-
-## If non-finite maximum log-likelihood persists with the other
-## tuning methods, the finite tuning returns the fit along
-## parameter shrinkage at which the maximum log-likelihood
-## exists. The general model is returned by default if
-## maximum log-likelihood initially exists.
-f5 <- serp(rating ~ temp + contact, slope = "penalize",
-           reverse = T, link = "logit", tuning = "finite",
-           data = wine)
-predict(f5, type="response")
-
 ## Manual/direct tuning with a user supplied lambda value
 ## is also possible.
-f6 <- serp(rating ~ temp + contact, slope = "penalize",
+f2 <- serp(rating ~ temp + contact, slope = "penalize",
            reverse = T, link = "logit", tuning = "manual",
            lambda = 43, data = wine)
-predict(f6, type="link")
+predict(f2, type="response")
 
 ## The unpenalized non-proportional odds model.
-f7 <- serp(rating ~ temp + contact, slope = "unparallel",
+f3 <- serp(rating ~ temp + contact, slope = "unparallel",
            reverse = T, link = "logit", data = wine)
-predict(f7, type="class")
+predict(f3, type="class")
 
 ## The unpenalized proportional odds model.
-f8 <-  serp(rating ~ temp + contact, slope = "parallel",
+f4 <-  serp(rating ~ temp + contact, slope = "parallel",
             reverse = T, link = "logit", data = wine)
-confint(f8)
+f4$message
 
 ## The unpenalized partial proportional odds model.
-f9 <- serp(rating ~ temp + contact, globalvar = ~ temp,
+f5 <- serp(rating ~ temp + contact, globalvar = ~ temp,
            slope = "partial", reverse = T, link = "logit",
            data = wine)
-anova(f1, f7, f8, f9)
+confint(f4)
 }
 
 }

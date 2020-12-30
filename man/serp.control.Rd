@@ -4,22 +4,36 @@
 \alias{serp.control}
 \title{Control parameters for serp fit.}
 \usage{
-serp.control(maxits = 5e01, eps = 1e-07, maxpen = 1e5,
-                    minP = .Machine$double.eps, nFold = 5e0)
+serp.control(maxits = 5e01, eps = 1e-07, maxpen = 1e05, trace = 0L,
+                    maxAdjIter = 5e0, max.half.iter = 1e01, relTol = 1e-03,
+                    nFold = 5e0, minP = .Machine$double.eps, ...)
 }
 \arguments{
-\item{maxits}{the maximum number of iteration.}
+\item{maxits}{the maximum number of Newton-Raphson iterations. Default to 100.}
 
 \item{eps}{threshold value during optimization at which the iteration routine terminates. In other words, when the reported change in the log-likelihood goes below this threshold, convergence is achieved.}
 
 \item{maxpen}{the upper end point of the interval from zero to be searched for a minimum tuning parameter.}
 
-\item{minP}{A near zero minimum value the fitted probabilities are allowed to get during iteration to prevent numerical instability .}
+\item{trace}{prints the Newton-Raphon fitting process at each iteration step.If 0 (default) no information is printed, if 1, 2 or 3 different shades of information are printed.}
+
+\item{maxAdjIter}{the maximum allowable number of Newton step adjustment to forestall an early optimization failure. Defaults to 5.}
+
+\item{max.half.iter}{the maximum number of step halfings. Defaults to 10.}
+
+\item{relTol}{relative convergence tolerance, defaults to 1e-03. checks relative changes in the parameter estimates between Newton iterations.}
 
 \item{nFold}{the number of k-fold cross validation for the "cv" \code{tuning} method, with default value k = 5.}
+
+\item{minP}{A near zero minimum value the fitted probabilities are allowed to get during iteration to prevent numerical instability .}
+
+\item{...}{additional arguments.}
+}
+\value{
+a list of control parameters.
 }
 \description{
-Default control parameters for serp fit. User supplied control parameters could be
+Default control parameters for serp fit. User-supplied control parameters could be
 specified in the main function.
 }
 \examples{

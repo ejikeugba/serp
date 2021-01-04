@@ -7,7 +7,7 @@
 serp(formula, link = c("logit", "probit","loglog", "cloglog", "cauchit"),
             slope = c("penalize", "parallel", "unparallel", "partial"),
             tuning = c("deviance","cv","manual","finite"), reverse = FALSE,
-            lambdagrid=NULL, cverror=c("brier", "logloss"), globalvar = NULL, data,
+            lambdagrid=NULL, cverror=c("brier", "logloss"), global = NULL, data,
             subset, weights=NULL, weight.type = c("analytic", "frequency"),
             na.action=NULL, lambda = NULL, contrasts = NULL, control = list(), ...)
 }
@@ -26,7 +26,7 @@ serp(formula, link = c("logit", "probit","loglog", "cloglog", "cauchit"),
 
 \item{cverror}{sets the performance metric for cv tuning, with the brier score used by default.}
 
-\item{globalvar}{specifies variables to be assigned global effects during penalization or when \code{slope} is set to \code{partial}. Variables are specified as a formula with an empty left hand side, for instance, globalvar = ~predictors.}
+\item{global}{specifies variables to be assigned global effects during penalization or when \code{slope} is set to \code{partial}. Variables are specified as a formula with an empty left hand side, for instance, global = ~predictors.}
 
 \item{data}{optional data frame explaining the variables used in the formula.}
 
@@ -63,7 +63,7 @@ Other model description methods include: \code{summary},
   \item{edf}{the (effective) number of degrees of freedom used by the model}
   \item{fitted.values}{the fitted probabilities.}
   \item{gradient}{a column vector of gradients for the coefficients at the model convergence.}
-  \item{globalvar}{variable(s) in model treated as global effect(s)}
+  \item{global}{variable(s) in model treated as global effect(s)}
   \item{Hessian}{the hessian matrix for the coefficients at the model convergence.}
   \item{iter}{the number of interactions before convergence or non-convergence.}
   \item{lambda}{an optimal shrinkage parameter for the penalized slope via minimum residual deviance, cross-validation or user-supplied.}
@@ -125,7 +125,7 @@ that the corresponding parameters \eqn{\delta_{1j},\dots \delta_{k-1,j}}
 vary smoothly over the categories, the following penalty
 (Tutz and Gertheiss, 2016),
 
-\deqn{J_{\lambda}(\delta)= \sum_{\substack{j=1}}^{p} \sum_{r=1}^{k-2} (\delta_{r+1,j}-\delta_{rj})^{2}}
+\deqn{J_{\lambda}(\delta)= \sum_{j=1}^{p} \sum_{r=1}^{k-2} (\delta_{r+1,j}-\delta_{rj})^{2}}
 
 enables the smoothing of response categories such that all
 category-specific effects associated with the response turn towards a
@@ -134,29 +134,31 @@ with only the category-specific part of the model penalized.
 }
 \examples{
 \dontrun{
-## The application of SERP to CLM is illustrated with the
-## cumulative logit model of the wine dataset.
+## Consider the cumulative logit model of the wine dataset,
+## where the rating of wine bitterness is predicted with
+## the two treatment factors, temperature and contact.
 
-## The deviance tuning returns the model along parameter
-## shrinkage at which the total residual deviance is minimal.
-## A user-specified discrete lambda grid could be alternatively
-## used for the deviance and cv tuning methods.
-f1 <- serp(rating ~ temp + contact, slope = "penalize",
-           reverse = T, link = "logit", tuning = "deviance",
-           data = wine)
+## The unpenalized non-proportional odds model returns
+## unbounded parameter estimates.
+f1 <- serp(rating ~ temp + contact, slope = "unparallel",
+           reverse = T, link = "logit", data = wine)
 summary(f1)
 
-## Manual/direct tuning with a user supplied lambda value
-## is also possible.
+## Using SERP with the deviance tuning, for instance, returns
+## the model along parameter shrinkage at which the total
+## residual deviance is minimal with stable parameter
+## estimates too.
 f2 <- serp(rating ~ temp + contact, slope = "penalize",
-           reverse = T, link = "logit", tuning = "manual",
-           lambda = 43, data = wine)
-predict(f2, type="response")
+           reverse = T, link = "logit", tuning = "deviance",
+           data = wine)
+summary(f2)
 
-## The unpenalized non-proportional odds model.
-f3 <- serp(rating ~ temp + contact, slope = "unparallel",
-           reverse = T, link = "logit", data = wine)
-predict(f3, type="class")
+## Manual/direct tuning with user-supplied single lambda
+## value is also possible.
+f3 <- serp(rating ~ temp + contact, slope = "penalize",
+           reverse = T, link = "logit", tuning = "manual",
+           lambda = 12, data = wine)
+predict(f3, type = "response")
 
 ## The unpenalized proportional odds model.
 f4 <-  serp(rating ~ temp + contact, slope = "parallel",
@@ -164,10 +166,11 @@ f4 <-  serp(rating ~ temp + contact, slope = "parallel",
 f4$message
 
 ## The unpenalized partial proportional odds model.
-f5 <- serp(rating ~ temp + contact, globalvar = ~ temp,
+f5 <- serp(rating ~ temp + contact, global = ~ temp,
            slope = "partial", reverse = T, link = "logit",
            data = wine)
-confint(f4)
+confint(f5)
+
 }
 
 }

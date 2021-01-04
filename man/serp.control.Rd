@@ -15,7 +15,7 @@ serp.control(maxits = 5e01, eps = 1e-07, maxpen = 1e05, trace = 0L,
 
 \item{maxpen}{the upper end point of the interval from zero to be searched for a minimum tuning parameter.}
 
-\item{trace}{prints the Newton-Raphon fitting process at each iteration step.If 0 (default) no information is printed, if 1, 2 or 3 different shades of information are printed.}
+\item{trace}{prints the Newton-Raphson fitting process at each iteration step.If 0 (default) no information is printed, if 1, 2 or 3 different shades of information are printed.}
 
 \item{maxAdjIter}{the maximum allowable number of Newton step adjustment to forestall an early optimization failure. Defaults to 5.}
 

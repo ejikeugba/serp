@@ -1,5 +1,5 @@
 # SERP internal functions
-formxL <- function(x, nL, slope, globalvar, m, vnull, ...)
+formxL <- function(x, nL, slope, global, m, vnull, ...)
 {
   Xdt <- function(x, nL)
   {
@@ -16,7 +16,7 @@ formxL <- function(x, nL, slope, globalvar, m, vnull, ...)
   xL <- lapply(1:nrow(x), function(u)
   {
     if (slope == 'partial'){
-      gb <- unlist(globalvar)
+      gb <- unlist(global)
       subg <- subset(m, select = c(gb))
       subm <- model.matrix(~., data = subg)
       subn <- colnames(subm)[-1L]
@@ -66,13 +66,13 @@ formxL <- function(x, nL, slope, globalvar, m, vnull, ...)
   xL
 }
 
-PenMx <- function(lamv, delta, nL, slope, m, globalvar,
+PenMx <- function(lamv, delta, nL, slope, m, global,
                   mslope, tuning, Terms)
 {
-  if (mslope == 'penalize' && !is.null(globalvar)){
+  if (mslope == 'penalize' && !is.null(global)){
     xnam <- c(colnames(m)[1], attributes(Terms)$term.labels)
     interac <- grep(':', xnam, fixed = T)
-    gb <- unlist(globalvar)
+    gb <- unlist(global)
     var.num <- seq_len(length(xnam))
     var.glo <- which(xnam %in% gb)
     if (length(interac) != 0L ) {
@@ -95,7 +95,7 @@ PenMx <- function(lamv, delta, nL, slope, m, globalvar,
   Dx <- t(mt) %*% mt
   pM <- rbind(matrix(0, nL-1, nvar+nL-1),
               cbind(matrix(0, nvar, nL-1), Dx))
-  if (mslope == 'penalize' && !is.null(globalvar)){
+  if (mslope == 'penalize' && !is.null(global)){
     smx <- matrix(1L:ncol(pM), ncol = nL-1, byrow=T)
     hmx <- smx[,-ncol(smx), drop = FALSE]
     pM[c(smx[var.glo, ]), c(smx[var.glo, ])] <- 0
@@ -175,7 +175,7 @@ checkArg <- function (mcall, scall, argnames)
   if (anyerr) stop(err, call. = FALSE)
 }
 
-startv <- function(link, linkf, globalvar, x,
+startv <- function(link, linkf, global, x,
                    yFreq, xMat, nL, nv, slope)
 {
   ut <- linkf$qfun(cumsum(yFreq[-nL]))
@@ -270,7 +270,7 @@ lnkfun <- function(link)
 }
 
 CVserp <- function(lambda, dt, nFold, linkf, link, m,
-                   slope, globalvar, nv, reverse, vnull, control,
+                   slope, global, nv, reverse, vnull, control,
                    subs, wt, cverror, mslope, tuning, coln, useout,
                    Terms)
 {
@@ -286,25 +286,25 @@ CVserp <- function(lambda, dt, nFold, linkf, link, m,
   yMtx <- yMx(y, obs, nL)
   yFreq <- colSums(yMtx)/obs
   x2 <- model.matrix(~tsData[, -1L])
-  if (mslope == 'penalize' && !is.null(globalvar)){
+  if (mslope == 'penalize' && !is.null(global)){
     colnames(x) <- colnames(dt)
     colnames(x2) <- colnames(dt)
     slope <- "partial"
   }
-  xlst <- formxL(x, nL, slope, globalvar, m, vnull)
+  xlst <- formxL(x, nL, slope, global, m, vnull)
   xMat <- do.call(rbind, xlst)
-  startval <- startv(link, linkf, globalvar, x, yFreq,
+  startval <- startv(link, linkf, global, x, yFreq,
                      xMat, nL, nv, slope)
   npar <- length(startval)
   x <- tnData[, -1L, drop = FALSE]
   wt <- rep(1, obs)
-  estx <- try(serp.fit(lambda, globalvar, x, y, startval, xlst,
+  estx <- try(serp.fit(lambda, global, x, y, startval, xlst,
                        xMat, yMtx, nL, obs, npar, linkf, link,
                        reverse, vnull, control, slope, wt, m,
                        mslope, tuning, Terms, xtrace=FALSE), silent = TRUE)
   if (!inherits(estx, "try-error")){
     est <- estx$coef
-    est <- est.names(est, slope, globalvar,
+    est <- est.names(est, slope, global,
                      coln, x, m, npar, xMat, nL, vnull, useout)
     if (!reverse) est <- -1L*est
     y2 <- as.ordered(tsData[, 1L])
@@ -318,7 +318,7 @@ CVserp <- function(lambda, dt, nFold, linkf, link, m,
       sk <- function(dff) seq(dff, length(est), (nL1 - 1))
       sdf <- if (ly1 > ly2) setdiff(ylev1, ylev2) else setdiff(ylev2, ylev1)
       dff <- matrix(sdf)
-      if (mslope == 'penalize' && !is.null(globalvar)){
+      if (mslope == 'penalize' && !is.null(global)){
         est <- est[!is.na(est)]
         nx <- names(est)
         nm <- c(sapply(dff, grep, nx, value = F))
@@ -329,7 +329,7 @@ CVserp <- function(lambda, dt, nFold, linkf, link, m,
         yMtx <- yMx(y2, obs, nL)[,ylev1]
       }
     }
-    xlst <- formxL(x2, nL, slope, globalvar, m, vnull)
+    xlst <- formxL(x2, nL, slope, global, m, vnull)
     xMat <- do.call(rbind, xlst)
     pr <- prlg(est, xMat, obs, yMtx = NULL, penx = NULL, linkf,
                control = NULL, wt = NULL)$pr
@@ -340,7 +340,7 @@ CVserp <- function(lambda, dt, nFold, linkf, link, m,
 }
 
 cvfun <- function(lambda, x, y, nFold, linkf, link, m,
-                  slope, globalvar, nv, reverse, vnull,
+                  slope, global, nv, reverse, vnull,
                   control, wt, cverror, mslope, tuning,
                   coln, useout, Terms)
 {
@@ -356,7 +356,7 @@ cvfun <- function(lambda, x, y, nFold, linkf, link, m,
     rs <- sapply(X = sp, FUN = CVserp,
                  lambda = lambda, dt = dt, nFold = nFold,
                  linkf = linkf, link = link, m = m,
-                 slope = slope, globalvar = globalvar,
+                 slope = slope, global = global,
                  nv = nv, reverse = reverse, vnull = vnull,
                  control = control, wt = wt, cverror=cverror,
                  mslope=mslope, tuning = tuning, coln=coln,
@@ -366,13 +366,13 @@ cvfun <- function(lambda, x, y, nFold, linkf, link, m,
   rs
 }
 
-dvfun <- function(lambda, globalvar, x, y, startval,
+dvfun <- function(lambda, global, x, y, startval,
                   xlst, xMat, yMtx, nL, obs, npar, linkf,
                   link, reverse, vnull,control, slope, wt,
                   tuning, m, mslope, Terms)
 {
   tryCatch({
-    rr <- serp.fit(lambda, globalvar, x, y, startval, xlst,
+    rr <- serp.fit(lambda, global, x, y, startval, xlst,
                    xMat, yMtx, nL, obs, npar, linkf, link,
                    reverse, vnull,control, slope, wt, m,
                    mslope, tuning, Terms, xtrace=FALSE);},
@@ -434,7 +434,7 @@ varnames <- function(cofnames, coef, nL)
   coef
 }
 
-est.names <- function(coef, slope, globalvar,
+est.names <- function(coef, slope, global,
                       coln, x, m, npar, xMat, nL, vnull, useout)
 {
   if (slope == "parallel"){
@@ -451,7 +451,7 @@ est.names <- function(coef, slope, globalvar,
   }
   if (slope == "partial"){
     xnam <- colnames(xMat)[-c(1:nL-1)]
-    gb <- unlist(globalvar)
+    gb <- unlist(global)
     subg <- subset(m, select = c(gb))
     subm <- model.matrix(~., data = subg)
     subn <- colnames(subm)[-1L]

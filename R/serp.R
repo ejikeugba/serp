@@ -11,7 +11,7 @@
 #' @usage serp(formula, link = c("logit", "probit","loglog", "cloglog", "cauchit"),
 #'             slope = c("penalize", "parallel", "unparallel", "partial"),
 #'             tuning = c("deviance","cv","manual","finite"), reverse = FALSE,
-#'             lambdagrid=NULL, cverror=c("brier", "logloss"), globalvar = NULL, data,
+#'             lambdagrid=NULL, cverror=c("brier", "logloss"), global = NULL, data,
 #'             subset, weights=NULL, weight.type = c("analytic", "frequency"),
 #'             na.action=NULL, lambda = NULL, contrasts = NULL, control = list(), ...)
 #' @param formula regression formula of the form: response ~ predictors. The response should be a factor (ordered).
@@ -21,7 +21,7 @@
 #' @param reverse false by default, when true the sign of the linear predictor is reversed.
 #' @param lambdagrid optional user supplied lambda grid for cv and deviance tuning methods. Negative range of values are not allowed, instead (0, Inf). With large number of predictors and cases in the model, iterations run faster over a short grid interval, i.e., the shorter the grid length the faster iteration.
 #' @param cverror sets the performance metric for cv tuning, with the brier score used by default.
-#' @param globalvar specifies variables to be assigned global effects during penalization or when \code{slope} is set to \code{partial}. Variables are specified as a formula with an empty left hand side, for instance, globalvar = ~predictors.
+#' @param global specifies variables to be assigned global effects during penalization or when \code{slope} is set to \code{partial}. Variables are specified as a formula with an empty left hand side, for instance, global = ~predictors.
 #' @param data optional data frame explaining the variables used in the formula.
 #' @param subset specifies which subset of the rows of the data should be used for in fit. All observations are used by default.
 #' @param weights optional case weights in fitting. Negative weights are not allowed. Defaults to 1.
@@ -75,7 +75,7 @@
 #' vary smoothly over the categories, the following penalty
 #' (Tutz and Gertheiss, 2016),
 #'
-#' \deqn{J_{\lambda}(\delta)= \sum_{\substack{j=1}}^{p} \sum_{r=1}^{k-2} (\delta_{r+1,j}-\delta_{rj})^{2}}
+#' \deqn{J_{\lambda}(\delta)= \sum_{j=1}^{p} \sum_{r=1}^{k-2} (\delta_{r+1,j}-\delta_{rj})^{2}}
 #'
 #' enables the smoothing of response categories such that all
 #' category-specific effects associated with the response turn towards a
@@ -107,7 +107,7 @@
 #'   \item{edf}{the (effective) number of degrees of freedom used by the model}
 #'   \item{fitted.values}{the fitted probabilities.}
 #'   \item{gradient}{a column vector of gradients for the coefficients at the model convergence.}
-#'   \item{globalvar}{variable(s) in model treated as global effect(s)}
+#'   \item{global}{variable(s) in model treated as global effect(s)}
 #'   \item{Hessian}{the hessian matrix for the coefficients at the model convergence.}
 #'   \item{iter}{the number of interactions before convergence or non-convergence.}
 #'   \item{lambda}{an optimal shrinkage parameter for the penalized slope via minimum residual deviance, cross-validation or user-supplied.}
@@ -125,29 +125,31 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' ## The application of SERP to CLM is illustrated with the
-#' ## cumulative logit model of the wine dataset.
+#' ## Consider the cumulative logit model of the wine dataset,
+#' ## where the rating of wine bitterness is predicted with
+#' ## the two treatment factors, temperature and contact.
 #'
-#' ## The deviance tuning returns the model along parameter
-#' ## shrinkage at which the total residual deviance is minimal.
-#' ## A user-specified discrete lambda grid could be alternatively
-#' ## used for the deviance and cv tuning methods.
-#' f1 <- serp(rating ~ temp + contact, slope = "penalize",
-#'            reverse = T, link = "logit", tuning = "deviance",
-#'            data = wine)
+#' ## The unpenalized non-proportional odds model returns
+#' ## unbounded parameter estimates.
+#' f1 <- serp(rating ~ temp + contact, slope = "unparallel",
+#'            reverse = T, link = "logit", data = wine)
 #' summary(f1)
 #'
-#' ## Manual/direct tuning with a user supplied lambda value
-#' ## is also possible.
+#' ## Using SERP with the deviance tuning, for instance, returns
+#' ## the model along parameter shrinkage at which the total
+#' ## residual deviance is minimal with stable parameter
+#' ## estimates too.
 #' f2 <- serp(rating ~ temp + contact, slope = "penalize",
-#'            reverse = T, link = "logit", tuning = "manual",
-#'            lambda = 43, data = wine)
-#' predict(f2, type="response")
+#'            reverse = T, link = "logit", tuning = "deviance",
+#'            data = wine)
+#' summary(f2)
 #'
-#' ## The unpenalized non-proportional odds model.
-#' f3 <- serp(rating ~ temp + contact, slope = "unparallel",
-#'            reverse = T, link = "logit", data = wine)
-#' predict(f3, type="class")
+#' ## Manual/direct tuning with user-supplied single lambda
+#' ## value is also possible.
+#' f3 <- serp(rating ~ temp + contact, slope = "penalize",
+#'            reverse = T, link = "logit", tuning = "manual",
+#'            lambda = 12, data = wine)
+#' predict(f3, type = "response")
 #'
 #' ## The unpenalized proportional odds model.
 #' f4 <-  serp(rating ~ temp + contact, slope = "parallel",
@@ -155,10 +157,11 @@
 #' f4$message
 #'
 #' ## The unpenalized partial proportional odds model.
-#' f5 <- serp(rating ~ temp + contact, globalvar = ~ temp,
+#' f5 <- serp(rating ~ temp + contact, global = ~ temp,
 #'            slope = "partial", reverse = T, link = "logit",
 #'            data = wine)
-#' confint(f4)
+#' confint(f5)
+#'
 #' }
 #'
 serp <- function(formula,
@@ -168,7 +171,7 @@ serp <- function(formula,
                  reverse = FALSE,
                  lambdagrid = NULL,
                  cverror = c("brier", "logloss"),
-                 globalvar=NULL,
+                 global=NULL,
                  data,
                  subset=NULL,
                  weights=NULL,
@@ -250,36 +253,36 @@ serp <- function(formula,
   if (reverse) yMtx <- yMtx[, nL:1]
   linkf <- lnkfun(link)
   mslope <- slope
-  if (slope=='penalize' && !is.null(globalvar)) slope <- 'partial'
+  if (slope=='penalize' && !is.null(global)) slope <- 'partial'
   if (slope=='partial'){
-    gb <- globalvar <- as.character(all.vars(globalvar))
+    gb <- global <- as.character(all.vars(global))
     if (length(gb)==0) stop("variable(s) for global effects wrongly ",
                             "or totally unspecified")
     if (!length(union(colnames(m), gb)) == length(colnames(m)))
-      stop("variable(s) for global effects not recognized")
+      stop("unknown variable(s) for global effects")
     if (ncol(x) <= 2L || (ncol(x)-1)==length(gb)) slope <- "parallel"
     if (all.vars(Terms)[[1]] %in% gb)
-      stop("model response used as predictor in globalvar")
+      stop("response should not be set as global effect")
   }
-  xlst <- formxL(x, nL, slope, globalvar, m, vnull)
+  xlst <- formxL(x, nL, slope, global, m, vnull)
   yFreq <- colSums(yMtx)/obs
   xMat <- do.call(rbind, xlst)
   if (!vnull) x <- x[ ,-1L, drop=FALSE]
   coln <- colnames(x)
-  startval <- startv(link, linkf, globalvar, x, yFreq, xMat, nL, nv, slope)
+  startval <- startv(link, linkf, global, x, yFreq, xMat, nL, nv, slope)
   npar <- length(startval)
   nFold <- control$nFold
   useout <- FALSE
-  res <- serpfit(lambda, globalvar, x, y, startval, xlst, xMat, yMtx, nL,
+  res <- serpfit(lambda, global, x, y, startval, xlst, xMat, yMtx, nL,
                  obs, npar, linkf, link, reverse, vnull, control, slope,
                  tuning, nv, nFold, lambdagrid, wt, m, cverror, mslope,
                  coln, useout, Terms)
   coefs <- res$coef
-  coefs <- est.names(coefs, slope, globalvar, coln, x, m, npar, xMat,
+  coefs <- est.names(coefs, slope, global, coln, x, m, npar, xMat,
                      nL, vnull, useout)
-  if (mslope == 'penalize' && !is.null(globalvar)) slope <- "penalize"
+  if (mslope == 'penalize' && !is.null(global)) slope <- "penalize"
   ans <- c(list(call=mc, coef= coefs, model=m, slope=slope,
-                globalvar=globalvar, cverror=cverror, tuning=tuning,
+                global=global, cverror=cverror, tuning=tuning,
                 Terms=Terms, control=control), res)
   ans$na.action <- attr(m, "na.action")
   ans$contrasts <- cons

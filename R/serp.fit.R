@@ -1,18 +1,18 @@
 # SERP fit via Newton-Raphson iteration
-serpfit <- function(lambda, globalvar, x, y, startval, xlst, xMat,
+serpfit <- function(lambda, global, x, y, startval, xlst, xMat,
                     yMtx, nL, obs, npar, linkf, link, reverse,
                     vnull,control, slope, tuning, nv, nFold, lambdagrid,
                     wt, m, cverror, mslope, coln, useout, Terms)
 {
   if (mslope == 'penalize' && slope != 'parallel' &&
-      !is.null(globalvar)) slope <- "penalize"
+      !is.null(global)) slope <- "penalize"
   if(slope=="penalize"){
     switch(
       tuning,
       deviance = {
         if(!is.null(lambdagrid)){
           ml <- suppressWarnings(
-            sapply(lambdagrid, dvfun, globalvar, x, y, startval, xlst, xMat,
+            sapply(lambdagrid, dvfun, global, x, y, startval, xlst, xMat,
                    yMtx, nL, obs, npar, linkf, link, reverse, vnull,
                    control, slope, wt, tuning, m, mslope, Terms))
           hh <- cbind(lambdagrid, ml)
@@ -21,7 +21,7 @@ serpfit <- function(lambda, globalvar, x, y, startval, xlst, xMat,
           lam <- as.numeric(minL$minimum)
         }else{
           minL <- suppressWarnings(
-            optimize(f=dvfun, interval=c(0,control$maxpen), globalvar,
+            optimize(f=dvfun, interval=c(0,control$maxpen), global,
                      x, y, startval,xlst, xMat, yMtx, nL, obs, npar, linkf,
                      link, reverse, vnull,control, slope, wt, tuning, m,
                      mslope, Terms))
@@ -31,7 +31,7 @@ serpfit <- function(lambda, globalvar, x, y, startval, xlst, xMat,
         if(!is.null(lambdagrid)){
           ml <- try(suppressWarnings(
             sapply(lambdagrid, cvfun, x, y, nFold, linkf, link, m, slope,
-                   globalvar, nv, reverse, vnull, control, wt, cverror,
+                   global, nv, reverse, vnull, control, wt, cverror,
                    mslope, tuning, coln, useout, Terms)), silent = TRUE)
           if (inherits(ml, "try-error")) stop("bad input in cv function")
           hh <- cbind(lambdagrid, ml)
@@ -41,19 +41,19 @@ serpfit <- function(lambda, globalvar, x, y, startval, xlst, xMat,
         }else{
           minL <- try(suppressWarnings(
             optimize(f=cvfun,interval = c(0,control$maxpen), x, y, nFold,
-                     linkf, link, m, slope, globalvar, nv, reverse,
+                     linkf, link, m, slope, global, nv, reverse,
                      vnull, control, wt, cverror, mslope, tuning, coln,
                      useout, Terms)), silent = TRUE)
           if (inherits(minL, "try-error")) stop("bad input in cv function")
           lam <- minL$minimum
         }},
       finite = {
-        lx <- dvfun(lambda=0, globalvar, x, y, startval,xlst, xMat,
+        lx <- dvfun(lambda=0, global, x, y, startval,xlst, xMat,
                     yMtx, nL, obs, npar, linkf, link, reverse,
                     vnull,control, slope, wt, tuning, m, mslope, Terms)
         if(is.na(lx)){
           minL <- suppressWarnings(
-            optimize(f=dvfun, interval=c(0,control$maxpen), globalvar,
+            optimize(f=dvfun, interval=c(0,control$maxpen), global,
                      x, y, startval, xlst, xMat, yMtx, nL, obs, npar, linkf,
                      link, reverse, vnull,control, slope, wt, tuning, m,
                      mslope, Terms))
@@ -70,7 +70,7 @@ serpfit <- function(lambda, globalvar, x, y, startval, xlst, xMat,
     lam <- 0
     minL <- NULL
   }
-  res <- serp.fit(lam, globalvar, x, y, startval, xlst, xMat,
+  res <- serp.fit(lam, global, x, y, startval, xlst, xMat,
                   yMtx, nL, obs, npar, linkf, link, reverse,
                   vnull, control, slope, wt, m, mslope, tuning,
                   Terms)
@@ -118,7 +118,7 @@ serpfit <- function(lambda, globalvar, x, y, startval, xlst, xMat,
   ans
 }
 
-serp.fit <- function(lambda, globalvar, x, y, startval, xlst,
+serp.fit <- function(lambda, global, x, y, startval, xlst,
                      xMat, yMtx, nL, obs, npar, linkf, link, reverse,
                      vnull, control, slope, wt, m, mslope, tuning,
                      Terms, xtrace=TRUE)
@@ -138,7 +138,7 @@ serp.fit <- function(lambda, globalvar, x, y, startval, xlst,
   {
     iter <- iter+1
     penx <- PenMx(lamv = lambda, delta, nL,
-                  slope, m, globalvar, mslope, tuning, Terms)
+                  slope, m, global, mslope, tuning, Terms)
     fvalues <- prlg(delta, xMat, obs, yMtx, penx, linkf, control, wt)
     pr <- fvalues$pr[,-nL]
     obj <- fvalues$logL

@@ -37,7 +37,7 @@ print.serp <- function(x, ...)
       cverror <- "cv (logloss)"
     cat("\nPenalization:")
     if (!length(colnames(object$model)[-1L]) ==
-        length(object$globalvar)){
+        length(object$global)){
       cat("\npenalty:", "  "," SERP")
       cat("\ntuning:","    " , tun)
       if (object$tuning == "cv")
@@ -148,7 +148,7 @@ print.summary.serp <- function(x, ...){
     if (object$tuning == "cv" && object$cverror == "logloss")
       cverror <- "cv (logloss)"
     cat("\nPenalization:")
-    if (!length(colnames(object$model)[-1L])==length(object$globalvar)){
+    if (!length(colnames(object$model)[-1L])==length(object$global)){
       cat("\npenalty:", "  "," SERP")
       cat("\ntuning:","    " , tun)
       if (object$tuning == "cv") cat("\ncverror:",  "   ", object$cverror)
@@ -252,13 +252,13 @@ predict.serp <- function(object,
       nL <- ncol(yMtx)
     }
     if (nL > 2L){
-      xlst <- formxL(xpred, nL, object$slope, object$globalvar,
+      xlst <- formxL(xpred, nL, object$slope, object$global,
                      object$model, vnull)
       xMat <- do.call(rbind, xlst)
       linkf <- lnkfun(object$link)
       npar <- length(object$coef)
       coln <- colnames(xpred)[-1L]
-      cofx <- est.names(object$coef, object$slope, object$globalvar,
+      cofx <- est.names(object$coef, object$slope, object$global,
                         coln, x, m, npar, xMat, nL, vnull, useout)
       if (length(object$coef) == ncol(xMat))
         suppressWarnings(

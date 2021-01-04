@@ -9,7 +9,7 @@
 #' @param maxits the maximum number of Newton-Raphson iterations. Default to 100.
 #' @param eps threshold value during optimization at which the iteration routine terminates. In other words, when the reported change in the log-likelihood goes below this threshold, convergence is achieved.
 #' @param maxpen the upper end point of the interval from zero to be searched for a minimum tuning parameter.
-#' @param trace prints the Newton-Raphon fitting process at each iteration step.If 0 (default) no information is printed, if 1, 2 or 3 different shades of information are printed.
+#' @param trace prints the Newton-Raphson fitting process at each iteration step.If 0 (default) no information is printed, if 1, 2 or 3 different shades of information are printed.
 #' @param maxAdjIter the maximum allowable number of Newton step adjustment to forestall an early optimization failure. Defaults to 5.
 #' @param max.half.iter the maximum number of step halfings. Defaults to 10.
 #' @param relTol relative convergence tolerance, defaults to 1e-03. checks relative changes in the parameter estimates between Newton iterations.

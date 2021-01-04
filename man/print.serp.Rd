@@ -2,7 +2,7 @@
 % Please edit documentation in R/serp.method.R
 \name{print.serp}
 \alias{print.serp}
-\title{Print method for a serp object.}
+\title{Print method for a serp object}
 \usage{
 \method{print}{serp}(x, ...)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/serp.confint.R
 \name{confint.serp}
 \alias{confint.serp}
-\title{Confidence interval for a serp object.}
+\title{Confidence interval for a serp object}
 \usage{
 \method{confint}{serp}(object, parm, level = 0.95, ...)
 }

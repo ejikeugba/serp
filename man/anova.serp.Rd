@@ -2,7 +2,7 @@
 % Please edit documentation in R/serp.anova.R
 \name{anova.serp}
 \alias{anova.serp}
-\title{An ANOVA method for an object of class serp.}
+\title{An ANOVA method for an object of class serp}
 \usage{
 \method{anova}{serp}(object, ..., test = c("Chisq", "none"))
 }

@@ -27,12 +27,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' f1 <- serp(rating ~ temp + contact, globalvar = ~ temp,
+#' f1 <- serp(rating ~ temp + contact, global = ~ temp,
 #' slope = "partial", reverse = T, link = "logit",
 #' data = wine)
-#' y1 <- wine$rating
-#' p1 <- predict(f1, type="response")
-#'
 #' errorMetrics(f1, type = "brier")
 #' errorMetrics(f1, type = "logloss")
 #' errorMetrics(f1, type = "misclass")

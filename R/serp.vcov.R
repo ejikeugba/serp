@@ -1,4 +1,4 @@
-#' Variance covariance matrix for a serp object.
+#' Variance covariance matrix for a serp object
 #'
 #' Provides the Variance covariance matrix of an object of class serp.
 #'

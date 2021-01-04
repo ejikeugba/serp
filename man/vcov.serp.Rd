@@ -2,7 +2,7 @@
 % Please edit documentation in R/serp.vcov.R
 \name{vcov.serp}
 \alias{vcov.serp}
-\title{Variance covariance matrix for a serp object.}
+\title{Variance covariance matrix for a serp object}
 \usage{
 \method{vcov}{serp}(object, ...)
 }

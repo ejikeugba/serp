@@ -1,4 +1,4 @@
-#' Confidence interval for a serp object.
+#' Confidence interval for a serp object
 #'
 #' Provides the confidence interval of estimates of an object of class serp.
 #'

@@ -2,7 +2,7 @@
 % Please edit documentation in R/serp.control.R
 \name{serp.control}
 \alias{serp.control}
-\title{Control parameters for serp fit.}
+\title{Control parameters for serp fit}
 \usage{
 serp.control(maxits = 5e01, eps = 1e-07, maxpen = 1e05, trace = 0L,
                     maxAdjIter = 5e0, max.half.iter = 1e01, relTol = 1e-03,

@@ -1,4 +1,4 @@
-#' An ANOVA method for an object of class serp.
+#' An ANOVA method for an object of class serp
 #'
 #' Provides an ANOVA table for comparing two or more serp objects.
 #'

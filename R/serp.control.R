@@ -1,4 +1,4 @@
-#' Control parameters for serp fit.
+#' Control parameters for serp fit
 #'
 #' Default control parameters for serp fit. User-supplied control parameters could be
 #' specified in the main function.

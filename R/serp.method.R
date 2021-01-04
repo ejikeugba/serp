@@ -1,4 +1,4 @@
-#' Print method for a serp object.
+#' Print method for a serp object
 #'
 #' Prints the data frame returned by the \code{summary.serp} method.
 #'

@@ -2,6 +2,7 @@
 [![Codecov test coverage](https://codecov.io/gh/ejikeugba/serp/branch/master/graph/badge.svg)](https://codecov.io/gh/ejikeugba/serp?branch=master)
 [![Coveralls test coverage](https://coveralls.io/repos/github/ejikeugba/serp/badge.svg)](https://coveralls.io/r/ejikeugba/serp?branch=master)
 [![R build status](https://github.com/ejikeugba/serp/workflows/R-CMD-check/badge.svg)](https://github.com/ejikeugba/serp/actions)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/ejikeugba/serp?branch=master&svg=true)](https://ci.appveyor.com/project/ejikeugba/serp)
 <!-- badges: end -->
 
 # serp

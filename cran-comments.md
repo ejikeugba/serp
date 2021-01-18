@@ -5,8 +5,8 @@
 
 
 ## Local R CMD check results
--- R CMD check results ----------------------------------------- serp 0.1.5 ----
-Duration: 2m 23.8s
+-- R CMD check results ----------------------------------------- serp 0.1.6 ----
+Duration: 2m 7.4s
 
 0 errors v | 0 warnings v | 0 notes v
 

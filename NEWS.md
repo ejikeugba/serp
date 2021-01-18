@@ -1,3 +1,3 @@
-# serp  0.1.5
+# serp  0.1.6
 
-* Added a `NEWS.md` file to track changes to the package.
+* package ready for CRAN submission.

@@ -4,16 +4,16 @@
 \alias{confint.serp}
 \title{Confidence interval for a serp object}
 \usage{
-\method{confint}{serp}(object, parm, level = 0.95, ...)
+\method{confint}{serp}(object, ..., parm, level = 0.95)
 }
 \arguments{
 \item{object}{An object of class serp.}
 
+\item{...}{additional arguments.}
+
 \item{parm}{unused argument.}
 
 \item{level}{significance level.}
-
-\item{...}{additional arguments.}
 }
 \value{
 The confidence intervals of a fitted model.

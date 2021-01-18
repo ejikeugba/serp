@@ -4,28 +4,54 @@
 \alias{serp.control}
 \title{Control parameters for serp fit}
 \usage{
-serp.control(maxits = 5e01, eps = 1e-07, maxpen = 1e05, trace = 0L,
-                    maxAdjIter = 5e0, max.half.iter = 1e01, relTol = 1e-03,
-                    nFold = 5e0, minP = .Machine$double.eps, ...)
+serp.control(
+             maxits = 5e01,
+             eps = 1e-07,
+             maxpen = 1e05,
+             trace = 0L,
+             maxAdjIter = 5e0,
+             max.half.iter = 1e01,
+             relTol = 1e-03,
+             nrFold = 5e0,
+             cv.seed = 1e01,
+             grid.length = 5e01,
+             minP = .Machine$double.eps,
+             ...)
 }
 \arguments{
-\item{maxits}{the maximum number of Newton-Raphson iterations. Default to 100.}
+\item{maxits}{the maximum number of Newton's iterations. Default to 100.}
 
-\item{eps}{threshold value during optimization at which the iteration routine terminates. In other words, when the reported change in the log-likelihood goes below this threshold, convergence is achieved.}
+\item{eps}{threshold value during optimization at which the iteration
+routine terminates. In other words, when the reported change in the
+log-likelihood goes below this threshold, convergence is achieved.}
 
-\item{maxpen}{the upper end point of the interval from zero to be searched for a minimum tuning parameter.}
+\item{maxpen}{the upper end point of the interval from zero to be searched
+for a tuning parameter.}
 
-\item{trace}{prints the Newton-Raphson fitting process at each iteration step.If 0 (default) no information is printed, if 1, 2 or 3 different shades of information are printed.}
+\item{trace}{prints the Newton's fitting process at each iteration step.If
+0 (default) no information is printed, if 1, 2 or 3 different shades of
+information are printed.}
 
-\item{maxAdjIter}{the maximum allowable number of Newton step adjustment to forestall an early optimization failure. Defaults to 5.}
+\item{maxAdjIter}{the maximum allowable number of Newton step adjustment to
+forestall an early optimization failure. Defaults to 5.}
 
-\item{max.half.iter}{the maximum number of step halfings. Defaults to 10.}
+\item{max.half.iter}{the maximum number of iteration step-halfings. Defaults
+to 10.}
 
-\item{relTol}{relative convergence tolerance, defaults to 1e-03. checks relative changes in the parameter estimates between Newton iterations.}
+\item{relTol}{relative convergence tolerance, defaults to 1e-03. checks
+relative changes in the parameter estimates between Newton iterations.}
 
-\item{nFold}{the number of k-fold cross validation for the "cv" \code{tuning} method, with default value k = 5.}
+\item{nrFold}{the number of k-fold cross validation for the CV tuning
+method. Default to k = 5.}
 
-\item{minP}{A near zero minimum value the fitted probabilities are allowed to get during iteration to prevent numerical instability .}
+\item{cv.seed}{single numeric value to change the random seed in CV
+tuning.}
+
+\item{grid.length}{the length of the discrete lambda grid for the penalty
+method.}
+
+\item{minP}{A near zero minimum value the fitted probabilities are allowed
+to get during iteration to prevent numerical instability .}
 
 \item{...}{additional arguments.}
 }
@@ -33,8 +59,8 @@ serp.control(maxits = 5e01, eps = 1e-07, maxpen = 1e05, trace = 0L,
 a list of control parameters.
 }
 \description{
-Default control parameters for serp fit. User-supplied control parameters could be
-specified in the main function.
+Default control parameters for serp fit. User-supplied control parameters
+could be specified in the main function.
 }
 \examples{
 # See serp() documentation for examples.

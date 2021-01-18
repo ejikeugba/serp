@@ -20,7 +20,7 @@ m1 <- serp(rating ~ temp + contact, slope = "unparallel",
 summary(m1)
  
 
-## Using SERP with the deviance tuning,for instance,  returns 
+## Using SERP with the deviance tuning, for instance,  returns 
 ## the model along parameter shrinkage at which the total 
 ## residual deviance is minimal and stable parameter estimates 
 ## too.
@@ -33,7 +33,7 @@ predict(m2)
 ## used for the deviance and cv methods.
 m3 = serp(rating ~ temp + contact, slope = "penalize",
           reverse = T, link = "logit", tuning = "deviance",
-          lambdagrid = seq(0,1,length.out = 10), data = wine)
+          lambdagrid = 10^seq(10, -2, length.out=20), data = wine)
 confint(m3)
 
 

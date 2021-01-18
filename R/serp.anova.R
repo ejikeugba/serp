@@ -16,33 +16,33 @@
 #'
 anova.serp <- function (object, ..., test = c("Chisq", "none"))
 {
-  if (!inherits(object, "serp"))
-    stop("not a \"serp\" object", call. = FALSE)
   test <- match.arg(test)
   dots <- list(...)
   mod <- as.list(match.call())
   mod[[1]] <- NULL
   nm <- as.character(mod)
-  if (!length(dots))
-    stop("no anova implementation for a single ",
-         "\"serp\" object", call. = FALSE)
+  if (!length(dots) && inherits(object, "serp"))
+    stop("no anova implementation yet for a single ", "\'serp\' object",
+         call. = FALSE)
   mlist <- list(object, ...)
+  mclass <- all(unlist(lapply(mlist, class)) == "serp")
+  if (!mclass) stop("object(s) not of class \'serp\'")
   ml <- length(mlist)
-  dr <- sapply(mlist, function(r) (r$nobs - length(r$coef)))
+  dr <- vapply(mlist, function(r) (r$nobs - length(r$coef)), numeric(1))
   hh <- order(dr, decreasing = TRUE)
   mlist <- mlist[hh]
-  if (any(!sapply(mlist, inherits, "serp")))
-    stop("objects not of class \"serp\"", call. = FALSE)
-  fv <- sapply(mlist, function(r) length(r$fitted.values))
+  if (any(!vapply(mlist, inherits, logical(1), "serp")))
+    stop("input must be an object(s) of class 'serp'", call. = FALSE)
+  fv <- vapply(mlist, function(r) length(r$fitted.values), numeric(1))
   if (any(fv != fv[1L]))
     stop("models were not all fitted to the same ",
          "size of dataset", call. = FALSE)
-  dep <- unique(sapply(mlist, function(r) paste(formula(r)[2L])))
+  dep <- unique(vapply(mlist, function(r) paste(formula(r)[2L]), character(1)))
   drs <- dr[hh]
-  dev <- sapply(mlist, function(r) -2*r$logLik)
-  aic <- round(sapply(mlist, function(r) r$aic), 2L)
-  npar <- sapply(mlist, function(r) length(r$coef))
-  llik <- round(sapply(mlist, function(r) r$logLik), 3L)
+  dev <- vapply(mlist, function(r) -2*r$logLik, numeric(1))
+  aic <- round(vapply(mlist, function(r) r$aic, numeric(1)), 2L)
+  npar <- vapply(mlist, function(r) length(r$coef), numeric(1))
+  llik <- round(vapply(mlist, function(r) r$logLik, numeric(1)), 3L)
   prs <- c("", paste(seq_len(ml - 1L), 2L:ml, sep = " vs "))
   df <- c(NA_integer_, -diff(drs))
   ch <- round(c(NA_real_, -diff(dev)), 3L)

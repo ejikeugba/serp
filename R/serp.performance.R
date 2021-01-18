@@ -3,17 +3,20 @@
 #' @description Calculates performance metrics of fitted categorical models,
 #' including binary and multi-categorical models.
 #'
-#' @usage errorMetrics(actual, predicted,
-#'                     model= c("multiclass", "binary"),
-#'                     type= c("brier", "logloss", "misclass"),
-#'                     eps=.Machine$double.eps)
+#' @usage errorMetrics(
+#'              actual,
+#'              predicted,
+#'              model= c("multiclass", "binary"),
+#'              type= c("brier", "logloss", "misclass"),
+#'              eps=.Machine$double.eps)
 #' @param actual vector of actual values observed
-#' @param predicted predicted probability matrix of a categorical model or a vector of fitted values for binary models.
+#' @param predicted predicted probability matrix of a categorical model or a
+#'   vector of fitted values for binary models.
 #' @param model specifies whether multi-categorical or binary model
 #' @param type specifies type of error metrics
-#' @param eps a near-zero value introduced only if the fitted probabilities go beyond
-#' a specified threshold. It helps to minimize the chances of running into
-#' numerical problems.
+#' @param eps a near-zero value introduced only if the fitted probabilities go
+#'   beyond a specified threshold. It helps to minimize the chances of running
+#'   into numerical problems.
 #' @return A numeric value of computed performance metric determining how
 #' good a categorical model is compare to competing models.
 #' \describe{
@@ -27,7 +30,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' f1 <- serp(rating ~ temp + contact, global = ~ temp,
+#' f1 <- serp(rating ~ temp + contact, globalEff = ~ temp,
 #' slope = "partial", reverse = T, link = "logit",
 #' data = wine)
 #' errorMetrics(f1, type = "brier")
@@ -49,7 +52,9 @@
 #'
 #' @export
 #'
-errorMetrics <- function(actual, predicted,
+errorMetrics <- function(
+                         actual,
+                         predicted,
                          model = c("multiclass", "binary"),
                          type = c("brier", "logloss", "misclass"),
                          eps = .Machine$double.eps)
@@ -103,17 +108,17 @@ errorMetrics <- function(actual, predicted,
     binary={
       if (type=="brier"){
         y <- as.integer(y) - 1L
-        error <- sum((y - pred_y)^{2})/obs}
+        value <- sum((y - pred_y)^{2})/obs}
       if (type=="logloss"){
         y <- as.integer(y) - 1L
-        error <- - (sum(y * log(pred_y) + (1 - y) *
+        value <- - (sum(y * log(pred_y) + (1 - y) *
                           log(1 - pred_y))) / length(y)}
       if (type=="misclass"){
         y <- factor(y)
         ylevs <- levels(y)
         rr <- factor(max.col(pred_y), levels = seq_along(ylevs),
                      labels = ylevs)
-        error <- mean(y!=rr)}
+        value <- mean(y!=rr)}
     },
     multiclass={
       ym <- matrix(0, nrow=obs, ncol=nL,
@@ -122,17 +127,18 @@ errorMetrics <- function(actual, predicted,
       ym[cbind(1:obs, yi)] <- 1
       if (type=="brier"){
         rs <- rowSums(ym)
-        error <- sum(ym * (1 - pred_y)^2 + (rs - ym) *
+        value <- sum(ym * (1 - pred_y)^2 + (rs - ym) *
                        pred_y^2) / sum(rs)}
       if (type=="logloss"){
-        error <- -sum(ym * log(pred_y))/nrow(pred_y)}
+        value <- -sum(ym * log(pred_y))/nrow(pred_y)}
       if (type=="misclass"){
         rr <- apply(pred_y, 1, which.max)
-        hh <- sapply(1:nrow(ym), function(i) sum(ym[i, -rr[i]]))
-        error <- sum(hh) / sum(ym)}
+        rr <- rr - min(rr) + 1L
+        hh <- vapply(seq_len(nrow(ym)), function(i) sum(ym[i, -rr[i]]),
+                     numeric(1))
+        value <- sum(hh) / sum(ym)}
     })
   if (NAs > 0)
-    cat("\n---",NAs,"observation(s) deleted ",
-        "due to missingness","---", "\n")
-  error
+    warning(NAs," ", "observation(s) deleted ","due to missingness")
+  value
 }

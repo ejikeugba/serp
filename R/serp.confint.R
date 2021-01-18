@@ -15,11 +15,17 @@
 #' }
 #' @export
 #'
-confint.serp <- function (object, parm, level = 0.95, ...)
+confint.serp <- function (object, ..., parm, level = 0.95)
 {
   ### parm argument is ignored.
-  if (!inherits(object, "serp"))
-    stop("not a \"serp\" object", call. = FALSE)
+  dots <- list(...)
+  mod <- as.list(match.call())
+  mod[[1]] <- NULL
+  mlist <- list(object, ...)
+  mc <- unlist(lapply(mlist, class))
+  mclass <- all(mc == "serp")
+  if (!mclass) stop("input must be an object(s) of class 'serp'")
+  if (length(mc) > 1L) stop("one object at a time allowed", call. = FALSE)
   if (!(level > 0 && level < 1 && length(level) == 1 && is.numeric(level)))
     stop("\"clevel!\" should lie between 0 and 1", call. = FALSE)
   if (!(missing(parm) || is.null(parm)))

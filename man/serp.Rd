@@ -4,52 +4,101 @@
 \alias{serp}
 \title{Smooth Effects on Response Penalty for CLM}
 \usage{
-serp(formula, link = c("logit", "probit","loglog", "cloglog", "cauchit"),
-            slope = c("penalize", "parallel", "unparallel", "partial"),
-            tuning = c("deviance","cv","manual","finite"), reverse = FALSE,
-            lambdagrid=NULL, cverror=c("brier", "logloss"), global = NULL, data,
-            subset, weights=NULL, weight.type = c("analytic", "frequency"),
-            na.action=NULL, lambda = NULL, contrasts = NULL, control = list(), ...)
+serp(
+     formula,
+     link = c("logit", "probit","loglog", "cloglog", "cauchit"),
+     slope = c("penalize", "parallel", "unparallel", "partial"),
+     tuneMethod = c("deviance", "cv", "finite", "user"),
+     reverse = FALSE,
+     lambdaGrid = NULL,
+     cvMetric = c("brier", "logloss", "misclass"),
+     gridType = c("discrete", "fine"),
+     globalEff = NULL,
+     data,
+     subset,
+     weights = NULL,
+     weight.type = c("analytic", "frequency"),
+     na.action = NULL,
+     lambda = NULL,
+     contrasts = NULL,
+     control = list(),
+     ...)
 }
 \arguments{
-\item{formula}{regression formula of the form: response ~ predictors. The response should be a factor (ordered).}
+\item{formula}{regression formula of the form: response ~ predictors. The
+response should be a factor (ordered).}
 
-\item{link}{specifies the link function for the cumulative link model including: logit, probit, complementary log-log, cloglog, cauchit.}
+\item{link}{sets the link function for the cumulative link model including:
+logit, probit, complementary log-log, cloglog, cauchit.}
 
-\item{slope}{specifies the form of coefficients in the model, with "penalize" denoting the penalized coefficients, "unparallel" , "parallel" and "partial" denoting the unpenalized non-parallel, "parallel" and "partial" coefficients respectively.}
+\item{slope}{selects the form of coefficients used in the model, with
+\code{penalize} denoting the penalized coefficients, \code{unparallel},
+\code{parallel} and \code{partial} denoting the unpenalized non-parallel,
+parallel and semi-parallel coefficients respectively.}
 
-\item{tuning}{specifies the method of choosing an optimal shrinkage parameter, including: deviance, cv, manual and finite. i.e., the lambda value along parameter shrinkage path at which the fit's residual deviance or the cross-validated prediction error is minimal, or alternatively, tuning with a user supplied lambda. The finite tuning is used to locate the lambda value for which the fit's log-Likelihood is finite.}
+\item{tuneMethod}{sets the method of choosing an optimal shrinkage
+parameter, including: \code{deviance}, \code{cv}, \code{finite} and
+\code{user}. i.e., the lambda value along parameter shrinkage path at
+which the fit's residual deviance or the cross-validated test error is
+minimal. The finite tuning is used to obtain the model along parameter
+shrinkage for which the log-Likelihood exist (is finite). The 'user'
+tuning supports a user-supplied lambda value.}
 
-\item{reverse}{false by default, when true the sign of the linear predictor is reversed.}
+\item{reverse}{false by default, when true the sign of the linear predictor
+is reversed.}
 
-\item{lambdagrid}{optional user supplied lambda grid for cv and deviance tuning methods. Negative range of values are not allowed, instead (0, Inf). With large number of predictors and cases in the model, iterations run faster over a short grid interval, i.e., the shorter the grid length the faster iteration.}
+\item{lambdaGrid}{optional user-supplied lambda grid for the cv and deviance
+tuning methods, when the discrete \code{gridType} is chosen. Negative
+range of values are not allowed. A short lambda grid could increase
+computation time assuming large number of predictors and cases in the
+model.}
 
-\item{cverror}{sets the performance metric for cv tuning, with the brier score used by default.}
+\item{cvMetric}{sets the performance metric for the cv tuning, with the
+brier score used by default.}
 
-\item{global}{specifies variables to be assigned global effects during penalization or when \code{slope} is set to \code{partial}. Variables are specified as a formula with an empty left hand side, for instance, global = ~predictors.}
+\item{gridType}{chooses if a discrete or a continuous lambda grid should be
+used to select the optimal tuning parameter. The former is used by default
+and could be adjusted as desired in \code{serp.control}. The latter
+is on the range (0, \code{maxPen}). A user-supplied grid is also possible,
+which automatically overrides the internal grid.}
 
-\item{data}{optional data frame explaining the variables used in the formula.}
+\item{globalEff}{specifies variable(s) to be assigned global effects during
+penalization or when \code{slope} is set to \code{partial}. Variables are
+specified as a formula with an empty left hand side, for instance,
+globalEff = ~predictors.}
 
-\item{subset}{specifies which subset of the rows of the data should be used for in fit. All observations are used by default.}
+\item{data}{optional dataframe explaining the variables used in the formula.}
 
-\item{weights}{optional case weights in fitting. Negative weights are not allowed. Defaults to 1.}
+\item{subset}{specifies which subset of the rows of the data should be used
+for fit. All observations are used by default.}
 
-\item{weight.type}{distinguishes between analytic and frequency weights with the former set as default. The latter should be used when weights are mere case counts used to compress the data set.}
+\item{weights}{optional case weights in fitting. Negative weights are not
+allowed. Defaults to 1.}
+
+\item{weight.type}{chooses between analytic and frequency weights with the
+former used by default. The latter should be used when weights are mere
+case counts used to compress the data set.}
 
 \item{na.action}{a function to filter missing data.}
 
-\item{lambda}{a user-specified single numeric value for the tuning parameter when the \code{tuning} method is set to manual. A negative value is not allowed.}
+\item{lambda}{a user-supplied single numeric value for the tuning parameter
+when using the \code{user} tuning method. Negative values are not
+allowed.}
 
-\item{contrasts}{a list of contrasts to be used for some or all of the factors appearing as variables in the model formula.}
+\item{contrasts}{a list of contrasts to be used for some or all of the
+factors appearing as variables in the model formula.}
 
-\item{control}{A list of fit control parameters to replace default values returned by \code{serp.control}. Values not set assume default values.}
+\item{control}{A list of fit control parameters to replace default values
+returned by \code{serp.control}. Values not set assume default values.}
 
 \item{...}{additional arguments.}
 }
 \value{
-An object of class "serp" with the components listed below.
-Other model description methods include: \code{summary},
-\code{coef}, \code{predict}, \code{vcov}, \code{anova}, \code{errorMetrics}, etc.
+An object of class \code{serp} with the components listed below,
+depending on the type of slope modeled. Other summary methods include:
+ \code{summary}, \code{coef}, \code{predict}, \code{vcov},
+\code{anova}, \code{errorMetrics}, etc.
+
 \describe{
   \item{aic}{the akaike information criterion.}
   \item{bic}{the bayesian information criterion.}
@@ -58,35 +107,56 @@ Other model description methods include: \code{summary},
   \item{converged}{a character vector of fit convergence status.}
   \item{contrasts}{(where relevant) the contrasts used in the model.}
   \item{control}{list of control parameters from \code{serp.control}.}
-  \item{cverror}{the performance metric used for cv tuning.}
+  \item{cvMetric}{the performance metric used for cv tuning.}
   \item{deviance}{the residual deviance.}
   \item{edf}{the (effective) number of degrees of freedom used by the model}
   \item{fitted.values}{the fitted probabilities.}
-  \item{gradient}{a column vector of gradients for the coefficients at the model convergence.}
-  \item{global}{variable(s) in model treated as global effect(s)}
-  \item{Hessian}{the hessian matrix for the coefficients at the model convergence.}
-  \item{iter}{the number of interactions before convergence or non-convergence.}
-  \item{lambda}{an optimal shrinkage parameter for the penalized slope via minimum residual deviance, cross-validation or user-supplied.}
+  \item{globalEff}{variable(s) in model treated as global effect(s)}
+  \item{gradient}{a column vector of gradients for the coefficients at the
+        model convergence.}
+  \item{Hessian}{the hessian matrix for the coefficients at the model
+        convergence.}
+  \item{iter}{number of interactions before convergence or non-convergence.}
+  \item{lambda}{a user-supplied single numeric value for the \code{user}
+        tuning tuning method.}
+  \item{lambdaGrid}{a numeric vector of lambda values used to determine the
+        optimum tuning parameter.}
   \item{logLik}{the realized log-likelihood at the model convergence.}
-  \item{link}{a character vector indicating the link function of the fit.}
+  \item{link}{character vector indicating the link function of the fit.}
+  \item{message}{character vector stating the type of convergence obtained}
+  \item{misc}{a list to hold miscellaneous fit information.}
   \item{model}{model.frame having variables from formula.}
   \item{na.action}{(where relevant) information on the treatment of NAs.}
   \item{nobs}{the number of observations.}
-  \item{slope}{a character vector of the type of slope fitted.}
+  \item{nrFold}{the number of k-fold cross validation for the cv tuning
+        method. Default to k = 5.}
+  \item{reverse}{a logical vector indicating the the direction of the
+        cumulative probabilities. Default to P(Y<=r).}
+  \item{slope}{a character vector indicating the type of slope parameters
+        fitted. Default to \code{penalize}.}
   \item{Terms}{the terms structure describing the model.}
-  \item{tuning}{a character vector specifying the method for choosing an optimal shrinkage parameter.}
-  \item{value}{the minimum value of the performance metric that yielded the optimal shrinkage parameter (lambda). The brier score is returned for the "cv" tuning, while the residual deviance is reported for the "deviance" tuning.}
+  \item{testError}{numeric value of the cross-validated test error at which
+        the optimal tuning parameter emerged.}
+  \item{trainError}{numeric value of the cross-validated training error of
+        the final model.}
+  \item{tuneMethod}{a character vector specifying the method for choosing an
+        optimal shrinkage parameter.}
+  \item{value}{numeric value of the deviance or the minus log-likelihood of
+        the optimal model for the 'deviance' and the 'finite' tuning methods
+        respectively.}
   \item{ylev}{the number of the response levels.}
 }
 }
 \description{
-Fits cumulative link models (CLMs) with the smooth-effect-on-response
-penalty (SERP) via a modified Newton-Raphson algorithm. SERP enables the regularization
-of the parameter space between the general and the restricted cumulative models, with a
-resultant shrinkage of all subject-specific effects to global effects. The minimum deviance
-and CV tuning among others, provide the means of arriving at an optimal model in a situation
-where a user-supplied tuning value is not available. The slope argument allows for the
-selection of penalize, unparallel, parallel, or partial slope.
+Fits cumulative link models (CLMs) with the
+smooth-effect-on-response penalty (SERP) via a modified Newton-Raphson
+algorithm. SERP enables the regularization of the parameter space between
+the general and the restricted cumulative models, with a resultant shrinkage
+of all subject-specific effects to global effects. The minimum deviance
+and CV tuning among others, provide the means of arriving at an optimal
+model in a situation where a user-supplied tuning value is not available.
+The slope argument allows for the selection of a penalized, unparallel,
+parallel, or partial slope.
 }
 \details{
 The \code{serp} function fits the cumulative link model (CLM)
@@ -103,10 +173,10 @@ function. This model assumes that the effect of \eqn{x} does not
 depend on the  category. However, with this assumption relaxed,
 one obtains the following general cumulative model:
 
-\deqn{P(Y\leq r|x) = F(\delta_{0r} + x^T\delta_{r}),   r=1,\dots,k-1}
+\deqn{P(Y\leq r|x) = F(\delta_{0r} + x^T\delta_{r}),}
 
-This model, however, has the stochastic ordering property
-(McCullagh, 1980), which implies that \eqn{P(Y\leq r-1|x) < P(Y\leq r|x)}
+where r=1,\dots,k-1. This model, however, has the stochastic ordering
+property, which implies that \eqn{P(Y\leq r-1|x) < P(Y\leq r|x)}
 holds for all \eqn{x} and all categories \eqn{r}. Such assumption
 is often problematic, resulting in unstable likelihoods with
 ill-conditioned parameter space during the iterative procedure.
@@ -125,7 +195,8 @@ that the corresponding parameters \eqn{\delta_{1j},\dots \delta_{k-1,j}}
 vary smoothly over the categories, the following penalty
 (Tutz and Gertheiss, 2016),
 
-\deqn{J_{\lambda}(\delta)= \sum_{j=1}^{p} \sum_{r=1}^{k-2} (\delta_{r+1,j}-\delta_{rj})^{2}}
+\deqn{J_{\lambda}(\delta)= \sum_{j=1}^{p} \sum_{r=1}^{k-2}
+(\delta_{r+1,j}-\delta_{rj})^{2}}
 
 enables the smoothing of response categories such that all
 category-specific effects associated with the response turn towards a
@@ -134,43 +205,48 @@ with only the category-specific part of the model penalized.
 }
 \examples{
 \dontrun{
-## Consider the cumulative logit model of the wine dataset,
-## where the rating of wine bitterness is predicted with
-## the two treatment factors, temperature and contact.
+## Consider the cumulative logit model of the wine dataset, where the
+## rating of wine bitterness is predicted with the two treatment factors,
+## temperature and contact. The unpenalized non-proportional odds model
+## returns unbounded parameter estimates.
 
-## The unpenalized non-proportional odds model returns
-## unbounded parameter estimates.
 f1 <- serp(rating ~ temp + contact, slope = "unparallel",
            reverse = T, link = "logit", data = wine)
 summary(f1)
 
-## Using SERP with the deviance tuning, for instance, returns
-## the model along parameter shrinkage at which the total
-## residual deviance is minimal with stable parameter
-## estimates too.
-f2 <- serp(rating ~ temp + contact, slope = "penalize",
-           reverse = T, link = "logit", tuning = "deviance",
+## Using SERP with the deviance tuning, for instance, returns the model
+## along parameter shrinkage at which the total residual deviance
+## is minimal and with stable parameter estimates too. A discrete lambda
+## grid can alternatively be supplied with the discrete gridType,
+## for instance, by adding lambdaGrid = 10^seq(10, -2, length.out=20).
+## If not an internally generated lambda grid is used.
+
+f2 <- serp(rating ~ temp + contact, slope = "penalize", link = "logit",
+           reverse = FALSE, tuneMethod = "deviance", gridType = "fine",
            data = wine)
 summary(f2)
 
-## Manual/direct tuning with user-supplied single lambda
-## value is also possible.
-f3 <- serp(rating ~ temp + contact, slope = "penalize",
-           reverse = T, link = "logit", tuning = "manual",
-           lambda = 12, data = wine)
-predict(f3, type = "response")
+## A direct tuning with a user-supplied single lambda value
+## is also possible.
+f3 <- serp(rating ~ temp + contact, slope = "penalize", link = "logit",
+           reverse = T, tuneMethod = "user", lambda = 20,
+           data = wine)
+summary(f3)
+errorMetrics(f3)
+head(predict(f3, type = "response"))
 
 ## The unpenalized proportional odds model.
 f4 <-  serp(rating ~ temp + contact, slope = "parallel",
             reverse = T, link = "logit", data = wine)
+summary(f4)
 f4$message
 
 ## The unpenalized partial proportional odds model.
-f5 <- serp(rating ~ temp + contact, global = ~ temp,
+f5 <- serp(rating ~ temp + contact, globalEff = ~ temp,
            slope = "partial", reverse = T, link = "logit",
            data = wine)
+summary(f5)
 confint(f5)
-
 }
 
 }

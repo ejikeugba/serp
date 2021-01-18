@@ -14,9 +14,18 @@
 #' @export
 #'
 vcov.serp <- function(object, ...){
+  dots <- list(...)
+  mod <- as.list(match.call())
+  mod[[1]] <- NULL
+  mlist <- list(object, ...)
+  mc <- unlist(lapply(mlist, class))
+  mclass <- all(mc == "serp")
+  if (!mclass) stop("input must be an object(s) of class 'serp'")
+  if (length(mc) > 1L) stop("one object at a time allowed", call. = FALSE)
+
   if (!inherits(object, "serp"))
     stop("not a \"serp\" object", call. = FALSE)
-  H <- cbind(object$hess[,c(1:ncol(object$hess))])
+  H <- cbind(object$hess[,seq_len(ncol(object$hess))])
   cholHx <- try(chol(H), silent = TRUE)
   if (inherits(cholHx, "try-error"))
     stop("Cannot compute vcov: \nHessian is not positive definite")
@@ -24,3 +33,10 @@ vcov.serp <- function(object, ...){
   dimnames(covx) <- list(names(object$coef), names(object$coef))
   covx
 }
+
+
+
+
+
+
+

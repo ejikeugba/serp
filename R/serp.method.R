@@ -16,53 +16,26 @@
 print.serp <- function(x, ...)
 {
   if (!inherits(x, "serp"))
-    stop("not a \"serp\" object", call. = FALSE)
+    stop("input must be an object of class 'serp'", call. = FALSE)
   object <- x
   cat("\ncall:\n")
   print(object$call)
-  if (object$slope == 'penalize'){
-    tun <- object$tuning
-    if (tun =='manual'){
-      h1 <- " "
-      h2 <- round(object$lambda, 5L)
-    }
-    if (!tun == 'manual'){
-      h1 <- round(as.numeric(object$value), 6L)
-      h2 <- round(as.numeric(object$lambda), 5L)
-      if (is.na(object$logLik)) h1 <- h2 <- NA
-    }
-    if (object$tuning == "cv" && object$cverror == "brier")
-      cverror <- "cv (brier)"
-    if (object$tuning == "cv" && object$cverror == "logloss")
-      cverror <- "cv (logloss)"
-    cat("\nPenalization:")
-    if (!length(colnames(object$model)[-1L]) ==
-        length(object$global)){
-      cat("\npenalty:", "  "," SERP")
-      cat("\ntuning:","    " , tun)
-      if (object$tuning == "cv")
-        cat("\ncverror:",  "   ", object$cverror)
-      cat("\nvalue:","     " , h1)
-      cat("\nlambda:","    " , h2)
-    } else cat("\nwith no subject-specific effects found, ",
-               "parallel slope(s) returned\n")
-    cat("\n")
-  }
+  max.tun <- FALSE
   cat("\ncoefficients:\n")
   print(object$coef)
   cat("\nloglik:", object$logLik, " ","aic:", object$aic, "\n")
+
+  if (object$slope == 'penalize') penalty.print(object, max.tun)
+
+  if (max.tun){
+    cat("\n")
+    cat("! maximum tuning parameter reached\n")
+  }
   na.ac <- length(object$na.action)
   if (na.ac > 0){
     cat("\n")
-    if (na.ac==1)
-    {
-      cat("\n---",na.ac,"observation deleted due to ",
-          "missingness","---", "\n")
-    } else {
-      cat("\n")
-      cat("\n---",na.ac,"observations deleted due to ",
-          "missingness","---", "\n")
-    }
+    cat("\n---",na.ac,"observation(s) deleted due to ",
+        "missingness","---", "\n")
   }
 }
 
@@ -81,40 +54,44 @@ print.serp <- function(x, ...)
 #'
 summary.serp <- function(object, ...){
   if (!inherits(object, "serp"))
-    stop("not a \"serp\" object", call. = FALSE)
+    stop("input must be an object of class 'serp'", call. = FALSE)
   coef <- object$coef
   nL <- object$ylev
   coefs <- matrix(0, length(coef), 4L,
                   dimnames = list(names(coef), NULL))
   coefs[, 1L] <- coef
-  H <- cbind(object$hess[,c(1:ncol(object$hess))])
+  H <- cbind(object$hess[,seq_len(ncol(object$hess))])
   dimnames(H) <- list(names(object$coef), names(object$coef))
   cholHx <- try(chol(H), silent = TRUE)
   if (inherits(cholHx, "try-error"))
     cholHx <- covx <- diag(NA, dim(H))
   else covx   <- chol2inv(cholHx)
-  coefs[, 2L] <- se.est <- sqrt(diag(covx))
-  coefs[, 3L] <- z.value <- coef/se.est
-  coefs[, 4L] <- pvalue  <- 2 * pnorm(abs(z.value), lower.tail = FALSE)
+  se.est <- sqrt(diag(covx))
+  if (object$reverse) {
+    r.fun <- reverse.fun(se.est, object$slope,
+                               object$globalEff, object$model, object$slope,
+                               object$fitted.values, nL,
+                               object$Terms, object$misc)
+    se.est <- r.fun[[1L]]
+  }
+  coefs[,2L] <- se.est
+  coefs[,3L] <- z.value <- coef/se.est
+  coefs[,4L] <- pvalue  <- 2 * pnorm(abs(z.value), lower.tail = FALSE)
   colnames(coefs) <- c("Estimate", "Std Error", "z value", "Pr(>|z|)")
   expcoefs <- exp(coef(object)[-c(1:(nL-1))])
   if (object$slope == 'penalize'){
-    tun <- object$tuning
-    if (object$tuning == "cv" && object$cverror == "brier")
-      tun <- "cv (brier)"
-    if (object$tuning == "cv" && object$cverror == "logloss")
-      tun <- "cv (logloss)"
-    if (tun == 'manual'){
+    tun <- object$tuneMethod
+    if (tun == 'user'){
       h1 <- NA
       h2 <- round(object$lambda, 5L)
     }
-    if (!tun == 'manual'){
-      h1 <- round(as.numeric(object$value), 6L)
+    if (!tun == 'user'){
+      h1 <- round(as.numeric(object$misc$testError), 6L)
       h2 <- round(as.numeric(object$lambda), 5L)
       if (is.na(object$logLik)) h1 <- h2 <- NA
     }
     penalty <- list(penalty = noquote("SERP"),
-                    tuning = noquote(tun), value = h1, lambda = h2)
+                    tuneMethod = noquote(tun), value = h1, lambda = h2)
     object$penalty <- penalty
   }
   object$hess <- H
@@ -128,36 +105,11 @@ summary.serp <- function(object, ...){
 #'
 print.summary.serp <- function(x, ...){
   if (!inherits(x, "summary.serp"))
-    stop("not a \"serp\" object", call. = FALSE)
+    stop("input must be an object of class 'serp'", call. = FALSE)
   object <- x
   cat("\ncall:\n")
   print(object$call)
-  if (object$slope == 'penalize'){
-    tun <- object$tuning
-    if (tun =='manual'){
-      h1 <- " "
-      h2 <- round(object$lambda, 5L)
-    }
-    if (!tun == 'manual'){
-      h1 <- round(as.numeric(object$value), 6L)
-      h2 <- round(as.numeric(object$lambda), 5L)
-      if (is.na(object$logLik)) h1 <- h2 <- NA
-    }
-    if (object$tuning == "cv" && object$cverror == "brier")
-      cverror <- "cv (brier)"
-    if (object$tuning == "cv" && object$cverror == "logloss")
-      cverror <- "cv (logloss)"
-    cat("\nPenalization:")
-    if (!length(colnames(object$model)[-1L])==length(object$global)){
-      cat("\npenalty:", "  "," SERP")
-      cat("\ntuning:","    " , tun)
-      if (object$tuning == "cv") cat("\ncverror:",  "   ", object$cverror)
-      cat("\nvalue:","     " , h1)
-      cat("\nlambda:","    " , h2)
-    } else cat("\nwith no subject-specific effects found, ",
-               "parallel slope(s) returned\n")
-    cat("\n")
-  }
+  max.tun <- FALSE
   nL <- object$ylev
   coef <- as.data.frame(object$coef)
   df <- (object$nobs*(object$ylev-1)) - length(coef[,1L])
@@ -174,16 +126,18 @@ print.summary.serp <- function(x, ...){
     cat("\nExponentiated coefficients:\n")
     print(object$expcoefs)
   }
+
+  if (object$slope == 'penalize') penalty.print(object, max.tun)
+
+
+  if (max.tun){
+    cat("\n")
+    cat("! maximum tuning parameter reached\n")
+  }
   if (na.ac > 0){
     cat("\n")
-    if (na.ac == 1){
-      cat("\n---",na.ac,"observation deleted ",
-          "due to missingness","---")
-    } else{
-      cat("\n")
-      cat("\n---",na.ac,"observations deleted ",
-          "due to missingness","---")
-    }
+    cat("\n---",na.ac,"observation(s) deleted due to ",
+        "missingness","---", "\n")
   }
   invisible(object)
 }
@@ -204,7 +158,8 @@ print.summary.serp <- function(x, ...){
 #' # See serp() documentation for examples.
 #' @export
 #'
-predict.serp <- function(object,
+predict.serp <- function(
+                         object,
                          type = c("link", "response", "class"),
                          newdata=NULL, ...)
 {
@@ -252,18 +207,18 @@ predict.serp <- function(object,
       nL <- ncol(yMtx)
     }
     if (nL > 2L){
-      xlst <- formxL(xpred, nL, object$slope, object$global,
+      xlst <- formxL(xpred, nL, object$slope, object$globalEff,
                      object$model, vnull)
       xMat <- do.call(rbind, xlst)
       linkf <- lnkfun(object$link)
       npar <- length(object$coef)
       coln <- colnames(xpred)[-1L]
-      cofx <- est.names(object$coef, object$slope, object$global,
+      cofx <- est.names(object$coef, object$slope, object$globalEff,
                         coln, x, m, npar, xMat, nL, vnull, useout)
       if (length(object$coef) == ncol(xMat))
         suppressWarnings(
-          resp <- prlg(cofx, xMat, obs, yMtx=NULL,
-                       penx=NULL, linkf, control=NULL, wt=NULL)$prob
+          resp <- prlg(cofx, xMat, obs, yMtx = NULL,
+                       penx = NULL, linkf, control = NULL, wt = NULL)$exact.pr
         )
       if (dim(xpred)[1] == 1L){
         resp <- t(data.frame(resp))
@@ -273,15 +228,15 @@ predict.serp <- function(object,
   }
   switch(
     type,
-    response= {pred <- data.frame(resp)
+    response = {pred <- data.frame(resp)
     colnames(pred) <- levels(droplevels(depvar))},
     link = {cms <- t(apply(resp, 1, cumsum))[,-nL]
     if (dim(xpred)[1] == 1L){
       cms <- t(data.frame(cms))
       row.names(cms) <- NULL}
-    pred <- data.frame(log(cms/(1-cms)))
+    pred <- data.frame(log(cms/(1 - cms)))
     colnames(pred) <- sprintf("%slink(P[Y<=%d])",
-                              object$link,1:(nL-1))},
+                              object$link,1:(nL - 1))},
     class = {ylevs <- levels(droplevels(depvar))
     pred <- factor(max.col(resp), levels = seq_along(ylevs),
                    labels = ylevs)})
@@ -354,3 +309,4 @@ logLik.serp <- function(object, ...)
 {
   object$logLik
 }
+

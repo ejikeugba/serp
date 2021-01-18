@@ -4,23 +4,26 @@
 \alias{errorMetrics}
 \title{Performance metrics for categorical models}
 \usage{
-errorMetrics(actual, predicted,
-                    model= c("multiclass", "binary"),
-                    type= c("brier", "logloss", "misclass"),
-                    eps=.Machine$double.eps)
+errorMetrics(
+             actual,
+             predicted,
+             model= c("multiclass", "binary"),
+             type= c("brier", "logloss", "misclass"),
+             eps=.Machine$double.eps)
 }
 \arguments{
 \item{actual}{vector of actual values observed}
 
-\item{predicted}{predicted probability matrix of a categorical model or a vector of fitted values for binary models.}
+\item{predicted}{predicted probability matrix of a categorical model or a
+vector of fitted values for binary models.}
 
 \item{model}{specifies whether multi-categorical or binary model}
 
 \item{type}{specifies type of error metrics}
 
-\item{eps}{a near-zero value introduced only if the fitted probabilities go beyond
-a specified threshold. It helps to minimize the chances of running into
-numerical problems.}
+\item{eps}{a near-zero value introduced only if the fitted probabilities go
+beyond a specified threshold. It helps to minimize the chances of running
+into numerical problems.}
 }
 \value{
 A numeric value of computed performance metric determining how
@@ -37,7 +40,7 @@ including binary and multi-categorical models.
 }
 \examples{
 \dontrun{
-f1 <- serp(rating ~ temp + contact, global = ~ temp,
+f1 <- serp(rating ~ temp + contact, globalEff = ~ temp,
 slope = "partial", reverse = T, link = "logit",
 data = wine)
 errorMetrics(f1, type = "brier")

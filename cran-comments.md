@@ -1,3 +1,9 @@
+This is a re-submission. In this version I have:
+
+* Removed an invalid URLs from README.md
+
+* Re-run all necessary checks as outlined below
+
 ## Test environments
 * local Windows 10 with R version 4.0.3
 * win builder (release)
@@ -5,12 +11,10 @@
 
 
 ## Local R CMD check results
--- R CMD check results ----------------------------------------- serp 0.1.6 ----
-Duration: 2m 7.4s
+-- R CMD check results ----------------------------------------- serp 0.1.7 ----
+Duration: 2m 17.6s
 
 0 errors v | 0 warnings v | 0 notes v
-
-R CMD check succeeded
 
 
 ## R-hub check results

@@ -1,8 +1,10 @@
-# serp  0.1.7
+# serp  0.1.8
+* package re-submission to CRAN
 
-* package re-submission to CRAN.
-* Remove invalid URLs from README.md
+- reference to methods used in the package is included in the  description field
+- values were added to all exported methods with corresponding explanations
+- examples now runs by having all \dontrun{} removed
+- all occurrences of <<- in the functions are dropped
+- READmE.md is updated
 
-# serp  0.1.6
 
-* package ready for CRAN submission.

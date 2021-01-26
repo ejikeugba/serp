@@ -43,7 +43,8 @@ test_that("cumulative model via serp matches with vglm",
 
   #3# parallel slope with reversed cloglog link
   sp <- serp(rating ~ temp + contact, slope = "parallel",
-             link = "cloglog", reverse=TRUE, data = wine)
+             link = "cloglog", reverse=TRUE,
+             data = wine)
   vm <- vglm(rating ~ temp + contact,
              family=cumulative(link="clogloglink", parallel=TRUE,
                                reverse=TRUE), data = wine)
@@ -74,7 +75,7 @@ test_that("cumulative model via serp matches with vglm",
   dev.sp <- deviance(sp)
   dev.vm <- deviance(vm)
 
-  cof.sp <- summary(sp)$coef[,1L]
+  cof.sp <- summary(sp)$coefficient[,1L]
   cof.vm <- coef(vm)
   expect_equal(cof.sp, cof.vm, check.attributes=FALSE,
                tolerance=1e-06)

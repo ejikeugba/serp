@@ -12,10 +12,10 @@
 \item{...}{additional arguments.}
 }
 \value{
-A single value of model log-likelihood
+A single numeric value of model log-likelihood
 }
 \description{
-Log-likelihood for a serp object.
+Returns the Log-likelihood for a fitted object of class 'serp'
 }
 \examples{
 # See serp() documentation for examples.

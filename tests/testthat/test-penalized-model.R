@@ -33,29 +33,30 @@ test_that("estreem shrinkage with serp results to the
               slope = "penalize", tuneMethod = "user",
               lambda = 0, reverse=FALSE, data=wine)
   sp2 <- serp(rating ~ temp + contact, link = "logit",
-              slope = "unparallel", reverse=FALSE, data=wine)
+              slope = "unparallel", reverse=FALSE,
+              data=wine)
 
   #3# checks on anova, confinct and vcov functions
 
   expect_equal(coef(sp1), coef(sp2), check.attributes=FALSE,
                tolerance=tol)
 
-  expect_error(anova.serp(sp1),
+  expect_error(serp:::anova.serp(sp1),
                "no anova implementation yet for a single 'serp' object")
-  expect_false(inherits(try(anova.serp(sp1, sp2)), 'try-error'))
+  expect_false(inherits(try(serp:::anova.serp(sp1, sp2)), 'try-error'))
 
 
-  expect_error(confint.serp(sp1, sp2), "one object at a time allowed")
+  expect_error(serp:::confint.serp(sp1, sp2), "one object at a time allowed")
 
-  expect_false(inherits(try(confint.serp(sp1)), 'try-error'))
+  expect_false(inherits(try(serp:::confint.serp(sp1)), 'try-error'))
 
-  expect_error(vcov.serp(sp1, sp2), "one object at a time allowed")
+  expect_error(serp:::vcov.serp(sp1, sp2), "one object at a time allowed")
 
-  expect_false(inherits(try(vcov.serp(sp1)), 'try-error'))
+  expect_false(inherits(try(serp:::vcov.serp(sp1)), 'try-error'))
 
 
   expect_output(serp:::print.serp(sp1))
-  expect_output(serp:::print.summary.serp(summary(sp1)))
+  expect_output(serp:::print.summary.serp(serp:::summary.serp(sp1)))
 
   rm(sp1, sp2)
 })

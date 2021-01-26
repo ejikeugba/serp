@@ -2,27 +2,36 @@
 % Please edit documentation in R/serp.anova.R
 \name{anova.serp}
 \alias{anova.serp}
-\title{An ANOVA method for an object of class serp}
+\title{ANOVA method for an object of class 'serp'}
 \usage{
 \method{anova}{serp}(object, ..., test = c("Chisq", "none"))
 }
 \arguments{
-\item{object}{An object of class serp.}
+\item{object}{An object of class 'serp'.}
 
 \item{...}{additional arguments.}
 
 \item{test}{type of test to be conducted.}
 }
 \value{
-The ANOVA table of a fitted model.
+An ANOVA table with the following components:
+\describe{
+  \item{model}{the respective model aliases.}
+  \item{no.par}{the no of parameters in the model.}
+  \item{AIC}{the akaike information criterion.}
+  \item{logLik}{the realized log-likelihood.}
+  \item{Test}{the different pair(s) of test(s) conducted.}
+  \item{LR.stat}{the computed Likelihood ratio statistic.}
+  \item{df}{the degree of freedom.}
+  \item{Pr(chi)}{the p-value of test statitic.}
+}
 }
 \description{
-Provides an ANOVA table for comparing two or more serp objects.
+Provides an ANOVA table for comparing two or more 'serp' objects.
 }
 \examples{
-\dontrun{
-anova(object,..., test)
-}
+# See serp() documentation for examples.
+
 }
 \seealso{
 \code{\link{serp}}

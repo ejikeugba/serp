@@ -1,16 +1,15 @@
 #' Variance covariance matrix for a serp object
 #'
-#' Provides the Variance covariance matrix of an object of class serp.
+#' Provides the Variance covariance matrix of an object of class 'serp'.
 #'
-#' @param object An object of class serp.
+#' @param object An object of class 'serp'.
 #' @param ... additional arguments.
-#' @seealso
-#' \code{\link{serp}}
+#' @seealso \code{\link{serp}}
 #' @return A variance covariance matrix of a fitted model.
+#'
 #' @examples
-#' \dontrun{
-#' vcov(object,...)
-#' }
+#' # See serp() documentation for examples.
+#'
 #' @export
 #'
 vcov.serp <- function(object, ...){

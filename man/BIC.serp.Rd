@@ -2,20 +2,21 @@
 % Please edit documentation in R/serp.method.R
 \name{BIC.serp}
 \alias{BIC.serp}
-\title{BIC for a serp object.}
+\title{BIC for an object of class 'serp'}
 \usage{
 \method{BIC}{serp}(object, ...)
 }
 \arguments{
-\item{object}{An object of class serp.}
+\item{object}{An object of class 'serp'.}
 
 \item{...}{additional arguments.}
 }
 \value{
-A single value of model BIC.
+A single numeric value of the model.
 }
 \description{
-BIC for a serp object.
+Returns the bayesian information criterion of a fitted
+object of class 'serp'
 }
 \examples{
 # See serp() documentation for examples.

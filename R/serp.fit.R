@@ -186,11 +186,16 @@ serpfit <- function(x, y, wt, yMtx, link, slope, reverse, control,
   if (!vnull){
     hes <- res$info
     gra <- res$score
+    dimnames(hes) <- list(names(startval), names(startval))
+    dimnames(gra) <- list(names(startval), "gradient")
   } else {
     delta <- delta[nL] + delta[seq_len(nL-1L)]
     hes <- res$info[-nL, -nL]
     gra <- res$score[-nL]
     npar <- nL - 1
+    new.name <- names(startval)[seq_len(nL)-1L]
+    dimnames(hes) <- list(new.name, new.name)
+    names(gra) <- new.name
   }
   delta <- as.numeric(delta)
   sl <- if (partial.names) "partial" else slope

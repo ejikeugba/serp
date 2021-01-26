@@ -1,13 +1,12 @@
-#' Print method for a serp object
+#' Print method for object of class 'serp'
 #'
-#' Prints the data frame returned by the \code{summary.serp} method.
+#' Prints out a vector of coefficients of the fitted model with some
+#' additional goodness-of-fit measures.
 #'
-#' @param x An object of class serp.
+#' @param x An object of class 'serp'.
 #' @param ... additional arguments.
-#' @return NULL
-#' @seealso
-#' \code{\link{serp}}
-#'
+#' @return No return value
+#' @seealso \code{\link{serp}}
 #' @examples
 #' # See serp() documentation for examples.
 #'
@@ -37,7 +36,60 @@ print.serp <- function(x, ...)
     cat("\n---",na.ac,"observation(s) deleted due to ",
         "missingness","---", "\n")
   }
+  invisible(object)
 }
+
+
+#' Print method for object of class 'summary.serp'
+#'
+#' Prints the data frame returned by the \code{summary.serp} method.
+#'
+#' @param x An object of class 'summary.serp'.
+#' @param ... additional arguments.
+#' @return No return value
+#' @seealso \code{\link{serp}}
+#'
+#' @examples
+#' # See serp() documentation for examples.
+#'
+#' @export
+#'
+print.summary.serp <- function(x, ...){
+  if (!inherits(x, "summary.serp"))
+    stop("input must be an object of class 'serp'", call. = FALSE)
+  object <- x
+  cat("\ncall:\n")
+  print(object$call)
+  max.tun <- FALSE
+  nL <- object$ylev
+  coef <- as.data.frame(object$coefficients)
+  df <- (object$nobs*(object$ylev-1)) - length(coef[,1L])
+  na.ac <- length(object$na.action)
+  cat("\nCoefficients:\n")
+  printCoefmat(coef, digits = 4L, signif.stars = TRUE,
+               na.print = "NA", P.values = TRUE, has.Pvalue = TRUE,
+               signif.legend = TRUE)
+  cat("\nNumber of iterations:", object$iter, "\n")
+  cat("\nLoglik:", object$logLik, "on", df, "degrees of freedom","\n")
+  cat("\nAIC:", object$aic)
+  cat("\n")
+  if (!ncol(object$model) == 1L){
+    cat("\nExponentiated coefficients:\n")
+    print(object$expcoefs)
+  }
+  if (object$slope == 'penalize') penalty.print(object, max.tun)
+  if (max.tun){
+    cat("\n")
+    cat("! maximum tuning parameter reached\n")
+  }
+  if (na.ac > 0){
+    cat("\n")
+    cat("\n---",na.ac,"observation(s) deleted due to ",
+        "missingness","---", "\n")
+  }
+  invisible(object)
+}
+
 
 #' Summary method for a serp object.
 #'
@@ -45,9 +97,51 @@ print.serp <- function(x, ...)
 #'
 #' @param object An object of class serp.
 #' @param ... Not used. Additional summary arguments.
-#' @return A data frame of the fitted model summary.
-#' @seealso
-#' \code{\link{serp}}
+#' @return
+#' an object of class "summary.serp", a list (depending on the type of
+#' \code{slope} used) with the components itemized below. Note that the
+#' 'components from object' are already defined in the main function.
+#' \describe{
+#'   \item{call}{the component from object.}
+#'   \item{link}{the component from object.}
+#'   \item{edf}{the component from object.}
+#'   \item{ylev}{the component from object.}
+#'   \item{nobs}{the component from object.}
+#'   \item{gradient}{the component from object.}
+#'   \item{Hessian}{the component from object.}
+#'   \item{fitted.values}{the component from object.}
+#'   \item{slope}{the component from object.}
+#'   \item{Terms}{the component from object.}
+#'   \item{control}{the component from object.}
+#'   \item{reverse}{the component from object.}
+#'   \item{converged}{the component from object.}
+#'   \item{iter}{the component from object.}
+#'   \item{message}{the component from object.}
+#'   \item{misc}{the component from object.}
+#'   \item{model}{the component from object.}
+#'   \item{coefficients}{the matrix of coefficients, standard errors,
+#'         z-values and p-values.}
+#'   \item{logLik}{the component from object.}
+#'   \item{deviance}{the component from object.}
+#'   \item{aic}{the component from object.}
+#'   \item{bic}{the component from object.}
+#'   \item{contrasts}{the component from object.}
+#'   \item{penalty}{list of penalization information when \code{slope} set
+#'         to "penalize".}
+#'   \item{expcoefs}{the exponentiated coefficients.}
+#'   \item{cvMetric}{the component from object.}
+#'   \item{globalEff}{the component from object.}
+#'   \item{lambda}{the component from object.}
+#'   \item{lambdaGrid}{v}
+#'   \item{na.action}{the component from object.}
+#'   \item{nrFold}{the component from object.}
+#'   \item{testError}{the component from object.}
+#'   \item{trainError}{the component from object.}
+#'   \item{tuneMethod}{the component from object.}
+#'   \item{value}{the component from object.}
+#' }
+#'
+#' @seealso \code{\link{serp}}
 #' @examples
 #' # See serp() documentation for examples.
 #' @export
@@ -60,7 +154,7 @@ summary.serp <- function(object, ...){
   coefs <- matrix(0, length(coef), 4L,
                   dimnames = list(names(coef), NULL))
   coefs[, 1L] <- coef
-  H <- cbind(object$hess[,seq_len(ncol(object$hess))])
+  H <- cbind(object$hessian[,seq_len(ncol(object$hessian))])
   dimnames(H) <- list(names(object$coef), names(object$coef))
   cholHx <- try(chol(H), silent = TRUE)
   if (inherits(cholHx, "try-error"))
@@ -69,10 +163,11 @@ summary.serp <- function(object, ...){
   se.est <- sqrt(diag(covx))
   if (object$reverse) {
     r.fun <- reverse.fun(se.est, object$slope,
-                               object$globalEff, object$model, object$slope,
-                               object$fitted.values, nL,
-                               object$Terms, object$misc)
+                         object$globalEff, object$model, object$slope,
+                         object$fitted.values, nL,
+                         object$Terms, object$misc)
     se.est <- r.fun[[1L]]
+    if (object$misc$variable.null) se.est <- se.est[seq_len(nL)-1L]
   }
   coefs[,2L] <- se.est
   coefs[,3L] <- z.value <- coef/se.est
@@ -94,66 +189,27 @@ summary.serp <- function(object, ...){
                     tuneMethod = noquote(tun), value = h1, lambda = h2)
     object$penalty <- penalty
   }
-  object$hess <- H
-  object$coef <- coefs
+  object$hessian <- H
+  object$coefficients <- coefs
   object$expcoefs <- expcoefs
   class(object) <- "summary.serp"
   object
 }
 
-#' @export
-#'
-print.summary.serp <- function(x, ...){
-  if (!inherits(x, "summary.serp"))
-    stop("input must be an object of class 'serp'", call. = FALSE)
-  object <- x
-  cat("\ncall:\n")
-  print(object$call)
-  max.tun <- FALSE
-  nL <- object$ylev
-  coef <- as.data.frame(object$coef)
-  df <- (object$nobs*(object$ylev-1)) - length(coef[,1L])
-  na.ac <- length(object$na.action)
-  cat("\nCoefficients:\n")
-  printCoefmat(coef, digits = 4L, signif.stars = TRUE,
-               na.print = "NA", P.values = TRUE, has.Pvalue = TRUE,
-               signif.legend = TRUE)
-  cat("\nNumber of iterations:", object$iter, "\n")
-  cat("\nLoglik:", object$logLik, "on", df, "degrees of freedom","\n")
-  cat("\nAIC:", object$aic)
-  cat("\n")
-  if (!ncol(object$model) == 1L){
-    cat("\nExponentiated coefficients:\n")
-    print(object$expcoefs)
-  }
 
-  if (object$slope == 'penalize') penalty.print(object, max.tun)
-
-
-  if (max.tun){
-    cat("\n")
-    cat("! maximum tuning parameter reached\n")
-  }
-  if (na.ac > 0){
-    cat("\n")
-    cat("\n---",na.ac,"observation(s) deleted due to ",
-        "missingness","---", "\n")
-  }
-  invisible(object)
-}
-
-#' Predict method for a serp object.
+#' Predict method for object of class 'serp'.
 #'
 #' Returns the predicted probabilities, link and class
-#' for an object of class "serp".
+#' for an object of class 'serp..
 #'
 #' @param object An object of class serp.
-#' @param type any of response, link or terms.
+#' @param type could be any of these: response, link or terms.
 #' @param newdata fresh dataset with all relevant variables.
 #' @param ... additional arguments.
-#' @return The object returned depends on \code{type}.
-#' @seealso
-#' \code{\link{serp}}
+#' @return A vector of predicted classes with \code{type} equal to 'class'
+#' or a dataframe of predicted values for \code{type} equal to 'response'
+#' or 'link'.
+#' @seealso \code{\link{serp}}
 #' @examples
 #' # See serp() documentation for examples.
 #' @export
@@ -161,7 +217,8 @@ print.summary.serp <- function(x, ...){
 predict.serp <- function(
                          object,
                          type = c("link", "response", "class"),
-                         newdata=NULL, ...)
+                         newdata = NULL,
+                         ...)
 {
   if (!inherits(object, "serp"))
     stop("not a \"serp\" object", call. = FALSE)
@@ -243,14 +300,17 @@ predict.serp <- function(
   pred
 }
 
-#' AIC for a serp object.
+
+#' AIC for an object of class 'serp'
 #'
-#' @param object An object of class serp.
+#' Returns the akaike information criterion of a fitted
+#' object of class 'serp'
+#'
+#' @param object An object of class 'serp'.
 #' @param k fixed value equal to 2.
 #' @param ... additional arguments.
-#' @return A single value of model AIC.
-#' @seealso
-#' \code{\link{serp}}
+#' @return A single numeric value of the model AIC.
+#' @seealso \code{\link{serp}}
 #' @examples
 #' # See serp() documentation for examples.
 #' @export
@@ -261,13 +321,16 @@ AIC.serp <- function (object, ..., k=2)
   -2 * object$logLik + k * edf
 }
 
-#' BIC for a serp object.
+
+#' BIC for an object of class 'serp'
 #'
-#' @param object An object of class serp.
+#' Returns the bayesian information criterion of a fitted
+#' object of class 'serp'
+#'
+#' @param object An object of class 'serp'.
 #' @param ... additional arguments.
-#' @return A single value of model BIC.
-#' @seealso
-#' \code{\link{serp}}
+#' @return A single numeric value of the model.
+#' @seealso \code{\link{serp}}
 #' @examples
 #' # See serp() documentation for examples.
 #' @export
@@ -278,13 +341,15 @@ BIC.serp <- function (object, ...)
   -2 * object$logLik + log(object$nobs) * edf
 }
 
-#' Coefficients for a serp object.
+
+#' Coefficients for a serp object
+#'
+#' Returns the coefficients of a fitted object of class 'serp'
 #'
 #' @param object An object of class serp.
 #' @param ... additional arguments.
 #' @return A vector of model coefficients.
-#' @seealso
-#' \code{\link{serp}}
+#' @seealso \code{\link{serp}}
 #' @examples
 #' # See serp() documentation for examples.
 #' @export
@@ -294,13 +359,15 @@ coef.serp <- function(object, ...)
   object$coef
 }
 
+
 #' Log-likelihood for a serp object.
+#'
+#' Returns the Log-likelihood for a fitted object of class 'serp'
 #'
 #' @param object An object of class serp.
 #' @param ... additional arguments.
-#' @return A single value of model log-likelihood
-#' @seealso
-#' \code{\link{serp}}
+#' @return A single numeric value of model log-likelihood
+#' @seealso \code{\link{serp}}
 #' @examples
 #' # See serp() documentation for examples.
 #' @export
@@ -309,4 +376,3 @@ logLik.serp <- function(object, ...)
 {
   object$logLik
 }
-

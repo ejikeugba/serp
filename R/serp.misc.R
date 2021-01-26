@@ -336,10 +336,10 @@ dvfun <- function(lambda, globalEff, x, y, startval, xlst, xMat, yMtx,
                    xMat, yMtx, nL, obs, npar, linkf, link,
                    vnull,control, slope, globalEff, m,
                    mslope, tuneMethod, Terms, xtrace=FALSE);},
-    error=function(e) {rr <<- NA})
+    error=function(e) {rr <- NA})
   logLik <- if(tuneMethod == "finite") rr$exact.logL else rr$logL
   tryCatch({
-    rd <- -2*as.numeric(logLik);}, error=function(e) {rd <<- NA})
+    rd <- -2*as.numeric(logLik);}, error=function(e) {rd <- NA})
   return(rd)
 }
 

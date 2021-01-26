@@ -1,17 +1,27 @@
-#' An ANOVA method for an object of class serp
+#' ANOVA method for an object of class 'serp'
 #'
-#' Provides an ANOVA table for comparing two or more serp objects.
+#' Provides an ANOVA table for comparing two or more 'serp' objects.
 #'
-#' @param object An object of class serp.
+#' @param object An object of class 'serp'.
 #' @param ... additional arguments.
 #' @param test type of test to be conducted.
-#' @return The ANOVA table of a fitted model.
-#' @seealso
-#' \code{\link{serp}}
-#' @examples
-#' \dontrun{
-#' anova(object,..., test)
+#' @return An ANOVA table with the following components:
+#' \describe{
+#'   \item{model}{the respective model aliases.}
+#'   \item{no.par}{the no of parameters in the model.}
+#'   \item{AIC}{the akaike information criterion.}
+#'   \item{logLik}{the realized log-likelihood.}
+#'   \item{Test}{the different pair(s) of test(s) conducted.}
+#'   \item{LR.stat}{the computed Likelihood ratio statistic.}
+#'   \item{df}{the degree of freedom.}
+#'   \item{Pr(chi)}{the p-value of test statitic.}
 #' }
+#'
+#' @seealso \code{\link{serp}}
+#'
+#' @examples
+#' # See serp() documentation for examples.
+#'
 #' @export
 #'
 anova.serp <- function (object, ..., test = c("Chisq", "none"))

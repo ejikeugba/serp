@@ -2,22 +2,23 @@
 % Please edit documentation in R/serp.method.R
 \name{AIC.serp}
 \alias{AIC.serp}
-\title{AIC for a serp object.}
+\title{AIC for an object of class 'serp'}
 \usage{
 \method{AIC}{serp}(object, ..., k = 2)
 }
 \arguments{
-\item{object}{An object of class serp.}
+\item{object}{An object of class 'serp'.}
 
 \item{...}{additional arguments.}
 
 \item{k}{fixed value equal to 2.}
 }
 \value{
-A single value of model AIC.
+A single numeric value of the model AIC.
 }
 \description{
-AIC for a serp object.
+Returns the akaike information criterion of a fitted
+object of class 'serp'
 }
 \examples{
 # See serp() documentation for examples.

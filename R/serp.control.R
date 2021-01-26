@@ -1,6 +1,6 @@
 #' Control parameters for serp fit
 #'
-#' Default control parameters for serp fit. User-supplied control parameters
+#' Default control parameters for 'serp' fit. User-supplied control parameters
 #' could be specified in the main function.
 #'
 #' @usage serp.control(
@@ -41,8 +41,7 @@
 #'   to get during iteration to prevent numerical instability .
 #' @param ... additional arguments.
 #' @return a list of control parameters.
-#' @seealso
-#' \code{\link{serp}}
+#' @seealso \code{\link{serp}}
 #' @examples
 #' # See serp() documentation for examples.
 #'

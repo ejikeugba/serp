@@ -6,7 +6,7 @@
 Smooth Effects on Response Penalty for CLM
 
 A regularization method for the cumulative link models (CLM). 
-The serp function applies the 'smooth-effect-on-response penalty' 
+The 'serp' function applies the 'smooth-effect-on-response penalty' 
 (SERP) on the estimates of the general CLM, enabling all 
 subject-specific effects associated with each variable in 
 the model to shrink towards a unique global effect.
@@ -20,7 +20,7 @@ the two treatment factors, temperature and contact.
 ## The unpenalized non-proportional odds model returns unbounded
 ## parameter estimates.
 m1 <- serp(rating ~ temp + contact, slope = "unparallel",
-           reverse = T, link = "logit", data = wine)
+           reverse = TRUE, link = "logit", data = wine)
 summary(m1)
  
 
@@ -29,23 +29,23 @@ summary(m1)
 ## residual deviance is minimal and stable parameter estimates 
 ## too.
 m2 <- serp(rating ~ temp + contact, slope = "penalize",
-           reverse = T, link = "logit", tuning = "deviance",
+           reverse = TRUE, link = "logit", tuneMethod = "deviance",
            data = wine)
-predict(m2)
+predict(m2, type='response')
 
 ## A user-supplied discrete lambda grid could be alternatively
 ## used for the deviance and cv methods.
 m3 = serp(rating ~ temp + contact, slope = "penalize",
-          reverse = T, link = "logit", tuning = "deviance",
-          lambdagrid = 10^seq(10, -2, length.out=20), data = wine)
+          reverse = TRUE, link = "logit", tuneMethod = "deviance",
+          lambdaGrid = 10^seq(10, -2, length.out=10), data = wine)
 confint(m3)
 
 
 ## A penalized partial proportional odds model is obtained by
 ## setting some variable(s) as global effect(s).
 m4 <- serp(rating ~ temp + contact, slope = "penalize",
-           reverse = T, link = "logit", tuning = "deviance",
-           global = ~ temp, data = wine)
+           reverse = TRUE, link = "logit", tuneMethod = "deviance",
+           globalEff = ~ temp, data = wine)
 errorMetrics(m4)
 ```
 
@@ -58,3 +58,4 @@ devtools::install_github("ejikeugba/serp")
 ## Loading:
 ```R
 library(serp)
+

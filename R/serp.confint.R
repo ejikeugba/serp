@@ -1,18 +1,17 @@
-#' Confidence interval for a serp object
+#' Confidence interval for an object of class 'serp'
 #'
-#' Provides the confidence interval of estimates of an object of class serp.
+#' Provides the confidence interval of estimates for an object of class 'serp'.
 #'
-#' @param object An object of class serp.
+#' @param object An object of class 'serp'.
 #' @param parm unused argument.
 #' @param level significance level.
 #' @param ... additional arguments.
-#' @return The confidence intervals of a fitted model.
-#' @seealso
-#' \code{\link{serp}}
+#' @return A matrix of the the confidence intervals of fitted model.
+#' @seealso \code{\link{serp}}
+#'
 #' @examples
-#' \dontrun{
-#' confint(object,...)
-#' }
+#' # See serp() documentation for examples.
+#'
 #' @export
 #'
 confint.serp <- function (object, ..., parm, level = 0.95)
@@ -35,7 +34,7 @@ confint.serp <- function (object, ..., parm, level = 0.95)
   levf <- levformat(alpha, 3)
   qn <- qnorm(alpha)
   est <- coef(object)
-  ser <- summary(object)$coef[,2]
+  ser <- summary(object)$coefficient[,2]
   cint <- array(NA, dim = c(length(est), 2L),
                 dimnames = list(names(est), levf))
   cint[] <- est + ser %o% qn

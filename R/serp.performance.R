@@ -29,9 +29,9 @@
 #' \code{\link{serp}}
 #'
 #' @examples
-#' \dontrun{
-#' f1 <- serp(rating ~ temp + contact, globalEff = ~ temp,
-#' slope = "partial", reverse = T, link = "logit",
+#'
+#' f1 <- serp(rating ~ temp + contact, tuneMethod = "user",
+#' slope = "penalize", lambda = 0.3, reverse = TRUE, link = "logit",
 #' data = wine)
 #' errorMetrics(f1, type = "brier")
 #' errorMetrics(f1, type = "logloss")
@@ -48,7 +48,6 @@
 #' errorMetrics(actual=y, predicted=p2, model= "binary", type = "brier")
 #' errorMetrics(actual=y, predicted=p2, model= "binary", type = "logloss")
 #' errorMetrics(actual=y, predicted=p2, model= "binary", type = "misclass")
-#' }
 #'
 #' @export
 #'

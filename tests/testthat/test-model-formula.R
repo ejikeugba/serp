@@ -12,6 +12,9 @@ test_that("formula is specified in serp",
     "Model needs a formula")
   expect_error(
     serp(data = wine), "Model needs a formula")
+  expect_vector(serp(rating~ 1, link = "cauchit", slope = "penalize",
+                     tuneMethod = "finite", reverse=TRUE,
+                     data = wine)$coef)
 })
 
 ##

@@ -2,12 +2,12 @@
 % Please edit documentation in R/serp.confint.R
 \name{confint.serp}
 \alias{confint.serp}
-\title{Confidence interval for a serp object}
+\title{Confidence interval for an object of class 'serp'}
 \usage{
 \method{confint}{serp}(object, ..., parm, level = 0.95)
 }
 \arguments{
-\item{object}{An object of class serp.}
+\item{object}{An object of class 'serp'.}
 
 \item{...}{additional arguments.}
 
@@ -16,15 +16,14 @@
 \item{level}{significance level.}
 }
 \value{
-The confidence intervals of a fitted model.
+A matrix of the the confidence intervals of fitted model.
 }
 \description{
-Provides the confidence interval of estimates of an object of class serp.
+Provides the confidence interval of estimates for an object of class 'serp'.
 }
 \examples{
-\dontrun{
-confint(object,...)
-}
+# See serp() documentation for examples.
+
 }
 \seealso{
 \code{\link{serp}}

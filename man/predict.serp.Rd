@@ -2,25 +2,27 @@
 % Please edit documentation in R/serp.method.R
 \name{predict.serp}
 \alias{predict.serp}
-\title{Predict method for a serp object.}
+\title{Predict method for object of class 'serp'.}
 \usage{
 \method{predict}{serp}(object, type = c("link", "response", "class"), newdata = NULL, ...)
 }
 \arguments{
 \item{object}{An object of class serp.}
 
-\item{type}{any of response, link or terms.}
+\item{type}{could be any of these: response, link or terms.}
 
 \item{newdata}{fresh dataset with all relevant variables.}
 
 \item{...}{additional arguments.}
 }
 \value{
-The object returned depends on \code{type}.
+A vector of predicted classes with \code{type} equal to 'class'
+or a dataframe of predicted values for \code{type} equal to 'response'
+or 'link'.
 }
 \description{
 Returns the predicted probabilities, link and class
-for an object of class "serp".
+for an object of class 'serp..
 }
 \examples{
 # See serp() documentation for examples.

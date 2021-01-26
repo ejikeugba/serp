@@ -212,50 +212,27 @@
 #' }
 #' @export
 #' @examples
-#' \dontrun{
-#' ## Consider the cumulative logit model of the wine dataset, where the
-#' ## rating of wine bitterness is predicted with the two treatment factors,
-#' ## temperature and contact. The unpenalized non-proportional odds model
-#' ## returns unbounded parameter estimates.
 #'
+#' ## The unpenalized non-proportional odds model. (with Unbounded estimates)
 #' f1 <- serp(rating ~ temp + contact, slope = "unparallel",
-#'            reverse = T, link = "logit", data = wine)
-#' summary(f1)
+#'            reverse = TRUE, link = "logit", data = wine)
+#' coef(f1)
+#' logLik(f1)
 #'
-#' ## Using SERP with the deviance tuning, for instance, returns the model
-#' ## along parameter shrinkage at which the total residual deviance
-#' ## is minimal and with stable parameter estimates too. A discrete lambda
-#' ## grid can alternatively be supplied with the discrete gridType,
-#' ## for instance, by adding lambdaGrid = 10^seq(10, -2, length.out=20).
-#' ## If not an internally generated lambda grid is used.
+#' ## The penalized non-proportional odds model (with Improved estimates)
+#' f2 <- serp(rating ~ temp + contact, slope = "penalize",
+#'            link = "logit", reverse = TRUE, tuneMethod = "deviance",
+#'            lambdaGrid = 10^seq(1, -1, length.out=5), data = wine)
+#' coef(f2)
+#' predict(f2, type = "class")
+#' anova(f1, f2)
 #'
-#' f2 <- serp(rating ~ temp + contact, slope = "penalize", link = "logit",
-#'            reverse = FALSE, tuneMethod = "deviance", gridType = "fine",
-#'            data = wine)
-#' summary(f2)
-#'
-#' ## A direct tuning with a user-supplied single lambda value
-#' ## is also possible.
-#' f3 <- serp(rating ~ temp + contact, slope = "penalize", link = "logit",
-#'            reverse = T, tuneMethod = "user", lambda = 20,
-#'            data = wine)
+#' ## The unpenalized proportional odds model (with constrained estimates).
+#' f3 <-  serp(rating ~ temp + contact, slope = "parallel",
+#'             reverse = FALSE, link = "logit", data = wine)
 #' summary(f3)
+#' confint(f3)
 #' errorMetrics(f3)
-#' head(predict(f3, type = "response"))
-#'
-#' ## The unpenalized proportional odds model.
-#' f4 <-  serp(rating ~ temp + contact, slope = "parallel",
-#'             reverse = T, link = "logit", data = wine)
-#' summary(f4)
-#' f4$message
-#'
-#' ## The unpenalized partial proportional odds model.
-#' f5 <- serp(rating ~ temp + contact, globalEff = ~ temp,
-#'            slope = "partial", reverse = T, link = "logit",
-#'            data = wine)
-#' summary(f5)
-#' confint(f5)
-#' }
 #'
 serp <- function(
   formula,
@@ -363,3 +340,4 @@ serp <- function(
   class(ans) <- function.name
   ans
 }
+

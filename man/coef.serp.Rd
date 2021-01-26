@@ -2,7 +2,7 @@
 % Please edit documentation in R/serp.method.R
 \name{coef.serp}
 \alias{coef.serp}
-\title{Coefficients for a serp object.}
+\title{Coefficients for a serp object}
 \usage{
 \method{coef}{serp}(object, ...)
 }
@@ -15,7 +15,7 @@
 A vector of model coefficients.
 }
 \description{
-Coefficients for a serp object.
+Returns the coefficients of a fitted object of class 'serp'
 }
 \examples{
 # See serp() documentation for examples.

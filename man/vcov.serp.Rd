@@ -7,7 +7,7 @@
 \method{vcov}{serp}(object, ...)
 }
 \arguments{
-\item{object}{An object of class serp.}
+\item{object}{An object of class 'serp'.}
 
 \item{...}{additional arguments.}
 }
@@ -15,12 +15,11 @@
 A variance covariance matrix of a fitted model.
 }
 \description{
-Provides the Variance covariance matrix of an object of class serp.
+Provides the Variance covariance matrix of an object of class 'serp'.
 }
 \examples{
-\dontrun{
-vcov(object,...)
-}
+# See serp() documentation for examples.
+
 }
 \seealso{
 \code{\link{serp}}

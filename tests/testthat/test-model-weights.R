@@ -22,7 +22,23 @@ test_that("weight argument introduces no error",
          slope = "parallel", reverse=FALSE, weights = c(rep(1,71), 0.6),
          weight.type = "frequency", data = wine),
     "frequency weights must be whole numbers")
+  expect_vector(
+  serp(rating ~ temp + contact, slope = "parallel",
+       link = "cloglog", reverse=TRUE, weights = rep(1, 72),
+       weight.type = "frequency", data = wine)$coef)
+
 })
+
+## check if trace works
+expect_output(serp(rating ~ temp + contact, link = "logit",
+                   slope = "unparallel", reverse=FALSE,
+                   control= list(trace=1),
+                   data=wine))
+
+expect_output(serp(rating ~ temp + contact, link = "logit",
+                   slope = "unparallel", reverse=FALSE,
+                   control= list(trace=2),
+                   data=wine))
 
 ## checks on errorMetrics
 f1 <- serp(rating ~ temp + contact, link = "logit",
@@ -52,3 +68,4 @@ e6 <- errorMetrics(y, p, model= "binary", type = "misclass")
 expect_false(any(is.na(c(e1, e2, e3, e4, e5, e6))))
 
 rm(e1, e2, e3, e4, e5, e6, y, p, q, mm, f1)
+

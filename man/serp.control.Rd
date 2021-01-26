@@ -59,7 +59,7 @@ to get during iteration to prevent numerical instability .}
 a list of control parameters.
 }
 \description{
-Default control parameters for serp fit. User-supplied control parameters
+Default control parameters for 'serp' fit. User-supplied control parameters
 could be specified in the main function.
 }
 \examples{

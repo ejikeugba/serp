@@ -59,7 +59,7 @@ errorMetrics(m4)
 ```
 
 ## Installing:
-serp is now available on [CRAN](https://cran.r-project.org/package=serp). To install directly form CRAN, run the following code:
+serp is now available on [CRAN](https://cran.r-project.org/package=serp). To install directly from CRAN, run the following code in r:
 ```{r, eval = FALSE}
 install.packages("serp")
 ```

@@ -4,7 +4,6 @@
 [![Codecov test coverage](https://codecov.io/gh/ejikeugba/serp/branch/master/graph/badge.svg)](https://codecov.io/gh/ejikeugba/serp?branch=master)
 <!-- badges: end -->
 
-# serp
 Smooth Effects on Response Penalty for CLM
 
 A regularization method for the cumulative link models (CLM). 

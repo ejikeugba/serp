@@ -1,17 +1,3 @@
----
-output: github_document
----
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  out.width = "100%"
-)
-```
-
 # serp <img src='man/figures/hex_logo.png' align="right" height="105" />
 
 <!-- badges: start -->

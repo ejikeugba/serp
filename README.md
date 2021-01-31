@@ -2,6 +2,11 @@
 
 <!-- badges: start -->
 [![Codecov test coverage](https://codecov.io/gh/ejikeugba/serp/branch/master/graph/badge.svg)](https://codecov.io/gh/ejikeugba/serp?branch=master)
+[![R build status](https://github.com/ejikeugba/serp/workflows/R-CMD-check/badge.svg)](https://github.com/ejikeugba/serp/actions)
+[![CRAN status](https://www.r-pkg.org/badges/version/serp )](https://CRAN.R-project.org/package=serp )
+[![Tests status](https://appveyor-shields-badge.herokuapp.com/api/api/testResults/<ejikeugba>/<serp>/badge.svg)](https://ci.appveyor.com/project/<ejikeugba>/<serp>)
+[![Github All Releases](https://img.shields.io/github/downloads/<-- ejikeugba-->/<-- serp-->/total.svg)]()
+[![license](https://img.shields.io/badge/license-GPL--2-blue.svg)](https://www.gnu.org/licenses/gpl-2.0.en.html)
 <!-- badges: end -->
 
 Smooth Effects on Response Penalty for CLM

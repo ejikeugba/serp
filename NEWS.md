@@ -1,3 +1,7 @@
+# serp  0.1.8.9000
+* README.md gets additional badges and a hexagon sticker
+
+---
 # serp  0.1.8
 * package re-submission to CRAN
 

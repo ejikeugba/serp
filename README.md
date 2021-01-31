@@ -1,3 +1,5 @@
+# serp <img src='man/figures/hex_logo.png' align="right" height="139" />
+
 <!-- badges: start -->
 [![Codecov test coverage](https://codecov.io/gh/ejikeugba/serp/branch/master/graph/badge.svg)](https://codecov.io/gh/ejikeugba/serp?branch=master)
 <!-- badges: end -->

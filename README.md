@@ -1,4 +1,18 @@
-# serp <img src='man/figures/hex_logo.png' align="right" height="139" />
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  out.width = "100%"
+)
+```
+
+# serp <img src='man/figures/hex_logo.png' align="right" height="105" />
 
 <!-- badges: start -->
 [![Project Status: Active – The project has reached a stable, usable state and is being activelydeveloped.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
@@ -59,12 +73,19 @@ errorMetrics(m4)
 ```
 
 ## Installing:
-```R
+serp is now available on [CRAN](https://cran.r-project.org/package=serp). To install directly form CRAN, run the following code:
+```{r, eval = FALSE}
+install.packages("serp")
+```
+
+To install the latest development version, please use the following code:
+
+```{r, eval = FALSE}
 ## install.packages("devtools")
 devtools::install_github("ejikeugba/serp")
 ```
 
 ## Loading:
-```R
+```{r, eval = FALSE}
 library(serp)
-
+```

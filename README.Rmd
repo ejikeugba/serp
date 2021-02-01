@@ -1,39 +1,38 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
 
 # serp <img src='man/figures/hex_logo.png' align="right" height="105" />
 
 <!-- badges: start -->
-
-[![Project Status: Active – The project has reached a stable, usable
-state and is being
-activelydeveloped.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![Codecov test
-coverage](https://codecov.io/gh/ejikeugba/serp/branch/master/graph/badge.svg)](https://codecov.io/gh/ejikeugba/serp?branch=master)
-[![R build
-status](https://github.com/ejikeugba/serp/workflows/R-CMD-check/badge.svg)](https://github.com/ejikeugba/serp/actions)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/serp)](https://CRAN.R-project.org/package=serp)
-<http://cranlogs.r-pkg.org/badges/grand-total/serp>
+[![Project Status: Active – The project has reached a stable, usable state and is being activelydeveloped.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Codecov test coverage](https://codecov.io/gh/ejikeugba/serp/branch/master/graph/badge.svg)](https://codecov.io/gh/ejikeugba/serp?branch=master)
+[![R build status](https://github.com/ejikeugba/serp/workflows/R-CMD-check/badge.svg)](https://github.com/ejikeugba/serp/actions)
+[![CRAN status](https://www.r-pkg.org/badges/version/serp )](https://CRAN.R-project.org/package=serp)
+[![total downloads](http://cranlogs.r-pkg.org/badges/grand-total/serp)](http://cranlogs.r-pkg.org/badges/grand-total/serp)
 [![license](https://img.shields.io/badge/license-GPL--2-blue.svg)](https://www.gnu.org/licenses/gpl-2.0.en.html)
 <!-- [![downloads](https://cranlogs.r-pkg.org/badges/serp)](https://CRAN.R-project.org/package=serp) -->
 <!-- badges: end -->
 
 Smooth Effects on Response Penalty for CLM
 
-A regularization method for the cumulative link models (CLM). The ‘serp’
-function applies the ‘smooth-effect-on-response penalty’ (SERP) on the
-estimates of the general CLM, enabling all subject-specific effects
-associated with each variable in the model to shrink towards a unique
-global effect.
+A regularization method for the cumulative link models (CLM). The 'serp' function applies the 'smooth-effect-on-response penalty' (SERP) on the estimates of the general CLM, enabling all subject-specific effects associated with each variable in the model to shrink towards a unique global effect.
 
 ## Example
+Consider the cumulative logit model of the wine dataset, where the rating of wine bitterness is predicted with the two treatment factors, temperature and contact. 
 
-Consider the cumulative logit model of the wine dataset, where the
-rating of wine bitterness is predicted with the two treatment factors,
-temperature and contact.
-
-``` r
+```R
 ## The unpenalized non-proportional odds model returns unbounded
 ## parameter estimates.
 m1 <- serp(rating ~ temp + contact, slope = "unparallel",
@@ -67,24 +66,22 @@ errorMetrics(m4)
 ```
 
 ## Installation:
-
-You can install the released version of serp from
-[CRAN](https://cran.r-project.org/package=serp) with:
+You can install the released version of serp  from [CRAN](https://cran.r-project.org/package=serp) with:
 
 ``` r
 install.packages("serp ")
 ```
 
-And the development version from
-[GitHub](https://github.com/ejikeugba/serp) with:
+And the development version from [GitHub](https://github.com/ejikeugba/serp) with:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("ejikeugba/serp")
 ```
 
-## Loading:
 
-``` r
+## Loading:
+```{r, eval = FALSE}
 library(serp)
 ```
+

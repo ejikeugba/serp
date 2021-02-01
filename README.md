@@ -66,7 +66,7 @@ You can install the released version of serp from
 [CRAN](https://cran.r-project.org/package=serp) with:
 
 ``` r
-install.packages("serp ")
+install.packages("serp")
 ```
 
 And the development version from

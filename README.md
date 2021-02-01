@@ -4,17 +4,11 @@
 # serp <img src='man/figures/hex_logo.png' align="right" height="105" />
 
 <!-- badges: start -->
-
-[![Project Status: Active – The project has reached a stable, usable
-state and is being
-activelydeveloped.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![Codecov test
-coverage](https://codecov.io/gh/ejikeugba/serp/branch/master/graph/badge.svg)](https://codecov.io/gh/ejikeugba/serp?branch=master)
-[![R build
-status](https://github.com/ejikeugba/serp/workflows/R-CMD-check/badge.svg)](https://github.com/ejikeugba/serp/actions)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/serp)](https://CRAN.R-project.org/package=serp)
-<http://cranlogs.r-pkg.org/badges/grand-total/serp>
+[![Project Status: Active – The project has reached a stable, usable state and is being activelydeveloped.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Codecov test coverage](https://codecov.io/gh/ejikeugba/serp/branch/master/graph/badge.svg)](https://codecov.io/gh/ejikeugba/serp?branch=master)
+[![R build status](https://github.com/ejikeugba/serp/workflows/R-CMD-check/badge.svg)](https://github.com/ejikeugba/serp/actions)
+[![CRAN status](https://www.r-pkg.org/badges/version/serp )](https://CRAN.R-project.org/package=serp)
+[![total downloads](http://cranlogs.r-pkg.org/badges/grand-total/serp)](http://cranlogs.r-pkg.org/badges/grand-total/serp)
 [![license](https://img.shields.io/badge/license-GPL--2-blue.svg)](https://www.gnu.org/licenses/gpl-2.0.en.html)
 <!-- [![downloads](https://cranlogs.r-pkg.org/badges/serp)](https://CRAN.R-project.org/package=serp) -->
 <!-- badges: end -->

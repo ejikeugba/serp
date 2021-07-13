@@ -52,11 +52,11 @@
 #' @export
 #'
 errorMetrics <- function(
-                         actual,
-                         predicted,
-                         model = c("multiclass", "binary"),
-                         type = c("brier", "logloss", "misclass"),
-                         eps = .Machine$double.eps)
+  actual,
+  predicted,
+  model = c("multiclass", "binary"),
+  type = c("brier", "logloss", "misclass"),
+  eps = .Machine$double.eps)
 {
   model <- match.arg(model)
   type <- match.arg(type)
@@ -102,6 +102,8 @@ errorMetrics <- function(
     obs <- newobs
   }
   pred_y[pred_y < eps] <- eps
+  pred_y[pred_y > 1-eps] <- 1-eps
+  pred_y <- pred_y/rowSums(pred_y)
   switch(
     model,
     binary={

@@ -201,8 +201,6 @@
 #'   \item{Terms}{the terms structure describing the model.}
 #'   \item{testError}{numeric value of the cross-validated test error at which
 #'         the optimal tuning parameter emerged.}
-#'   \item{trainError}{numeric value of the cross-validated training error of
-#'         the final model.}
 #'   \item{tuneMethod}{a character vector specifying the method for choosing an
 #'         optimal shrinkage parameter.}
 #'   \item{value}{numeric value of the deviance or the minus log-likelihood of
@@ -307,7 +305,6 @@ serp <- function(
     }
   } else wt <- rep(1L, obs)
   y <- droplevels(y)
-  #if (!is.factor(y)) stop("response must be a factor")
   nL <- length(levels(y))
   if (nL <= 2L) stop("response must have 3 or more levels")
   x <- model.matrix(Terms, m, contrasts)
@@ -328,11 +325,9 @@ serp <- function(
   nvar <- ifelse(!vnull, dim(x)[2L] - 1L, dim(x)[2L])
   if (obs != dim(x)[1L]) stop("variable lengths unequal")
   yMtx <- yMx(y, obs, nL)
-  if (reverse) yMtx <- yMtx[, nL:1L]
-  linkf <- lnkfun(link)
   ans <- serpfit(x, y, wt, yMtx, link, slope, reverse, control,
                  Terms, lambda, lambdaGrid, gridType, tuneMethod,
-                 globalEff, cvMetric, mslope, linkf, nL, obs,
+                 globalEff, cvMetric, mslope, nL, obs,
                  vnull, nvar, m)
   ans <- c(list(call = mc), ans)
   ans$na.action <- attr(m, "na.action")
@@ -340,4 +335,3 @@ serp <- function(
   class(ans) <- function.name
   ans
 }
-

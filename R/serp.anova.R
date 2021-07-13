@@ -26,11 +26,14 @@
 #'
 anova.serp <- function (object, ..., test = c("Chisq", "none"))
 {
+  mc <- match.call()
   test <- match.arg(test)
   dots <- list(...)
   mod <- as.list(match.call())
   mod[[1]] <- NULL
   nm <- as.character(mod)
+  if (!all(unique(nm) == nm)) stop("duplicate object names are not allowed",
+                                   call. = FALSE)
   if (!length(dots) && inherits(object, "serp"))
     stop("no anova implementation yet for a single ", "\'serp\' object",
          call. = FALSE)
@@ -39,8 +42,13 @@ anova.serp <- function (object, ..., test = c("Chisq", "none"))
   if (!mclass) stop("object(s) not of class \'serp\'")
   ml <- length(mlist)
   dr <- vapply(mlist, function(r) (r$nobs - length(r$coef)), numeric(1))
+  slope.type <- vapply(mlist, function(r) (r$slope), character(1))
+  if (any(slope.type=="penalize")) stop("available anova-test doesn't support",
+                                        " model(s) with penalized slope",
+                                        call. = FALSE)
   hh <- order(dr, decreasing = TRUE)
   mlist <- mlist[hh]
+  nm <- nm[hh]
   if (any(!vapply(mlist, inherits, logical(1), "serp")))
     stop("input must be an object(s) of class 'serp'", call. = FALSE)
   fv <- vapply(mlist, function(r) length(r$fitted.values), numeric(1))
@@ -58,13 +66,12 @@ anova.serp <- function (object, ..., test = c("Chisq", "none"))
   ch <- round(c(NA_real_, -diff(dev)), 3L)
   pv <- c(NA_real_, 1 - pchisq(ch[-1L], df[-1L]))
   pv <- signif(pv, 4)
-  res <- data.frame(Model = nm, no.par =npar, AIC=aic, logLik=llik,
+  res <- data.frame(Model = nm, slope = slope.type, no.par =npar, AIC=aic, logLik=llik,
                     Test = prs, LRtest = ch, df = df, Prob = pv)
-  names(res) <- c("Model", "no.par", "AIC", "logLik",
+  names(res) <- c("Model", "slope","no.par", "AIC", "logLik",
                   "Test", "LR.stat", "df", "Pr(Chi)")
-  if (test == "none") res <- res[, -7L]
+  if (test == "none") res <- res[, -9L]
   class(res) <- c("Anova", "data.frame")
-  attr(res, "heading") <- c("Likelihood ratio tests of ordinal models.",
-                            paste("Response:",dep, "\n"))
+  attr(res, "heading") <- "Likelihood ratio tests of ordinal models:\n"
   res
 }

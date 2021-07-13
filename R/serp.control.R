@@ -48,17 +48,17 @@
 #' @export
 #'
 serp.control <- function(
-                         maxits = 5e01,
-                         eps = 1e-07,
-                         maxpen = 1e05,
-                         trace = 0L,
-                         maxAdjIter = 5e0,
-                         max.half.iter = 1e01,
-                         relTol = 1e-03,
-                         nrFold = 5e0,
-                         cv.seed = 1e01,
-                         grid.length = 5e01,
-                         minP = .Machine$double.eps, ...)
+  maxits = 5e01,
+  eps = 1e-07,
+  maxpen = 1e05,
+  trace = 0L,
+  maxAdjIter = 5e0,
+  max.half.iter = 1e01,
+  relTol = 1e-03,
+  nrFold = 5e0,
+  cv.seed = 1e01,
+  grid.length = 5e01,
+  minP = .Machine$double.eps, ...)
 {
   cntr <- c(maxits, eps, maxpen, minP, maxAdjIter, trace,
             max.half.iter, relTol)
@@ -79,8 +79,9 @@ serp.control <- function(
     "3" = "Maximum number of step-half iteration limit reached",
     "4" = "Maximum number of Newton adjustments reached",
     "5" = "Iteration process abruptly ended",
-    "s" = "Stochastic ordering assumption failed. Consider using
-           penalized, parallel or partial slope, or other link function."
+    "s" = "  Stochastic ordering assumption failed.
+    Consider using the penalized, parallel or partial slope,
+    or other link functions."
   ))
   list(maxits = as.integer(maxits), eps = eps, minP = minP,
        maxpen = maxpen, maxAdjIter = as.integer(maxAdjIter),

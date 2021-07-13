@@ -1,7 +1,7 @@
 Type: Package
 Package: serp
 Title: Smooth Effects on Response Penalty for 'CLM'
-Version: 0.1.8
+Version: 0.1.8.9003
 Author: Ejike R. Ugba [aut, cre, cph]
 Maintainer: Ejike R. Ugba <ejike.ugba@outlook.com>
 Description: A regularization method for the cumulative link

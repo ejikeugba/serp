@@ -24,11 +24,11 @@ print.serp <- function(x, ...)
   print(object$coef)
   cat("\nloglik:", object$logLik, " ","aic:", object$aic, "\n")
 
-  if (object$slope == 'penalize') penalty.print(object, max.tun)
+  if (object$slope == 'penalize') max.tun <- penalty.print(object, max.tun)
 
   if (max.tun){
     cat("\n")
-    cat("! maximum tuning parameter reached\n")
+    cat("* minimum tuning criterion obtained at lambda upper limit\n")
   }
   na.ac <- length(object$na.action)
   if (na.ac > 0){
@@ -77,10 +77,10 @@ print.summary.serp <- function(x, ...){
     cat("\nExponentiated coefficients:\n")
     print(object$expcoefs)
   }
-  if (object$slope == 'penalize') penalty.print(object, max.tun)
+  if (object$slope == 'penalize') max.tun <- penalty.print(object, max.tun)
   if (max.tun){
     cat("\n")
-    cat("! maximum tuning parameter reached\n")
+    cat("* minimum tuning criterion obtained at lambda upper limit\n")
   }
   if (na.ac > 0){
     cat("\n")
@@ -126,17 +126,16 @@ print.summary.serp <- function(x, ...){
 #'   \item{aic}{the component from object.}
 #'   \item{bic}{the component from object.}
 #'   \item{contrasts}{the component from object.}
-#'   \item{penalty}{list of penalization information when \code{slope} set
-#'         to "penalize".}
+#'   \item{penalty}{list of penalization information obtained with
+#'         \code{slope} set to "penalize".}
 #'   \item{expcoefs}{the exponentiated coefficients.}
 #'   \item{cvMetric}{the component from object.}
 #'   \item{globalEff}{the component from object.}
 #'   \item{lambda}{the component from object.}
-#'   \item{lambdaGrid}{v}
+#'   \item{lambdaGrid}{the component from object}
 #'   \item{na.action}{the component from object.}
 #'   \item{nrFold}{the component from object.}
 #'   \item{testError}{the component from object.}
-#'   \item{trainError}{the component from object.}
 #'   \item{tuneMethod}{the component from object.}
 #'   \item{value}{the component from object.}
 #' }
@@ -161,14 +160,6 @@ summary.serp <- function(object, ...){
     cholHx <- covx <- diag(NA, dim(H))
   else covx   <- chol2inv(cholHx)
   se.est <- sqrt(diag(covx))
-  if (object$reverse) {
-    r.fun <- reverse.fun(se.est, object$slope,
-                         object$globalEff, object$model, object$slope,
-                         object$fitted.values, nL,
-                         object$Terms, object$misc)
-    se.est <- r.fun[[1L]]
-    if (object$misc$variable.null) se.est <- se.est[seq_len(nL)-1L]
-  }
   coefs[,2L] <- se.est
   coefs[,3L] <- z.value <- coef/se.est
   coefs[,4L] <- pvalue  <- 2 * pnorm(abs(z.value), lower.tail = FALSE)
@@ -183,7 +174,6 @@ summary.serp <- function(object, ...){
     if (!tun == 'user'){
       h1 <- round(as.numeric(object$misc$testError), 6L)
       h2 <- round(as.numeric(object$lambda), 5L)
-      if (is.na(object$logLik)) h1 <- h2 <- NA
     }
     penalty <- list(penalty = noquote("SERP"),
                     tuneMethod = noquote(tun), value = h1, lambda = h2)
@@ -215,13 +205,13 @@ summary.serp <- function(object, ...){
 #' @export
 #'
 predict.serp <- function(
-                         object,
-                         type = c("link", "response", "class"),
-                         newdata = NULL,
-                         ...)
+  object,
+  type = c("link", "response", "class"),
+  newdata = NULL,
+  ...)
 {
   if (!inherits(object, "serp"))
-    stop("not a \"serp\" object", call. = FALSE)
+    stop("object must be of class \"serp\"", call. = FALSE)
   type <- match.arg(type)
   nL <- object$ylev
   control <- object$control
@@ -229,58 +219,39 @@ predict.serp <- function(
   depvar <- object$model[,1L]
   xpred <- model.matrix(object$Terms, object$model)
   if (!is.factor(depvar)) depvar <- factor(depvar)
+
   if (!(is.null(newdata))){
     newnames <- colnames(newdata)
     oldnames <- all.vars(object$Terms)
-    if (all(!is.element(oldnames, newnames)))
-      stop("variables in new data different ",
-           "from those in the model")
+    if (!all(is.element(oldnames, newnames)))
+      stop("names in newdata do not match previous names", call. = FALSE)
     m <- newdata[,oldnames]
     xpred <- model.matrix(object$Terms, newdata)
+
     if (!dim(xpred)[1] == 1L)
       x <- xpred[,-1L]
     else x <- subset(xpred, select = -1)
     vnull <- ifelse((dim(x)[2] == 1L), TRUE, FALSE)
     useout <- TRUE
-    ym <- oldnames[1L]
-    y <- newdata[,ym]
-    if (!is.factor(y)) y <- factor(y)
-    wt <- rep(1, length(y))
-    if (!is.factor(y))
-      stop("response must be a factor",
-           call. = FALSE)
-    nL <- length(levels(y))
-    if (nL <= 2)
-      stop("response must have more than two levels",
-           call. = FALSE)
-    obs <- length(y)
-    if (obs != dim(x)[1])
-      stop("variable lengths unequal",
-           call. = FALSE)
-    yMtx <- yMx(y, obs, nL)
-    if (object$ylev != nL){
-      yint <- intersect(levels(y),levels(droplevels(depvar)))
-      yMtx <- yMtx[ ,yint]
-      nL <- ncol(yMtx)
-    }
-    if (nL > 2L){
-      xlst <- formxL(xpred, nL, object$slope, object$globalEff,
-                     object$model, vnull)
-      xMat <- do.call(rbind, xlst)
-      linkf <- lnkfun(object$link)
-      npar <- length(object$coef)
-      coln <- colnames(xpred)[-1L]
-      cofx <- est.names(object$coef, object$slope, object$globalEff,
-                        coln, x, m, npar, xMat, nL, vnull, useout)
-      if (length(object$coef) == ncol(xMat))
-        suppressWarnings(
-          resp <- prlg(cofx, xMat, obs, yMtx = NULL,
-                       penx = NULL, linkf, control = NULL, wt = NULL)$exact.pr
-        )
-      if (dim(xpred)[1] == 1L){
-        resp <- t(data.frame(resp))
-        row.names(resp) <- NULL
-      }
+    nL <- object$ylev
+    obs <- nrow(x)
+    xlst <- formxL(xpred, nL, object$slope, object$globalEff,
+                   object$model, vnull)
+    xMat <- do.call(rbind, xlst)
+    linkf <- lnkfun(object$link)
+    npar <- length(object$coef)
+    coln <- colnames(xpred)[-1L]
+    cofx <- est.names(object$coef, object$slope, object$globalEff,
+                      coln, x, m, npar, xMat, nL, vnull, useout)
+    cofx <- if (object$reverse) -object$coef else object$coef
+    if (length(object$coef) == ncol(xMat))
+      suppressWarnings(
+        resp <- prlg(cofx, xMat, obs, yMtx = NULL,
+                     penx = NULL, linkf, control = NULL, wt = NULL)$exact.pr
+      )
+    if (dim(xpred)[1] == 1L){
+      resp <- t(data.frame(resp))
+      row.names(resp) <- NULL
     }
   }
   switch(
@@ -290,10 +261,17 @@ predict.serp <- function(
     link = {cms <- t(apply(resp, 1, cumsum))[,-nL]
     if (dim(xpred)[1] == 1L){
       cms <- t(data.frame(cms))
-      row.names(cms) <- NULL}
-    pred <- data.frame(log(cms/(1 - cms)))
-    colnames(pred) <- sprintf("%slink(P[Y<=%d])",
-                              object$link,1:(nL - 1))},
+      row.names(cms) <- NULL
+    }
+    if (!object$reverse){
+      pred <- data.frame(log(cms/(1 - cms)))
+      colnames(pred) <- sprintf("%slink(P[Y<=%d])",
+                                object$link,1:(nL - 1))
+    } else {
+      pred <- - data.frame(log(cms/(1 - cms)))
+      colnames(pred) <- sprintf("%slink(P[Y>=%d])",
+                                object$link,2:nL)
+    }},
     class = {ylevs <- levels(droplevels(depvar))
     pred <- factor(max.col(resp), levels = seq_along(ylevs),
                    labels = ylevs)})

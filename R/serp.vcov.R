@@ -32,10 +32,3 @@ vcov.serp <- function(object, ...){
   dimnames(covx) <- list(names(object$coef), names(object$coef))
   covx
 }
-
-
-
-
-
-
-

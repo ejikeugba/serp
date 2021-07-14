@@ -40,17 +40,16 @@ an object of class "summary.serp", a list (depending on the type of
   \item{aic}{the component from object.}
   \item{bic}{the component from object.}
   \item{contrasts}{the component from object.}
-  \item{penalty}{list of penalization information when \code{slope} set
-        to "penalize".}
+  \item{penalty}{list of penalization information obtained with
+        \code{slope} set to "penalize".}
   \item{expcoefs}{the exponentiated coefficients.}
   \item{cvMetric}{the component from object.}
   \item{globalEff}{the component from object.}
   \item{lambda}{the component from object.}
-  \item{lambdaGrid}{v}
+  \item{lambdaGrid}{the component from object}
   \item{na.action}{the component from object.}
   \item{nrFold}{the component from object.}
   \item{testError}{the component from object.}
-  \item{trainError}{the component from object.}
   \item{tuneMethod}{the component from object.}
   \item{value}{the component from object.}
 }

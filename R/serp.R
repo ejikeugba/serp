@@ -223,7 +223,6 @@
 #'            lambdaGrid = 10^seq(1, -1, length.out=5), data = wine)
 #' coef(f2)
 #' predict(f2, type = "class")
-#' anova(f1, f2)
 #'
 #' ## The unpenalized proportional odds model (with constrained estimates).
 #' f3 <-  serp(rating ~ temp + contact, slope = "parallel",

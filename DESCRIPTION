@@ -1,7 +1,7 @@
 Type: Package
 Package: serp
 Title: Smooth Effects on Response Penalty for 'CLM'
-Version: 0.1.8.9003
+Version: 0.1.8.9004
 Author: Ejike R. Ugba [aut, cre, cph]
 Maintainer: Ejike R. Ugba <ejike.ugba@outlook.com>
 Description: A regularization method for the cumulative link
@@ -20,7 +20,7 @@ Description: A regularization method for the cumulative link
     descriptive methods are also available. An outline of the penalty 
     implemented here is found in Tutz, G and Gertheiss, J (2016) 
     <doi:10.1177/1471082X16642560>.
-License: GPL-2
+License: GPL-2 | file LICENSE
 URL: https://github.com/ejikeugba/serp
 BugReports: https://github.com/ejikeugba/serp/issues
 Depends: 

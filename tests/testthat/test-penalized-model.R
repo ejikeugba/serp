@@ -30,17 +30,16 @@ test_that("estreem shrinkage with serp results to the
 
   #2# Zero shrinkage yields NPOM
   sp1 <- serp(rating ~ temp + contact, link = "logit",
-              slope = "penalize", tuneMethod = "user",
-              lambda = 0, reverse=FALSE, data=wine)
+              slope = "partial", reverse=FALSE,
+              globalEff = ~ temp + contact, data=wine)
   sp2 <- serp(rating ~ temp + contact, link = "logit",
-              slope = "unparallel", reverse=FALSE,
+              slope = "parallel", reverse=FALSE,
               data=wine)
 
   #3# checks on anova, confinct and vcov functions
 
   expect_equal(coef(sp1), coef(sp2), check.attributes=FALSE,
                tolerance=tol)
-
   expect_error(serp:::anova.serp(sp1),
                "no anova implementation yet for a single 'serp' object")
   expect_false(inherits(try(serp:::anova.serp(sp1, sp2)), 'try-error'))

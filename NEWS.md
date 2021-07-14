@@ -1,5 +1,10 @@
-# serp  0.1.8.9003
+# serp 0.1.8.9004
+- update License in the description 
+- Bugs in the example codes fixed
+- Bugs in test files corrected
+
 ---
+# serp 0.1.8.9003
 - Column titles of predicted values with reverse TRUE are corrected.
 - Bugs in the deviance (dvfun) are corrected.
 - serp predict function now handles both single and multiple row input(s).
@@ -13,8 +18,8 @@
 - reverse.fun is removed from summary.serp function.
 - predicted values in errorMetrics get normalized for greater efficiency.
 
-# serp  0.1.8.9002
 ---
+# serp 0.1.8.9002
 - warning messages in serpfit get updated.
 - Bug in serpfit when specifying gridType corrected.
 - trainError no longer shows up in serp output.
@@ -27,16 +32,16 @@
 - anova test for the 'penalize' slope currently disabled.
 - updates in serp.control warning messages.
 
-# serp  0.1.8.9001
 ---
+# serp 0.1.8.9001
 - serp gets a new license.
 
 ---
-# serp  0.1.8.9000
+# serp 0.1.8.9000
 * README.md gets additional badges and a hexagon sticker
 
 ---
-# serp  0.1.8
+# serp 0.1.8
 * package re-submission to CRAN
 
 - reference to methods used in the package is included in the  description field
@@ -44,5 +49,3 @@
 - examples now runs by having all \dontrun{} removed
 - all occurrences of <<- in the functions are dropped
 - READmE.md is updated
-
-

@@ -137,8 +137,6 @@ depending on the type of slope modeled. Other summary methods include:
   \item{Terms}{the terms structure describing the model.}
   \item{testError}{numeric value of the cross-validated test error at which
         the optimal tuning parameter emerged.}
-  \item{trainError}{numeric value of the cross-validated training error of
-        the final model.}
   \item{tuneMethod}{a character vector specifying the method for choosing an
         optimal shrinkage parameter.}
   \item{value}{numeric value of the deviance or the minus log-likelihood of
@@ -217,7 +215,6 @@ f2 <- serp(rating ~ temp + contact, slope = "penalize",
            lambdaGrid = 10^seq(1, -1, length.out=5), data = wine)
 coef(f2)
 predict(f2, type = "class")
-anova(f1, f2)
 
 ## The unpenalized proportional odds model (with constrained estimates).
 f3 <-  serp(rating ~ temp + contact, slope = "parallel",

@@ -103,7 +103,7 @@ errorMetrics <- function(
   }
   pred_y[pred_y < eps] <- eps
   pred_y[pred_y > 1-eps] <- 1-eps
-  pred_y <- pred_y/rowSums(pred_y)
+  pred_y <- if (model=="multiclass") pred_y/rowSums(pred_y) else pred_y
   switch(
     model,
     binary={

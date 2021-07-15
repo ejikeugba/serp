@@ -32,19 +32,20 @@ anova.serp <- function (object, ..., test = c("Chisq", "none"))
   mod <- as.list(match.call())
   mod[[1]] <- NULL
   nm <- as.character(mod)
-  if (!all(unique(nm) == nm)) stop("duplicate object names are not allowed",
-                                   call. = FALSE)
+  if (!length(unique(nm)) == length(nm))
+    stop("duplicate object names are not allowed", call. = FALSE)
   if (!length(dots) && inherits(object, "serp"))
     stop("no anova implementation yet for a single ", "\'serp\' object",
          call. = FALSE)
   mlist <- list(object, ...)
   mclass <- all(unlist(lapply(mlist, class)) == "serp")
-  if (!mclass) stop("object(s) not of class \'serp\'")
+  if (!mclass) stop("object(s) of class other than serp not supported",
+                    call. = FALSE)
   ml <- length(mlist)
   dr <- vapply(mlist, function(r) (r$nobs - length(r$coef)), numeric(1))
   slope.type <- vapply(mlist, function(r) (r$slope), character(1))
-  if (any(slope.type=="penalize")) stop("available anova-test doesn't support",
-                                        " model(s) with penalized slope",
+  if (any(slope.type=="penalize"))
+  stop("available anova-test doesn't support model(s) with penalized slope",
                                         call. = FALSE)
   hh <- order(dr, decreasing = TRUE)
   mlist <- mlist[hh]
@@ -66,8 +67,8 @@ anova.serp <- function (object, ..., test = c("Chisq", "none"))
   ch <- round(c(NA_real_, -diff(dev)), 3L)
   pv <- c(NA_real_, 1 - pchisq(ch[-1L], df[-1L]))
   pv <- signif(pv, 4)
-  res <- data.frame(Model = nm, slope = slope.type, no.par =npar, AIC=aic, logLik=llik,
-                    Test = prs, LRtest = ch, df = df, Prob = pv)
+  res <- data.frame(Model = nm, slope = slope.type, no.par =npar, AIC=aic,
+                    logLik=llik, Test = prs, LRtest = ch, df = df, Prob = pv)
   names(res) <- c("Model", "slope","no.par", "AIC", "logLik",
                   "Test", "LR.stat", "df", "Pr(Chi)")
   if (test == "none") res <- res[, -9L]

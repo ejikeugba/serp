@@ -357,55 +357,6 @@ dvfun <- function(lambda, globalEff, x, y, startval, xlst, xMat, yMtx,
   return(rd)
 }
 
-reverse.fun <- function(delta, slope, globalEff, m, mslope, fv, nL,
-                        Terms, misc)
-{
-  .Deprecated(NULL)
-  if (mslope == 'penalize' && slope != 'parallel' &&
-      !is.null(globalEff)) slope <- "partial"
-  delta <- c(delta)
-  if (slope == "partial") {
-    gb <- unlist(globalEff)
-    subg <- subset(m, select = c(gb))
-    subm <- model.matrix(~., data = subg)
-    subn <- colnames(subm)[-1L]
-    xnames <- misc$colnames.x
-    if (any(grepl(":", xnames))){
-      subn2 <- xnames[which(grepl(":", xnames))]
-      subn <- c(subn, subn2)
-    }
-    var.glo <- c(which(xnames %in% subn))
-    names(delta) <- misc$colnames.xMat
-    var.glo <- which(delta %in% delta[xnames[var.glo]])
-    spc <- delta[var.glo]
-    glo <- delta[-var.glo]
-    mdd <- matrix(seq_along(glo), nrow = nL-1)
-    mbb <- apply(FUN = sort, mdd, 2L, decreasing=TRUE)
-    deltax <- c(glo[c(mbb)], spc)
-    new.nam <- c(seq_along(delta)[-var.glo], var.glo)
-    names(deltax) <- new.nam
-    delta <- deltax[order(factor(names(deltax), levels = seq_along(delta)))]
-  }
-  if (slope=="penalize" && is.null(globalEff))
-  {
-    mdd <- matrix(seq_along(delta), nrow=nL-1)
-    mbb <- apply(FUN = sort, mdd, 2L, decreasing = TRUE)
-    delta <- delta[c(mbb)]
-  }
-  if (slope == "parallel")
-  {
-    par.ind <- sort(seq_len(nL-1), decreasing=TRUE)
-    delta <- c(delta[par.ind], delta[nL:length(delta)])
-  }
-  if (slope=="unparallel")
-  {
-    mdd <- matrix(seq_along(delta), nrow = nL-1)
-    mbb <- apply(FUN = sort, mdd, 2L, decreasing = TRUE)
-    delta <- delta[c(mbb)]
-  }
-  fv <- fv[ ,sort(seq_len(nL), decreasing = TRUE)]
-  list(delta, fv)
-}
 
 Trace <- function (iter, maxGrad, obj, delta, step,
                    score, eigen, info, trc, inflector, first = FALSE,

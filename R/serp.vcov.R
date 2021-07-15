@@ -27,7 +27,7 @@ vcov.serp <- function(object, ...){
   H <- cbind(object$hess[,seq_len(ncol(object$hess))])
   cholHx <- try(chol(H), silent = TRUE)
   if (inherits(cholHx, "try-error"))
-    stop("Cannot compute vcov: \nHessian is not positive definite")
+    stop("Could not compute vcov: \nHessian is not positive definite")
   covx   <- chol2inv(cholHx)
   dimnames(covx) <- list(names(object$coef), names(object$coef))
   covx

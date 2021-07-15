@@ -63,8 +63,8 @@ serp.control <- function(
   cntr <- c(maxits, eps, maxpen, minP, maxAdjIter, trace,
             max.half.iter, relTol)
   if(!all(is.numeric(cntr)) || any((cntr) < 0))
-    stop("maxits, eps, maxpen, minP, maxAdjIter, max.half.iter and ",
-         "relTol should all be numeric and non-negative")
+    stop("maxits, eps, maxpen, minP, maxAdjIter, max.half.iter and
+  relTol should all be numeric and non-negative")
   if(!(is.numeric(nrFold)) || (nrFold < 2L) || (nrFold > 10L))
     stop("nrFold should be numeric and between 2 and 10 inclusive.",
          call. = FALSE)

@@ -10,19 +10,20 @@ serpfit <- function(x, y, wt, yMtx, link, slope, reverse, control,
   if (slope == 'partial'){
     if (!is.null(globalEff)) {
       if(class(globalEff) != "formula")
-        stop("no object of class formula used in globalEff")
+        stop("no object of class formula used in globalEff", call. = FALSE)
       if (grepl('["]', c(globalEff)))
-        stop("variable name(s) in quotes not allowed in globalEff")
+        stop("variable name(s) in quotes not allowed in globalEff",
+             call. = FALSE)
       globalEff <- as.character(all.vars(globalEff))
       if (length(globalEff) == 0L)
-        stop("wrong input(s) in 'globalEff'")
+        stop("wrong input(s) in 'globalEff'", call. = FALSE)
       if (!length(union(colnames(m), globalEff)) == length(colnames(m)))
-        stop("unknown variable(s) in globalEff")
+        stop("unknown variable(s) in globalEff", call. = FALSE)
       if (ncol(x) <= 2L || (ncol(x)-1) == length(globalEff))
         slope <- "parallel"
       if (all.vars(Terms)[[1L]] %in% globalEff)
-        stop("response not allowed in 'globalEff'")
-    } else stop("'globalEff' is unspecified")
+        stop("response not allowed in 'globalEff'", call. = FALSE)
+    } else stop("'globalEff' is unspecified", call. = FALSE)
   }
   link_reversed <- FALSE
   initial_link <- link
@@ -107,7 +108,7 @@ serpfit <- function(x, y, wt, yMtx, link, slope, reverse, control,
                      cvMetric, mslope, tuneMethod, Terms, xlst = xlst,
                      yMtx = yMtx, obs)), silent = TRUE)
             if (inherits(ml, "try-error"))
-              stop("numeric problem, cannot proceed with cv tuning")
+              stop("cv tuning did not succeed, try switching to a different tuneMethod")
             hh <- cbind(lambdaGrid, ml)
             hh <- as.numeric(hh[which.min(hh[,2L]), ])
             minL <- list(minimum = hh[1L], objective = hh[2L])
@@ -120,7 +121,8 @@ serpfit <- function(x, y, wt, yMtx, link, slope, reverse, control,
                        link, m, slope, globalEff, nvar, reverse, vnull,
                        control, wt, cvMetric, mslope, tuneMethod,
                        Terms, xlst = xlst, yMtx = yMtx, obs)), silent = TRUE)
-            if (inherits(minL, "try-error")) stop("bad input in cv function")
+            if (inherits(minL, "try-error"))
+              stop("cv tuning did not succeed, try switching to a different tuneMethod")
             lam <- minL$minimum
           })
         ans$nrFold <- nrFold
@@ -171,8 +173,8 @@ serpfit <- function(x, y, wt, yMtx, link, slope, reverse, control,
                 "tuning method")
       if (tuneMethod=="deviance" || tuneMethod=="cv"){
         if (!is.null(lambdaGrid))
-          warning(nfinite,"increase lambdaGrid upper limit or apply a different ",
-                  "tuning method")
+          warning(nfinite,"increase lambdaGrid upper limit or apply a ",
+                  "different tuning method")
         else
           warning(nfinite,"try a different tuning method.")
       }

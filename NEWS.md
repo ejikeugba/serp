@@ -1,3 +1,10 @@
+# serp 0.1.8.9005
+- tests reconstructed to yield improved unit test coverage.
+- rewrote some of the error and warning messages in key serp functions.
+- Bugs in anova.serp fixed.
+- 
+
+---
 # serp 0.1.8.9004
 - update License in the description 
 - Bugs in the example codes fixed

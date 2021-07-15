@@ -289,7 +289,7 @@ serp <- function(
       stop("negative weights not allowed")
     if (slope == "penalize" && tuneMethod == 'cv' &&
         weight.type != "frequency")
-      stop("frequency weights only is allowed for 'cv' tuning")
+      stop("only frequency weights are allowed in 'cv' tuning.")
     if (weight.type == "frequency"){
       if(any(round(weights) != weights))
         stop("frequency weights must be whole numbers")

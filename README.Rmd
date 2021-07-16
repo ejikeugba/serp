@@ -24,7 +24,6 @@ knitr::opts_chunk$set(
 [![total downloads](http://cranlogs.r-pkg.org/badges/grand-total/serp)](http://cranlogs.r-pkg.org/badges/grand-total/serp)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/ejikeugba/serp?branch=master&svg=true)](https://ci.appveyor.com/project/ejikeugba/serp)
 [![license](https://img.shields.io/badge/license-GPL--2-blue.svg)](https://www.gnu.org/licenses/gpl-2.0.en.html)
-<!-- [![downloads](https://cranlogs.r-pkg.org/badges/serp)](https://CRAN.R-project.org/package=serp) -->
 <!-- badges: end -->
 
 Smooth Effects on Response Penalty for CLM

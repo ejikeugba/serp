@@ -17,8 +17,6 @@ knitr::opts_chunk$set(
 # serp <img src='man/figures/hex_logo.png' align="right" height="105" />
 
 <!-- badges: start -->
-[![codecov.io](https://codecov.io/github/ejikeugba/serp/coverage.svg?branch=master)]
-(https://codecov.io/github/ejikeugba/serp?branch=master)
 [![Project Status: Active – The project has reached a stable, usable state and is being activelydeveloped.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Codecov test coverage](https://codecov.io/gh/ejikeugba/serp/branch/master/graph/badge.svg)](https://codecov.io/gh/ejikeugba/serp?branch=master)
 [![R build status](https://github.com/ejikeugba/serp/workflows/R-CMD-check/badge.svg)](https://github.com/ejikeugba/serp/actions)

@@ -171,8 +171,8 @@ test_that("predict function works properly",
 
             expect_error(
               errorMetrics(
-                actual = as.factor(rbinom(100,1,0.5)),
-                predicted = matrix(runif(100), 20,1),
+                actual = as.factor(rbinom(20,1,0.5)),
+                predicted = matrix(runif(100), 20,5),
                 model = c("binary"),
                 type = c("brier"),
                 eps = .Machine$double.eps),

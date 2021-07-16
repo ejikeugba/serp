@@ -50,3 +50,11 @@ artifacts:
 
   - path: '\*_*.zip'
     name: Bits
+
+language: r
+
+r_packages:
+  - covr
+
+after_success:
+  - Rscript -e 'library(covr); codecov()'

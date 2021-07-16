@@ -31,6 +31,13 @@ test_script:
 on_failure:
   - 7z a failure.zip *.Rcheck\*
   - appveyor PushArtifact failure.zip
+language: r
+
+r_packages:
+  - covr
+
+after_success:
+  - Rscript -e 'library(covr); codecov()'
 
 artifacts:
   - path: '*.Rcheck\**\*.log'
@@ -51,10 +58,3 @@ artifacts:
   - path: '\*_*.zip'
     name: Bits
 
-language: r
-
-r_packages:
-  - covr
-
-after_success:
-  - Rscript -e 'library(covr); codecov()'

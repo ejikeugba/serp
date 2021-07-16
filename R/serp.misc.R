@@ -357,7 +357,6 @@ dvfun <- function(lambda, globalEff, x, y, startval, xlst, xMat, yMtx,
   return(rd)
 }
 
-
 Trace <- function (iter, maxGrad, obj, delta, step,
                    score, eigen, info, trc, inflector, first = FALSE,
                    half.iter = NULL, step.type = c("modify", "adjust", "full"))

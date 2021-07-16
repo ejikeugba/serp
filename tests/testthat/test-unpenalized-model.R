@@ -94,8 +94,3 @@ test_that("cumulative model via serp matches with vglm",
 
             rm(sp, vm, dev.sp, dev.vm, cof.sp, cof.vm, tol)
           })
-
-
-
-
-

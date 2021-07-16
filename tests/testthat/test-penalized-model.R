@@ -1,7 +1,6 @@
 library(testthat)
 library(serp)
 
-
 context("Penalized - checks if serp works properly on cumulative models")
 wine <- serp::wine
 
@@ -79,8 +78,6 @@ test_that("estreem shrinkage with serp results to the
             rm(sp1, sp2, sp3, sp4)
           })
 
-
-
 ## checks on lambda and lambdaGrid
 test_that("lambda is a single numeric and non-negative value and
            that lambdaGrid contains the right input values",
@@ -118,7 +115,6 @@ test_that("lambda is a single numeric and non-negative value and
             rm(subs)
           })
 
-
 ## checks on data subset
 test_that("subset indices are positive whole numbers",
           {
@@ -143,8 +139,6 @@ test_that("subset indices are positive whole numbers",
                    data = wine),
               "subset indices must be positive whole numbers")
           })
-
-
 
 ## checks on predict function and data subset
 test_that("predict function works properly",
@@ -197,8 +191,6 @@ test_that("predict function works properly",
             rm(pred1, pred2, subs)
 
           })
-
-
 
 ## checks on warning and error messages
 test_that("error messages and warnings report properly",
@@ -264,7 +256,6 @@ test_that("error messages and warnings report properly",
                    link = "logit",
                    tuneMethod = "cv",
                    gridType = "fine",
-                   #gridType = "discrete",
                    reverse = F,
                    lambda = 0.09,
                    lambdaGrid = 10^seq(-1, 2, length.out=2),
@@ -281,7 +272,6 @@ test_that("error messages and warnings report properly",
                            slope = "penalize",
                            link = "logit",
                            tuneMethod = "cv",
-                           #gridType = "fine",
                            gridType = "discrete",
                            reverse = F,
                            lambda = 0,
@@ -291,7 +281,6 @@ test_that("error messages and warnings report properly",
 
             expect_output(penalty.print(object=mm4, max.tun=TRUE))
             expect_output(print.serp(mm4))
-
 
             expect_error(
               serp(y ~ x1 + x2,
@@ -315,7 +304,6 @@ test_that("error messages and warnings report properly",
                    lambdaGrid = 10^seq(-1, 2, length.out=2),
                    data = test_data4)$logLik)
 
-
             test_data4$y <- rpois(20, 1)
             expect_error(
               serp(y ~ x1 + x2,
@@ -329,9 +317,5 @@ test_that("error messages and warnings report properly",
                    data = test_data4),
               "response must be an ordered factor")
 
-
             rm(test_data1, test_data2, test_data3, test_data4, n)
           })
-
-
-

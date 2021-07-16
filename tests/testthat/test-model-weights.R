@@ -46,9 +46,6 @@ test_that("weight argument introduces no error",
             rm(test_data, n)
           })
 
-
-
-
 ## checks on trace and errorMeterics
 test_that("trace and errorMeterics work properly",
           {
@@ -106,6 +103,4 @@ test_that("trace and errorMeterics work properly",
             rm(e1, e2, e3, e4, e5, y, p, mm, f1)
 
 })
-
-
 

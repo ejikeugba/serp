@@ -1,3 +1,12 @@
+# serp 0.1.8.9007
+- updates README.md
+- description gets additional doi
+- references in serp documentation updated
+
+# serp 0.1.8.9006
+- Bugs in tests fixed
+
+---
 # serp 0.1.8.9005
 - tests reconstructed to yield improved unit test coverage.
 - rewrote some of the error and warning messages in key serp functions.

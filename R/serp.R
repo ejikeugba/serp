@@ -147,7 +147,8 @@
 #' enables the smoothing of response categories such that all
 #' category-specific effects associated with the response turn towards a
 #' common global effect. SERP could also be applied to a semi-parallel model
-#' with only the category-specific part of the model penalized.
+#' with only the category-specific part of the model penalized. See,
+#' Ugba et al. (2021) for a detailed discussion on SERP.
 #'
 #' @references
 #' McCullagh, P (1980). Regression Models for Ordinal Data.
@@ -157,6 +158,11 @@
 #' Tutz, G and Gertheiss, J (2016). Regularized Regression
 #'     for Categorical Data (With Discussion and Rejoinder).
 #'     \emph{Statistical Modelling}, 16, pp. 161-260.
+#'     https://doi.org/10.1177/1471082X16642560
+#'
+#' Ugba, E R; Mörlein, D; Gertheiss, J (2021). Smoothing in Ordinal
+#'     Regression: An Application to Sensory Data. \emph{Stats}, 4, 616–633.
+#'     https://doi.org/10.3390/stats4030037
 #'
 #' @return An object of class \code{serp} with the components listed below,
 #' depending on the type of slope modeled. Other summary methods include:

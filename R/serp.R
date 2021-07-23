@@ -151,16 +151,16 @@
 #' Ugba et al. (2021) for a detailed discussion on SERP.
 #'
 #' @references
-#' McCullagh, P (1980). Regression Models for Ordinal Data.
+#' McCullagh, P. (1980). Regression Models for Ordinal Data.
 #'     \emph{Journal of the Royal Statistical Society. Series B
 #'     (Methodological)}, 42, pp. 109-142.
 #'
-#' Tutz, G and Gertheiss, J (2016). Regularized Regression
+#' Tutz, G. and Gertheiss, J. (2016). Regularized Regression
 #'     for Categorical Data (With Discussion and Rejoinder).
 #'     \emph{Statistical Modelling}, 16, pp. 161-260.
 #'     https://doi.org/10.1177/1471082X16642560
 #'
-#' Ugba, E R; Mörlein, D; Gertheiss, J (2021). Smoothing in Ordinal
+#' Ugba, E. R., Mörlein, D. and Gertheiss, J. (2021). Smoothing in Ordinal
 #'     Regression: An Application to Sensory Data. \emph{Stats}, 4, 616–633.
 #'     https://doi.org/10.3390/stats4030037
 #'

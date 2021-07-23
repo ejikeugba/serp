@@ -179,7 +179,7 @@ coef(m4)
     the parallel estimates and the selected estimates based on the
     minimum deviance, respectively.
 
-<img src='man/figures/serpshrink.png' />
+<img src='man/figures/serpshrink.png' width = "800" />
 
 ## Installation:
 
@@ -206,10 +206,10 @@ library(serp)
 
 ## References:
 
-Ugba, E R; Mörlein, D; Gertheiss, J (2021). Smoothing in Ordinal
+Ugba, E. R., Mörlein, D. and Gertheiss, J. (2021). Smoothing in Ordinal
 Regression: An Application to Sensory Data. *Stats*, 4, 616–633.
 <https://doi.org/10.3390/stats4030037>
 
-Tutz, G and Gertheiss, J (2016). Regularized Regression for Categorical
-Data (With Discussion and Rejoinder). *Statistical Modelling*, 16,
-161-260. <https://doi.org/10.1177/1471082X16642560>
+Tutz, G. and Gertheiss, J. (2016). Regularized Regression for
+Categorical Data (With Discussion and Rejoinder). *Statistical
+Modelling*, 16, 161-260. <https://doi.org/10.1177/1471082X16642560>

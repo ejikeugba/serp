@@ -16,12 +16,12 @@ test_that("estreem shrinkage with serp results to the
                         slope = "penalize", tuneMethod = "user",
                         lambda = 1e10, reverse=FALSE, data=wine,
                         subset = subs)
-            cof1 <- unique(round(as.numeric(coef(sp1)), 9L))
+            cof1 <- round(as.numeric(coef(sp1))[1L], 4L)
 
             sp2 <- serp(rating ~ temp + contact, link = "logit",
                         slope = "parallel", reverse=FALSE, data = wine,
                         subset = subs)
-            cof2 <- coef(sp2)
+            cof2 <- round(as.numeric(coef(sp2))[1L], 4L)
             expect_equal(cof1, cof2, check.attributes=FALSE,
                          tolerance=tol)
 

@@ -10,6 +10,8 @@ state and is being
 activelydeveloped](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Codecov test
 coverage](https://codecov.io/gh/ejikeugba/serp/branch/master/graph/badge.svg)](https://codecov.io/gh/ejikeugba/serp?branch=master)
+[![total
+downloads](http://cranlogs.r-pkg.org/badges/grand-total/serp)](http://cranlogs.r-pkg.org/badges/grand-total)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/serp)](https://CRAN.R-project.org/package=serp)
 [![R build

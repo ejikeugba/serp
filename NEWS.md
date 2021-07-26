@@ -1,8 +1,21 @@
+# serp 0.2.0
+- resubmission to CRAN
+
+---
+# serp 0.1.9.9000
+- fixed all issues spotted out in the last version released on CRAN.  
+
+---
+# serp 0.1.9
+- Submit serp version 0.1.9 to CRAN
+
+---
 # serp 0.1.8.9007
 - updates README.md
 - description gets additional doi
 - references in serp documentation updated
 
+---
 # serp 0.1.8.9006
 - Bugs in tests fixed
 

@@ -181,7 +181,7 @@ coef(m4)
     the parallel estimates and the selected estimates based on the
     minimum deviance, respectively.
 
-<img src='man/figures/serpshrink.png' width = "800" />
+<img src='man/figures/serpshrink.png' width = "600" />
 
 ## Installation:
 

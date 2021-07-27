@@ -1,4 +1,8 @@
 # serp 0.2.0
+- serp version 0.2.0 release
+
+---
+# serp 0.1.9.9001
 - resubmission to CRAN
 
 ---

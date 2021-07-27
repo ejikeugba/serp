@@ -26,7 +26,7 @@ bibliography: paper.bib
 
 The use of specialized methods for the analysis of categorical data has drastically increased in recent times [@agresti_categorical_2002]. Scientists very frequently use one form of the categorical response model or the other to study relationships between different variables of interest and also make predictions and/or inferences. For instance, several findings arising from clinical trials, social surveys, market research, etc, very much rely on results obtained from the application of models like: the generalized linear model [@nelder_generalized_1972; @McCullagh&Nelder1989], the cumulative link models (CLMs) [@mcCullagh_regression_1980] and similar models [see, e.g., @fahrmeir_multivariate_2001; @tutz_regression_2011]. However, in high-dimensional applications of these models where several potential predictors are used in the model, the so-called identification problem (particularly in CLMs) could be somewhat unavoidable [@fisher_identification_1966; @greenberg_advanced_1983]. Thankfully, the regularization technique [see, e.g., Hastie, Tibshirani, and Friedman 2009; @buhmann_statistics_2011] among other approaches, offers a means to address such an issue. 
 
-The [serp](https://ejikeugba.github.io/serp) library [@Ugba_serp_2021], available in the Comprehensive R Archive Network ([CRAN](https://CRAN.R-project.org/package=serp)) [@R_language_2020], implements a unique regularization algorithm that results in very flexible modelling of CLMs [see, @tutz_regularized_2016; @ugba_smoothing_2021]. As an open-source library, [serp](https://ejikeugba.github.io/serp) aims to provide a platform for advanced scientific modelling. The core features of [serp](https://ejikeugba.github.io/serp) as well as details on its usage are provided in the library [documentation](https://cran.r-project.org/web/packages/serp/serp.pdf).
+The [serp](https://ejikeugba.github.io/serp) library [@Ugba_serp_2021], available in the Comprehensive R Archive Network ([CRAN](https://CRAN.R-project.org/package=serp)) [@R_language_2020], implements a unique regularization algorithm that results in very flexible modelling of CLMs [see, @tutz_regularized_2016; @ugba_smoothing_2021]. Fitting is powered by a modified-Newton optimization method that facilitates an easy convergence and estimation speed. As an open-source library, [serp](https://ejikeugba.github.io/serp) aims to provide a platform for advanced scientific modelling. The core features of [serp](https://ejikeugba.github.io/serp) as well as details on its usage are provided in the library [documentation](https://cran.r-project.org/web/packages/serp/serp.pdf).
 
 
 
@@ -61,6 +61,10 @@ The [wine dataset](https://ejikeugba.github.io/serp/reference/wine.html) adapted
 
 
 Table: Estimates and standard errors (in parenthesis) of regression coefficients of the non-penalized (via vglm) and penalized (via serp) NPOM of the wine dataset, with Temperature-warm (TW) and Contact-yes (CY) as predictors.
+
+
+Finally, beyond the mentioned regularization functionality, [serp] provides a collection of tools that promote a stress-free modelling in empirical research. Moreover, standard function names and arguments already known to users familiar with related libraries are also used in [serp], reducing unnecessary ambiguity. Lastly, details about usage and a more elaborate examples are hosted online through a pkgdown (Wickham & Hesselberth, 2020) website on Github Pages.  
+
 
 
 # Acknowledgements

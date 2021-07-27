@@ -63,8 +63,7 @@ The [wine dataset](https://ejikeugba.github.io/serp/reference/wine.html) adapted
 Table: Estimates and standard errors (in parenthesis) of regression coefficients of the non-penalized (via vglm) and penalized (via serp) NPOM of the wine dataset, with Temperature-warm (TW) and Contact-yes (CY) as predictors.
 
 
-Finally, beyond the mentioned regularization functionality, [serp] provides a collection of tools that promote a stress-free modelling in empirical research. Moreover, standard function names and arguments already known to users familiar with related libraries are also used in [serp], reducing unnecessary ambiguity. Lastly, details about usage and a more elaborate examples are hosted online through a pkgdown (Wickham & Hesselberth, 2020) website on Github Pages.  
-
+Finally, beyond the discussed regularization functionality, [serp](https://ejikeugba.github.io/serp) provides a collection of tools that promote a stress-free modelling in empirical research. Moreover, standard function names and arguments already known to users familiar with related libraries are also used in [serp](https://ejikeugba.github.io/serp), reducing unnecessary ambiguity. Lastly, details about usage and a more elaborate examples are hosted online through a pkgdown [@wickham_pkgdown_2020] website on Github Pages.  
 
 
 # Acknowledgements

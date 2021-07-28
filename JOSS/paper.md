@@ -1,5 +1,5 @@
 ---
-title: 'SERP: An R package for smoothing in ordinal regression'
+title: 'serp: An R package for smoothing in ordinal regression'
 tags:
   - R
   - regularization

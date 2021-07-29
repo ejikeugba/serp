@@ -3,7 +3,7 @@
 
 ---
 # serp 0.1.9.9001
-- resubmission to CRAN
+- re-submission to CRAN
 
 ---
 # serp 0.1.9.9000

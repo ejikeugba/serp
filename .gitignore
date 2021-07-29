@@ -2,8 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
-JOSS/
-*.paper.bib
-*.paper.md
 inst/doc
 docs

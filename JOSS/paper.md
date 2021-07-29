@@ -59,7 +59,7 @@ The [wine dataset](https://ejikeugba.github.io/serp/reference/wine.html) adapted
   CY:4          |   1.162    (0.905) |    1.158   (0.892) |
 
 
-Table: Estimates and standard errors (in parenthesis) of regression coefficients of the non-penalized (via vglm) and penalized (via serp) NPOM of the wine dataset, with Temperature-warm (TW) and Contact-yes (CY) as predictors.
+Table: Estimates and standard errors (in parenthesis) of regression coefficients of the non-penalized (via vglm) and penalized (via serp) NPOM of the wine dataset, with Temperature:warm (TW) and Contact:yes (CY) as predictors.
 
 
 

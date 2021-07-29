@@ -14,8 +14,6 @@ coverage](https://codecov.io/gh/ejikeugba/serp/branch/master/graph/badge.svg)](h
 downloads](http://cranlogs.r-pkg.org/badges/grand-total/serp)](http://cranlogs.r-pkg.org/badges/grand-total)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/serp)](https://CRAN.R-project.org/package=serp)
-[![R build
-status](https://github.com/ejikeugba/serp/workflows/R-CMD-check/badge.svg)](https://github.com/ejikeugba/serp/actions)
 [![license](https://img.shields.io/badge/license-GPL--2-blue.svg)](https://www.gnu.org/licenses/gpl-2.0.en.html)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/ejikeugba/serp?branch=master&svg=true)](https://ci.appveyor.com/project/ejikeugba/serp)
@@ -181,7 +179,7 @@ coef(m4)
     the parallel estimates and the selected estimates based on the
     minimum deviance, respectively.
 
-<img src='man/figures/serpshrink.png' width = "600" />
+<img src='man/figures/serpshrink.png' width = "800" />
 
 ## Installation:
 

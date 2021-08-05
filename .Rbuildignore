@@ -6,7 +6,6 @@
 ^\.github$
 ^_pkgdown\.yml$
 ^docs$
-^JOSS$
 ^pkgdown$
 ^README\.Rmd$
 ^appveyor\.yml$

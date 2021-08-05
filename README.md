@@ -17,6 +17,8 @@ status](https://www.r-pkg.org/badges/version/serp)](https://CRAN.R-project.org/p
 [![license](https://img.shields.io/badge/license-GPL--2-blue.svg)](https://www.gnu.org/licenses/gpl-2.0.en.html)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/ejikeugba/serp?branch=master&svg=true)](https://ci.appveyor.com/project/ejikeugba/serp)
+[![R build
+status](https://github.com/ejikeugba/serp/workflows/R-CMD-check/badge.svg)](https://github.com/ejikeugba/serp/actions)
 
 <!-- badges: end -->
 

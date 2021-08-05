@@ -7,5 +7,6 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^JOSS$
 ^README\.Rmd$
 ^appveyor\.yml$

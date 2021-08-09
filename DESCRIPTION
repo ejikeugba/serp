@@ -3,7 +3,7 @@ Package: serp
 Title: Smooth Effects on Response Penalty for 'CLM'
 Version: 0.2.0
 Authors@R: 
-    person(given = "Ejike R",
+    person(given = "Ejike R.",
            family = "Ugba",
            role = c("aut", "cre", "cph"),
            email = "ejike.ugba@outlook.com",

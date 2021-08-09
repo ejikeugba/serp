@@ -1,6 +1,7 @@
 .Rproj.user
 .Rhistory
 .RData
+.cran-comments.md
 .Ruserdata
 inst/doc
 docs

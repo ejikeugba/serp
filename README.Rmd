@@ -80,7 +80,7 @@ coef(m4)
 
 
 
-* The Figure below shows the coefficient paths (row1) and the smoothing steps (row2) for the ordinal model of the wine data using SERP. The dashed horizontal (blue) and vertical (red) lines denote the parallel estimates and the selected estimates based on the minimum deviance, respectively.
+* The Figure below shows the coefficient paths (row1) and the smoothing steps (row2) for the ordinal model of the wine data using SERP. The dashed horizontal (blue) and vertical (red) lines respectively denote the parallel estimates and the selected estimates based on the minimum deviance.
 
 <img src='man/figures/serpshrink.png' width = "800" />
 
@@ -115,5 +115,4 @@ Tutz, G. and Gertheiss, J. (2016). Regularized Regression
      for Categorical Data (With Discussion and Rejoinder).
      *Statistical Modelling*, 16, 161-260.
      https://doi.org/10.1177/1471082X16642560
-
-
+     

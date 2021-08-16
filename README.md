@@ -177,9 +177,9 @@ coef(m4)
 
   - The Figure below shows the coefficient paths (row1) and the
     smoothing steps (row2) for the ordinal model of the wine data using
-    SERP. The dashed horizontal (blue) and vertical (red) lines denote
-    the parallel estimates and the selected estimates based on the
-    minimum deviance, respectively.
+    SERP. The dashed horizontal (blue) and vertical (red) lines
+    respectively denote the parallel estimates and the selected
+    estimates based on the minimum deviance.
 
 <img src='man/figures/serpshrink.png' width = "800" />
 

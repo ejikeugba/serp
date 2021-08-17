@@ -44,16 +44,16 @@ The [wine dataset](https://ejikeugba.github.io/serp/reference/wine.html) adapted
 
 
 
-![Estimated coefficient paths for the ordinal model of the wine data when using SERP. The thick lines on the top displays are the category-specific coefficients associated with the two predictors, under increasing values of $\lambda$ on the range ($10^-3, 10^5$). The dashed horizontal (blue) and vertical (red) lines denote the parallel estimates and the selected estimates based on the minimum deviance, respectively. The bottom displays further illustrate SERP's smoothing steps from the category-specific to the parallel estimates, the solid black, grey and dashed blue line strokes are NPOM, SERP and POM estimates, respectively; with the dashed black lines indicating SERP estimates chosen via minimum deviance.\label{fig:serpfig}](serp_fig.png){ width=70%}
+![Estimated coefficient paths for the ordinal model of the wine data when using SERP. The thick lines on the top displays are the category-specific coefficients associated with the two predictors, under increasing values of $\lambda$ on the range ($10^{-3}, 10^5$). The dashed horizontal (blue) and vertical (red) lines denote the parallel estimates and the selected estimates based on the minimum deviance, respectively. The bottom displays further illustrate SERP's smoothing steps from the category-specific to the parallel estimates, the solid black, grey and dashed blue line strokes are NPOM, SERP and POM estimates, respectively; with the dashed black lines indicating SERP estimates chosen via minimum deviance.\label{fig:serpfig}](serp_fig.png){ width=70%}
 
 
 
   Coefficients  |        vglm        |        serp        |
   :-------------|-------------------:|-------------------:|
   (Intercept):1 |   1.226    (0.557) |    1.255   (0.556) |
-  (Intercept):2 |$-$1.033    (0.481) | $-$1.061   (0.480) | 
-  (Intercept):3 |$-$3.946    (0.902) | $-$3.926   (0.881) |
-  (Intercept):4 |$-$19.184  (>$10^3$)| $-$6.497   (2.486) |
+  (Intercept):2 |  -1.033    (0.481) |   -1.061   (0.480) | 
+  (Intercept):3 |  -3.946    (0.902) |   -3.926   (0.881) |
+  (Intercept):4 |  -19.184  (>$10^3$)|   -6.497   (2.486) |
   TW:1          |  19.243   (>$10^3$)|    3.922   (2.333) |
   TW:2          |   2.111    (0.601) |    2.149   (0.600) |
   TW:3          |   2.940    (0.828) |    2.927   (0.810) |

@@ -10,15 +10,14 @@ tags:
   - shrinkage penalty
 authors:
   - name: Ejike R. Ugba
-affiliation: 1
-orcid: 0000-0003-2572-0023
+    orcid: 0000-0003-2572-0023
+    affiliation: 1
 affiliations:
-  - name: Department of Mathematics and Statistics, School of Economics and Social Sciences, Helmut Schmidt University, Hamburg, Germany
-index: 1
+ - name: Department of Mathematics and Statistics, School of Economics and Social Sciences, Helmut Schmidt University, Hamburg, Germany
+   index: 1
 date: 25 August 2021
 bibliography: paper.bib
----  
-  
+---
 
 
 # Summary 

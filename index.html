@@ -92,150 +92,54 @@
 
 <!-- badges: end -->
 <p>Smooth Effects on Response Penalty for CLM</p>
-<p>A regularization method for the cumulative link models (CLM). The ‘serp’ function applies the ‘smooth-effect-on-response penalty’ (SERP) on the estimates of the general CLM, enabling all subject-specific effects associated with each variable in the model to shrink towards a unique global effect. Fitting is done using a modified Newton’s method (Ugba et al., 2021; Tutz and Gertheiss, 2016).</p>
+<p>A regularization method for the cumulative link models (CLM). The ‘serp’ function applies the ‘smooth-effect-on-response penalty’ (SERP) on the estimates of the general CLM, causing all subject-specific effects associated with each variable in the model to shrink towards a unique global effect. Fitting is done using a modified Newton’s method. Several standard model performance and descriptive methods are also available. See <a href="https://doi.org/10.3390/stats4030037">Ugba et al., 2021</a> and <a href="https://doi.org/10.1177/1471082X16642560">Tutz and Gertheiss, 2016</a> for more details.</p>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
 <p>Consider the cumulative logit model of the wine dataset, where the rating of wine bitterness is predicted with the two treatment factors, temperature and contact.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ejikeugba/serp">serp</a></span><span class="op">)</span>
-<span class="co">#&gt; Loading required package: serp</span></code></pre></div>
-<ul>
-<li>The unpenalized non-proportional odds model returns unbounded parameter estimates.</li>
-</ul>
-<!-- end list --><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ejikeugba/serp">serp</a></span><span class="op">)</span>
-<span class="va">m1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/serp.html">serp</a></span><span class="op">(</span><span class="va">rating</span> <span class="op">~</span> <span class="va">temp</span> <span class="op">+</span> <span class="va">contact</span>, slope <span class="op">=</span> <span class="st">"unparallel"</span>,
+<code class="sourceCode R"><span class="co">## The unpenalized non-proportional odds model returns unbounded estimates, hence,</span>
+<span class="co">## not fully identifiable.</span>
+<span class="va">f1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/serp.html">serp</a></span><span class="op">(</span><span class="va">rating</span> <span class="op">~</span> <span class="va">temp</span> <span class="op">+</span> <span class="va">contact</span>, slope <span class="op">=</span> <span class="st">"unparallel"</span>,
            reverse <span class="op">=</span> <span class="cn">TRUE</span>, link <span class="op">=</span> <span class="st">"logit"</span>, data <span class="op">=</span> <span class="va">wine</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">m1</span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; call:</span>
-<span class="co">#&gt; serp(formula = rating ~ temp + contact, link = "logit", slope = "unparallel", </span>
-<span class="co">#&gt;     reverse = TRUE, data = wine)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;                Estimate Std Error z value Pr(&gt;|z|)    </span>
-<span class="co">#&gt; (Intercept):1    1.2258    0.5570   2.201 0.027757 *  </span>
-<span class="co">#&gt; (Intercept):2   -1.0330    0.4807  -2.149 0.031638 *  </span>
-<span class="co">#&gt; (Intercept):3   -3.9464    0.9015  -4.377  1.2e-05 ***</span>
-<span class="co">#&gt; (Intercept):4  -19.1843 1079.7764  -0.018 0.985825    </span>
-<span class="co">#&gt; tempwarm:1      19.2427 3597.5553   0.005 0.995732    </span>
-<span class="co">#&gt; tempwarm:2       2.1108    0.6007   3.514 0.000441 ***</span>
-<span class="co">#&gt; tempwarm:3       2.9404    0.8283   3.550 0.000385 ***</span>
-<span class="co">#&gt; tempwarm:4      17.0636 1079.7763   0.016 0.987392    </span>
-<span class="co">#&gt; contactyes:1     1.6594    1.1786   1.408 0.159167    </span>
-<span class="co">#&gt; contactyes:2     1.3429    0.5830   2.303 0.021258 *  </span>
-<span class="co">#&gt; contactyes:3     1.6928    0.6602   2.564 0.010347 *  </span>
-<span class="co">#&gt; contactyes:4     1.1622    0.9054   1.284 0.199293    </span>
-<span class="co">#&gt; ---</span>
-<span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Number of iterations: 18 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Loglik: -84.61093 on 276 degrees of freedom </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; AIC: 193.2219</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Exponentiated coefficients:</span>
-<span class="co">#&gt;   tempwarm:1   tempwarm:2   tempwarm:3   tempwarm:4 contactyes:1 contactyes:2 </span>
-<span class="co">#&gt; 2.275154e+08 8.255243e+00 1.892362e+01 2.574225e+07 5.256007e+00 3.830073e+00 </span>
-<span class="co">#&gt; contactyes:3 contactyes:4 </span>
-<span class="co">#&gt; 5.434719e+00 3.196963e+00</span></code></pre></div>
-<ul>
-<li>Using SERP with the deviance tuning, for instance, returns the model along parameter shrinkage at which the total residual deviance is minimal and stable parameter estimates too.</li>
-</ul>
-<!-- end list --><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">m2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/serp.html">serp</a></span><span class="op">(</span><span class="va">rating</span> <span class="op">~</span> <span class="va">temp</span> <span class="op">+</span> <span class="va">contact</span>, slope <span class="op">=</span> <span class="st">"penalize"</span>,
-           reverse <span class="op">=</span> <span class="cn">TRUE</span>, link <span class="op">=</span> <span class="st">"logit"</span>, tuneMethod <span class="op">=</span> <span class="st">"deviance"</span>,
-           data <span class="op">=</span> <span class="va">wine</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">m2</span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; call:</span>
-<span class="co">#&gt; serp(formula = rating ~ temp + contact, link = "logit", slope = "penalize", </span>
-<span class="co">#&gt;     tuneMethod = "deviance", reverse = TRUE, data = wine)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;               Estimate Std Error z value Pr(&gt;|z|)    </span>
-<span class="co">#&gt; (Intercept):1   1.2551    0.5558   2.258 0.023929 *  </span>
-<span class="co">#&gt; (Intercept):2  -1.0613    0.4798  -2.212 0.026958 *  </span>
-<span class="co">#&gt; (Intercept):3  -3.9263    0.8813  -4.455 8.39e-06 ***</span>
-<span class="co">#&gt; (Intercept):4  -6.4972    2.4862  -2.613 0.008968 ** </span>
-<span class="co">#&gt; tempwarm:1      3.9218    2.3329   1.681 0.092751 .  </span>
-<span class="co">#&gt; tempwarm:2      2.1494    0.5997   3.584 0.000338 ***</span>
-<span class="co">#&gt; tempwarm:3      2.9272    0.8099   3.614 0.000301 ***</span>
-<span class="co">#&gt; tempwarm:4      4.3677    2.4152   1.808 0.070538 .  </span>
-<span class="co">#&gt; contactyes:1    1.6237    1.1257   1.442 0.149189    </span>
-<span class="co">#&gt; contactyes:2    1.3675    0.5801   2.357 0.018404 *  </span>
-<span class="co">#&gt; contactyes:3    1.6894    0.6519   2.592 0.009553 ** </span>
-<span class="co">#&gt; contactyes:4    1.1580    0.8922   1.298 0.194288    </span>
-<span class="co">#&gt; ---</span>
-<span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Number of iterations: 10 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Loglik: -84.39441 on 276 degrees of freedom </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; AIC: 192.7888</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Exponentiated coefficients:</span>
-<span class="co">#&gt;   tempwarm:1   tempwarm:2   tempwarm:3   tempwarm:4 contactyes:1 contactyes:2 </span>
-<span class="co">#&gt;    50.489269     8.580056    18.674798    78.859536     5.071594     3.925343 </span>
-<span class="co">#&gt; contactyes:3 contactyes:4 </span>
-<span class="co">#&gt;     5.416215     3.183674 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Regularization Info:</span>
-<span class="co">#&gt; penalty:     SERP</span>
-<span class="co">#&gt; tuneMethod:  deviance</span>
-<span class="co">#&gt; value:       168.7888</span>
-<span class="co">#&gt; lambda:      0.07197</span></code></pre></div>
-<ul>
-<li>A user-supplied discrete lambda grid could be used for the deviance or the cv tuning method.</li>
-</ul>
-<!-- end list --><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">m3</span> <span class="op">=</span> <span class="fu"><a href="reference/serp.html">serp</a></span><span class="op">(</span><span class="va">rating</span> <span class="op">~</span> <span class="va">temp</span> <span class="op">+</span> <span class="va">contact</span>, slope <span class="op">=</span> <span class="st">"penalize"</span>,
-          reverse <span class="op">=</span> <span class="cn">TRUE</span>, link <span class="op">=</span> <span class="st">"logit"</span>, tuneMethod <span class="op">=</span> <span class="st">"deviance"</span>,
-          lambdaGrid <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="op">-</span><span class="fl">2</span>, length.out<span class="op">=</span><span class="fl">10</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">wine</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">m3</span>, type<span class="op">=</span><span class="st">'response'</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt;            1         2         3          4           5</span>
-<span class="co">#&gt; 1 0.21732519 0.5315983 0.2307966 0.01758655 0.002693383</span>
-<span class="co">#&gt; 2 0.21732519 0.5315983 0.2307966 0.01758655 0.002693383</span>
-<span class="co">#&gt; 3 0.05373011 0.3710352 0.4759543 0.09064459 0.008635883</span>
-<span class="co">#&gt; 4 0.05373011 0.3710352 0.4759543 0.09064459 0.008635883</span>
-<span class="co">#&gt; 5 0.01014334 0.2392808 0.4796472 0.16657436 0.104354292</span>
-<span class="co">#&gt; 6 0.01014334 0.2392808 0.4796472 0.16657436 0.104354292</span></code></pre></div>
-<ul>
-<li>A penalized partial proportional odds model is obtained by setting one or variables as global effect(s).</li>
-</ul>
-<!-- end list --><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">m4</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/serp.html">serp</a></span><span class="op">(</span><span class="va">rating</span> <span class="op">~</span> <span class="va">temp</span> <span class="op">+</span> <span class="va">contact</span>, slope <span class="op">=</span> <span class="st">"penalize"</span>,
-           reverse <span class="op">=</span> <span class="cn">TRUE</span>, link <span class="op">=</span> <span class="st">"logit"</span>, tuneMethod <span class="op">=</span> <span class="st">"deviance"</span>,
-           globalEff <span class="op">=</span> <span class="op">~</span> <span class="va">temp</span>, data <span class="op">=</span> <span class="va">wine</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">m4</span><span class="op">)</span>
-<span class="co">#&gt; (Intercept):1 (Intercept):2 (Intercept):3 (Intercept):4      tempwarm </span>
-<span class="co">#&gt;      1.336395     -1.218164     -3.527260     -4.839052      2.414606 </span>
-<span class="co">#&gt;  contactyes:1  contactyes:2  contactyes:3  contactyes:4 </span>
-<span class="co">#&gt;      1.628993      1.526065      1.729784      1.418281</span></code></pre></div>
-<ul>
-<li>The Figure below shows the coefficient paths (row1) and the smoothing steps (row2) for the ordinal model of the wine data using SERP. The dashed horizontal (blue) and vertical (red) lines respectively denote the parallel estimates and the selected estimates based on the minimum deviance.</li>
-</ul>
-<p><img src="reference/figures/serpshrink.png" width="800"></p>
+<span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">f1</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## The penalized non-proportional odds model with a user-supplied lambda gives </span>
+<span class="co">## a fully identified model with bounded estimates. A suitable tuning criterion</span>
+<span class="co">## could as well be used to select lambda (e.g., cv) </span>
+<span class="va">f2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/serp.html">serp</a></span><span class="op">(</span><span class="va">rating</span> <span class="op">~</span> <span class="va">temp</span> <span class="op">+</span> <span class="va">contact</span>, slope <span class="op">=</span> <span class="st">"penalize"</span>,
+           link <span class="op">=</span> <span class="st">"logit"</span>, reverse <span class="op">=</span> <span class="cn">TRUE</span>, tuneMethod <span class="op">=</span> <span class="st">"user"</span>,
+           lambda <span class="op">=</span> <span class="fl">1e1</span> ,data <span class="op">=</span> <span class="va">wine</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">f2</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## A penalized partial proportional odds model with one variable set to </span>
+<span class="co">## global effect is also possible.</span>
+<span class="va">f3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/serp.html">serp</a></span><span class="op">(</span><span class="va">rating</span> <span class="op">~</span> <span class="va">temp</span> <span class="op">+</span> <span class="va">contact</span>, slope <span class="op">=</span> <span class="st">"penalize"</span>,
+           reverse <span class="op">=</span> <span class="cn">TRUE</span>, link <span class="op">=</span> <span class="st">"logit"</span>, tuneMethod <span class="op">=</span> <span class="st">"user"</span>,
+           lambda <span class="op">=</span> <span class="fl">2e1</span>, globalEff <span class="op">=</span> <span class="op">~</span> <span class="va">temp</span>, data <span class="op">=</span> <span class="va">wine</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">f3</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## The unpenalized proportional odds model with constrained estimates. Using a </span>
+<span class="co">## very strong lambda in f2 will result in estimates equal to estimates in f4.</span>
+<span class="va">f4</span> <span class="op">&lt;-</span>  <span class="fu"><a href="reference/serp.html">serp</a></span><span class="op">(</span><span class="va">rating</span> <span class="op">~</span> <span class="va">temp</span> <span class="op">+</span> <span class="va">contact</span>, slope <span class="op">=</span> <span class="st">"parallel"</span>,
+            reverse <span class="op">=</span> <span class="cn">FALSE</span>, link <span class="op">=</span> <span class="st">"logit"</span>, data <span class="op">=</span> <span class="va">wine</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">f4</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation:</h2>
-<p>You can install the released version of serp from <a href="https://cran.r-project.org/package=serp">CRAN</a> with:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<p>The released version of serp can be installed from <a href="https://cran.r-project.org/package=serp">CRAN</a> with:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"serp"</span><span class="op">)</span></code></pre></div>
-<p>And the development version from <a href="https://github.com/ejikeugba/serp">GitHub</a> with:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<p>or the development version from <a href="https://github.com/ejikeugba/serp">GitHub</a> with:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ejikeugba/serp"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="loading" class="section level2">
 <h2 class="hasAnchor">
 <a href="#loading" class="anchor"></a>Loading:</h2>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ejikeugba/serp">serp</a></span><span class="op">)</span></code></pre></div>
 </div>
 <div id="references" class="section level2">

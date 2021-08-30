@@ -67,8 +67,7 @@ formxL <- function(x, nL, slope, globalEff, m, vnull, ...)
   xL
 }
 
-PenMx <- function(lamv, delta, nL, slope, m, globalEff, mslope,
-                  tuneMethod, Terms)
+PenMx <- function(lamv, delta, nL, slope, m, globalEff, mslope, Terms)
 {
   if (mslope == 'penalize' && !is.null(globalEff)){
     xnam <- c(colnames(m)[1], attributes(Terms)$term.labels)
@@ -267,6 +266,22 @@ uMatFun <- function(pr, yMtx, linkf, nL)
   list(uMat = uMat, etaMat = etaMat, pr = pr, lp = lp)
 }
 
+df.serp <- function(fvalues, xMat, penx, nL){
+  P  <- fvalues$pr[,-nL]
+  pi <- matrix(apply(P,1,c), ncol = 1L)
+  V  <- sqrt(pi*(1-pi))
+  VX <- c(V) * xMat
+  plty <- penx$infopen
+  INV <-  try({solve( (crossprod(VX,VX) + plty), t(VX) )}, silent=TRUE)
+  if (!inherits(INV, "try-error")) {
+    H <- VX %*% INV
+    M <- as.matrix(diag(nrow(H)) - H)
+    edf <- sum(diag(H))
+    rdf <- sum(diag(M))
+    list(edf=edf, rdf=rdf)
+  } else list(edf=NA, rdf=NA)
+}
+
 lnkfun <- function(link)
 {
   structure(list(
@@ -281,7 +296,7 @@ lnkfun <- function(link)
 
 cvfun <- function(lambda, x, y, nrFold, linkf, link, m, slope, globalEff,
                   nvar, reverse, vnull, control, wt, cverror, mslope,
-                  tuneMethod, Terms, xlst, yMtx, obs)
+                  Terms, xlst, yMtx, obs)
 {
   obs <- nrow(m)
   set.seed(control$cv.seed)
@@ -311,7 +326,7 @@ cvfun <- function(lambda, x, y, nrFold, linkf, link, m, slope, globalEff,
     estx <- try(serp.fit(lambda, tn.x, tn.y, wt, startval, tn.xlst,
                          tn.xMat, tn.yMtx, nL, obs, npar, linkf, link,
                          vnull, control, slope, globalEff, m, mslope,
-                         tuneMethod, Terms, xtrace = FALSE), silent = TRUE)
+                         Terms, xtrace = FALSE), silent = TRUE)
     if (!inherits(estx, "try-error")){
       est <-  c(estx$coef)
       ts.yMtx <- yMtx[Indexes, ]
@@ -347,11 +362,15 @@ dvfun <- function(lambda, globalEff, x, y, startval, xlst, xMat, yMtx,
     rr <- serp.fit(lambda, x, y, wt, startval, xlst,
                    xMat, yMtx, nL, obs, npar, linkf, link,
                    vnull,control, slope, globalEff, m,
-                   mslope, tuneMethod, Terms, xtrace=FALSE);},
+                   mslope, Terms, xtrace=FALSE);},
     error=function(e) {rr <- NA})
   if(is.list(rr)){
-    logLik <- if(tuneMethod == "finite") rr$exact.logL else rr$logL
-    tryCatch({rd <- -2*as.numeric(logLik);}, error=function(e) {rd <- NA})
+    if(tuneMethod == "aic"){
+      tryCatch({rd <- -2*as.numeric(rr$logL) + 2*rr$edf;}, error=function(e) {rd <- NA})
+    }
+    if(tuneMethod == "finite"){
+      tryCatch({rd <- -2*as.numeric(rr$exact.logL);}, error=function(e) {rd <- NA})
+    }
   } else {rd <- Inf}
 
   return(rd)
@@ -427,17 +446,17 @@ penalty.print <- function(object, max.tun)
       length(object$globalEff)){
     cat("\npenalty:", "  "," SERP")
     cat("\ntuneMethod:","" , tun)
-    if (object$tuneMethod == "cv"){
+    if (tun == "cv"){
       cat("\ncvMetric:",  "  ", object$cvMetric)
       cat("\ntestError:"," " , h1)
     }
-    if (object$tuneMethod == "finite"){
+    if (tun == "finite"){
       if (is.na(h1)) cat("\nvalue:","     " , h1)
       else cat("\nvalue:","    " , h1)
     }
-    if (object$tuneMethod == "deviance" || object$tuneMethod == "user")
+    if (tun == "aic" || tun == "user")
       cat("\nvalue:","     " , h1)
-    if (object$tuneMethod == "cv" || object$tuneMethod == "deviance"){
+    if (tun == "cv" || tun == "aic"){
       if (is.null(object$gridType)){
         len.lamG <- length(object$lambdaGrid)
         max.lam <- round(max(object$lambdaGrid))

@@ -8,7 +8,7 @@ serp(
      formula,
      link = c("logit", "probit","loglog", "cloglog", "cauchit"),
      slope = c("penalize", "parallel", "unparallel", "partial"),
-     tuneMethod = c("deviance", "cv", "finite", "user"),
+     tuneMethod = c("aic", "cv", "finite", "user"),
      reverse = FALSE,
      lambdaGrid = NULL,
      cvMetric = c("brier", "logloss", "misclass"),
@@ -37,9 +37,9 @@ logit, probit, complementary log-log, cloglog, cauchit.}
 parallel and semi-parallel coefficients respectively.}
 
 \item{tuneMethod}{sets the method of choosing an optimal shrinkage
-parameter, including: \code{deviance}, \code{cv}, \code{finite} and
+parameter, including: \code{aic}, \code{cv}, \code{finite} and
 \code{user}. i.e., the lambda value along parameter shrinkage path at
-which the fit's residual deviance or the cross-validated test error is
+which the fit's AIC or the k-fold cross-validated test error is
 minimal. The finite tuning is used to obtain the model along parameter
 shrinkage for which the log-Likelihood exist (is finite). The 'user'
 tuning supports a user-supplied lambda value.}
@@ -47,11 +47,11 @@ tuning supports a user-supplied lambda value.}
 \item{reverse}{false by default, when true the sign of the linear predictor
 is reversed.}
 
-\item{lambdaGrid}{optional user-supplied lambda grid for the cv and deviance
-tuning methods, when the discrete \code{gridType} is chosen. Negative
-range of values are not allowed. A short lambda grid could increase
-computation time assuming large number of predictors and cases in the
-model.}
+\item{lambdaGrid}{optional user-supplied lambda grid for the \code{aic},
+and \code{cv} tuning methods, when the discrete \code{gridType}
+is chosen. Negative range of values are not allowed. A short lambda grid
+could increase computation time assuming large number of predictors and
+cases in the model.}
 
 \item{cvMetric}{sets the performance metric for the cv tuning, with the
 brier score used by default.}
@@ -100,8 +100,12 @@ depending on the type of slope modeled. Other summary methods include:
 \code{anova}, \code{errorMetrics}, etc.
 
 \describe{
-  \item{aic}{the akaike information criterion.}
-  \item{bic}{the bayesian information criterion.}
+  \item{aic}{the akaike information criterion, with effective degrees of
+        freedom obtained from the trace of the generalized hat matrix
+        depending on the tuning parameter.}
+  \item{bic}{the bayesian information criterion, with effective degrees of
+        freedom obtained from the trace of the generalized hat matrix
+        depending on the tuning parameter.}
   \item{call}{the matched call.}
   \item{coef}{a vector of coefficients of the fitted model.}
   \item{converged}{a character vector of fit convergence status.}
@@ -130,6 +134,7 @@ depending on the type of slope modeled. Other summary methods include:
   \item{nobs}{the number of observations.}
   \item{nrFold}{the number of k-fold cross validation for the cv tuning
         method. Default to k = 5.}
+  \item{rdf}{the residual degrees of freedom}
   \item{reverse}{a logical vector indicating the the direction of the
         cumulative probabilities. Default to P(Y<=r).}
   \item{slope}{a character vector indicating the type of slope parameters
@@ -139,9 +144,8 @@ depending on the type of slope modeled. Other summary methods include:
         the optimal tuning parameter emerged.}
   \item{tuneMethod}{a character vector specifying the method for choosing an
         optimal shrinkage parameter.}
-  \item{value}{numeric value of the deviance or the minus log-likelihood of
-        the optimal model for the 'deviance' and the 'finite' tuning methods
-        respectively.}
+  \item{value}{numeric value of AIC or logLik obtained at the optimal tuning
+        parameter when using \code{aic} or \code{finite} tuning methods respectively.}
   \item{ylev}{the number of the response levels.}
 }
 }
@@ -150,10 +154,11 @@ Fits cumulative link models (CLMs) with the
 smooth-effect-on-response penalty (SERP) via a modified Newton-Raphson
 algorithm. SERP enables the regularization of the parameter space between
 the general and the restricted cumulative models, with a resultant shrinkage
-of all subject-specific effects to global effects. The minimum deviance
-and CV tuning among others, provide the means of arriving at an optimal
-model in a situation where a user-supplied tuning value is not available.
-The slope argument allows for the selection of a penalized, unparallel,
+of all subject-specific effects to global effects. The Akaike information
+critrion (\code{aic}), K-fold cross validation (\code{cv}), among other tuning
+aproaches, provide the means of arriving at an optimal tuning parameter in a
+in a situation where a user-supplied tuning value is not available.
+The \code{slope} argument allows for the selection of a penalized, unparallel,
 parallel, or partial slope.
 }
 \details{
@@ -212,7 +217,7 @@ logLik(f1)
 
 ## The penalized non-proportional odds model (with Improved estimates)
 f2 <- serp(rating ~ temp + contact, slope = "penalize",
-           link = "logit", reverse = TRUE, tuneMethod = "deviance",
+           link = "logit", reverse = TRUE, tuneMethod = "aic",
            lambdaGrid = 10^seq(1, -1, length.out=5), data = wine)
 coef(f2)
 predict(f2, type = "class")

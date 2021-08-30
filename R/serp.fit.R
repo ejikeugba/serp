@@ -74,7 +74,7 @@ serpfit <- function(x, y, wt, yMtx, link, slope, reverse, control,
   if(slope == "penalize"){
     switch(
       tuneMethod,
-      deviance = {
+      aic = {
         switch(
           gridType,
           discrete = {
@@ -105,10 +105,10 @@ serpfit <- function(x, y, wt, yMtx, link, slope, reverse, control,
             ml <- try(suppressWarnings(
               vapply(lambdaGrid, cvfun, numeric(1), x, y, nrFold, linkf, link,
                      m, slope, globalEff, nvar, reverse, vnull, control, wt,
-                     cvMetric, mslope, tuneMethod, Terms, xlst = xlst,
-                     yMtx = yMtx, obs)), silent = TRUE)
+                     cvMetric, mslope, Terms, xlst = xlst, yMtx = yMtx,
+                     obs)), silent = TRUE)
             if (inherits(ml, "try-error"))
-              stop("cv tuning did not succeed, try switching to a different tuneMethod")
+              stop("cv tuning did not succeed, try using a different tuneMethod")
             hh <- cbind(lambdaGrid, ml)
             hh <- as.numeric(hh[which.min(hh[,2L]), ])
             minL <- list(minimum = hh[1L], objective = hh[2L])
@@ -119,10 +119,10 @@ serpfit <- function(x, y, wt, yMtx, link, slope, reverse, control,
             minL <- try(suppressWarnings(
               optimize(cvfun, c(0L,control$maxpen), x, y, nrFold, linkf,
                        link, m, slope, globalEff, nvar, reverse, vnull,
-                       control, wt, cvMetric, mslope, tuneMethod,
-                       Terms, xlst = xlst, yMtx = yMtx, obs)), silent = TRUE)
+                       control, wt, cvMetric, mslope, Terms, xlst = xlst,
+                       yMtx = yMtx, obs)), silent = TRUE)
             if (inherits(minL, "try-error"))
-              stop("cv tuning did not succeed, try switching to a different tuneMethod")
+              stop("cv tuning did not succeed, try using a different tuneMethod")
             lam <- minL$minimum
           })
         ans$nrFold <- nrFold
@@ -148,15 +148,13 @@ serpfit <- function(x, y, wt, yMtx, link, slope, reverse, control,
         minL <- NULL
         ans$lambda <- lambda
       })
-    ans$tuneMethod <- tuneMethod
   }else{
     lam <- 0L
     minL <- NULL
   }
   res <- serp.fit(lam, x, y, wt, startval, xlst, xMat,
                   yMtx, nL, obs, npar, linkf, link, vnull,
-                  control, slope, globalEff, m, mslope, tuneMethod,
-                  Terms)
+                  control, slope, globalEff, m, mslope, Terms)
   nmsv <- names(startval)
   misc <- list(colnames.x = colnames.x, colnames.xMat = nmsv, npar = npar,
                variable.null = vnull, convg.no = res$conv,  no.var = nvar)
@@ -171,7 +169,7 @@ serpfit <- function(x, y, wt, yMtx, link, slope, reverse, control,
       if (tuneMethod=="user")
         warning(nfinite,"apply a stronger lambda value or a different ",
                 "tuning method")
-      if (tuneMethod=="deviance" || tuneMethod=="cv"){
+      if (tuneMethod=="aic" || tuneMethod=="cv"){
         if (!is.null(lambdaGrid))
           warning(nfinite,"increase lambdaGrid upper limit or apply a ",
                   "different tuning method")
@@ -179,7 +177,7 @@ serpfit <- function(x, y, wt, yMtx, link, slope, reverse, control,
           warning(nfinite,"try a different tuning method.")
       }
     }
-    if (tuneMethod == "deviance" || tuneMethod == "cv"){
+    if (tuneMethod == "aic" || tuneMethod == "cv"){
       if (tuneMethod == "cv"){
         ans$testError <- if (is.na(res$loglik)) NA else minL$objective
       } else ans$value <- as.numeric(minL$objective)
@@ -195,6 +193,7 @@ serpfit <- function(x, y, wt, yMtx, link, slope, reverse, control,
     ans$lambda <- if (is.na(res$loglik)) NA else lam
     if (tuneMethod == "finite") ans$value <- res$loglik
   }
+  ans$tuneMethod <- tuneMethod
   if (!vnull){
     hes <- res$info
     gra <- res$score
@@ -217,21 +216,21 @@ serpfit <- function(x, y, wt, yMtx, link, slope, reverse, control,
   ans$coef <- delta
   ans$logLik <- as.numeric(res$loglik)
   ans$deviance <- -2*ans$logLik
-  ans$aic <- ans$deviance + 2*npar
-  ans$bic <- ans$deviance + log(obs)*npar
-  ans <- c(list(link = link, edf = npar, ylev = nL, nobs = obs,
+  ans$aic <- ans$deviance + 2*res$edf
+  ans$bic <- ans$deviance + log(obs)*res$edf
+  ans <- c(list(link = link, ylev = nL, nobs = obs,
                 gradient = gra, hessian = hes, fitted.values = fv,
                 slope = slope, Terms = Terms, control = control,
                 reverse = reverse, converged = res$converged,
-                iter = res$iter, message = res$message, misc = misc), ans)
+                iter = res$iter, message = res$message, misc = misc,
+                edf = res$edf, rdf = res$rdf), ans)
   ans
 }
-
 
 serp.fit <- function(lambda, x, y, wt, startval, xlst,
                      xMat, yMtx, nL, obs, npar, linkf, link,
                      vnull, control, slope, globalEff, m, mslope,
-                     tuneMethod, Terms, xtrace = TRUE)
+                     Terms, xtrace = TRUE)
 {
   iter <- 0
   maxits <- control$maxits
@@ -248,7 +247,7 @@ serp.fit <- function(lambda, x, y, wt, startval, xlst,
   {
     iter <- iter+1
     penx <- PenMx(lamv = lambda, delta, nL,
-                  slope, m, globalEff, mslope, tuneMethod, Terms)
+                  slope, m, globalEff, mslope, Terms)
     fvalues <- prlg(delta, xMat, obs, yMtx, penx, linkf, control, wt)
     pr <- fvalues$pr[,-nL]
     obj <- fvalues$logL
@@ -346,8 +345,9 @@ serp.fit <- function(lambda, x, y, wt, startval, xlst,
   if(conv > 1 && control$trace > 0L && xtrace) {
     cat("\n\n Optimization failed!\n", msg, fill = TRUE)
   }
-  res <- c(list(coef = delta, loglik = loglik, info = info,
-                score = score, converged = converged, conv = conv,
-                iter = iter, message = msg), fvalues)
+  df <- df.serp(fvalues, xMat, penx, nL)
+  res <- c(list(coef = delta, loglik = loglik, info = info, score = score,
+                converged = converged, conv = conv, iter = iter,
+                message = msg), edf = df$edf, rdf = df$rdf, fvalues)
   return(res)
 }

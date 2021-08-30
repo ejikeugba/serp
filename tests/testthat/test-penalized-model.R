@@ -92,7 +92,7 @@ test_that("lambda is a single numeric and non-negative value and
             expect_error(
               serp(rating ~ temp + contact, link = "probit",
                    slope = "penalize", reverse = FALSE,
-                   tuneMethod = "deviance",
+                   tuneMethod = "aic",
                    lambdaGrid = c(-3,4),
                    data = wine, subset = subs),
               "lambdaGrid must be a non-negative numeric vector of length > 1")
@@ -100,7 +100,7 @@ test_that("lambda is a single numeric and non-negative value and
             expect_vector(
               serp(rating ~ temp + contact, link = "cloglog",
                    slope = "penalize", reverse = FALSE,
-                   tuneMethod = "deviance",
+                   tuneMethod = "aic",
                    lambdaGrid = c(0,10),
                    data = wine, subset = subs)$lambda)
 
@@ -207,7 +207,7 @@ test_that("error messages and warnings report properly",
                    reverse = F,
                    lambdaGrid = 10^seq(-1, 2, length.out=2),
                    data = test_data1),
-              "cv tuning did not succeed, try switching to a different tuneMethod")
+              "cv tuning did not succeed, try using a different tuneMethod")
 
             expect_error(print.serp(test_data1),
                          "input must be an object of class 'serp'")
@@ -260,7 +260,7 @@ test_that("error messages and warnings report properly",
                    lambda = 0.09,
                    lambdaGrid = 10^seq(-1, 2, length.out=2),
                    data = test_data3),
-              "cv tuning did not succeed, try switching to a different tuneMethod")
+              "cv tuning did not succeed, try using a different tuneMethod")
 
             set.seed(1)
             n <- 20

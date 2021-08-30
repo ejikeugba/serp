@@ -1,3 +1,11 @@
+# serp 0.2.0.9000 
+- deviance tuning option in serp tuneMethod now replaced by AIC 
+- serp output includes residual degrees of freedom (rdf)
+- function to compute the effective degrees of freedom and rdf from the trace of the generalized hat matrix provided
+- serp.summary documentation has its value segment edited
+- new changes made in serp test functions
+
+---
 # serp 0.2.0
 - serp version 0.2.0 release
 

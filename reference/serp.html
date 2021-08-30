@@ -44,9 +44,10 @@
 smooth-effect-on-response penalty (SERP) via a modified Newton-Raphson
 algorithm. SERP enables the regularization of the parameter space between
 the general and the restricted cumulative models, with a resultant shrinkage
-of all subject-specific effects to global effects. The minimum deviance
-and CV tuning among others, provide the means of arriving at an optimal
-model in a situation where a user-supplied tuning value is not available.
+of all subject-specific effects to global effects. The Akaike information
+critrion (aic), K-fold cross validation (cv), among other tuning
+aproaches, provide the means of arriving at an optimal tuning parameter in a
+in a situation where a user-supplied tuning value is not available.
 The slope argument allows for the selection of a penalized, unparallel,
 parallel, or partial slope." />
 
@@ -80,7 +81,7 @@ parallel, or partial slope." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">serp</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.9000</span>
       </span>
     </div>
 
@@ -129,10 +130,11 @@ parallel, or partial slope." />
 smooth-effect-on-response penalty (SERP) via a modified Newton-Raphson
 algorithm. SERP enables the regularization of the parameter space between
 the general and the restricted cumulative models, with a resultant shrinkage
-of all subject-specific effects to global effects. The minimum deviance
-and CV tuning among others, provide the means of arriving at an optimal
-model in a situation where a user-supplied tuning value is not available.
-The slope argument allows for the selection of a penalized, unparallel,
+of all subject-specific effects to global effects. The Akaike information
+critrion (<code>aic</code>), K-fold cross validation (<code>cv</code>), among other tuning
+aproaches, provide the means of arriving at an optimal tuning parameter in a
+in a situation where a user-supplied tuning value is not available.
+The <code>slope</code> argument allows for the selection of a penalized, unparallel,
 parallel, or partial slope.</p>
     </div>
 
@@ -140,7 +142,7 @@ parallel, or partial slope.</p>
      <span class='va'>formula</span>,
      link <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"logit"</span>, <span class='st'>"probit"</span>,<span class='st'>"loglog"</span>, <span class='st'>"cloglog"</span>, <span class='st'>"cauchit"</span><span class='op'>)</span>,
      slope <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"penalize"</span>, <span class='st'>"parallel"</span>, <span class='st'>"unparallel"</span>, <span class='st'>"partial"</span><span class='op'>)</span>,
-     tuneMethod <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"deviance"</span>, <span class='st'>"cv"</span>, <span class='st'>"finite"</span>, <span class='st'>"user"</span><span class='op'>)</span>,
+     tuneMethod <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"aic"</span>, <span class='st'>"cv"</span>, <span class='st'>"finite"</span>, <span class='st'>"user"</span><span class='op'>)</span>,
      reverse <span class='op'>=</span> <span class='cn'>FALSE</span>,
      lambdaGrid <span class='op'>=</span> <span class='cn'>NULL</span>,
      cvMetric <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"brier"</span>, <span class='st'>"logloss"</span>, <span class='st'>"misclass"</span><span class='op'>)</span>,
@@ -179,9 +181,9 @@ parallel and semi-parallel coefficients respectively.</p></td>
     <tr>
       <th>tuneMethod</th>
       <td><p>sets the method of choosing an optimal shrinkage
-parameter, including: <code>deviance</code>, <code>cv</code>, <code>finite</code> and
+parameter, including: <code>aic</code>, <code>cv</code>, <code>finite</code> and
 <code>user</code>. i.e., the lambda value along parameter shrinkage path at
-which the fit's residual deviance or the cross-validated test error is
+which the fit's AIC or the k-fold cross-validated test error is
 minimal. The finite tuning is used to obtain the model along parameter
 shrinkage for which the log-Likelihood exist (is finite). The 'user'
 tuning supports a user-supplied lambda value.</p></td>
@@ -193,11 +195,11 @@ is reversed.</p></td>
     </tr>
     <tr>
       <th>lambdaGrid</th>
-      <td><p>optional user-supplied lambda grid for the cv and deviance
-tuning methods, when the discrete <code>gridType</code> is chosen. Negative
-range of values are not allowed. A short lambda grid could increase
-computation time assuming large number of predictors and cases in the
-model.</p></td>
+      <td><p>optional user-supplied lambda grid for the <code>aic</code>,
+and <code>cv</code> tuning methods, when the discrete <code>gridType</code>
+is chosen. Negative range of values are not allowed. A short lambda grid
+could increase computation time assuming large number of predictors and
+cases in the model.</p></td>
     </tr>
     <tr>
       <th>cvMetric</th>
@@ -272,8 +274,12 @@ depending on the type of slope modeled. Other summary methods include:
  <code>summary</code>, <code>coef</code>, <code>predict</code>, <code>vcov</code>,
 <code>anova</code>, <code>errorMetrics</code>, etc.</p>
 <dl>
-  <dt>aic</dt><dd><p>the akaike information criterion.</p></dd>
-  <dt>bic</dt><dd><p>the bayesian information criterion.</p></dd>
+  <dt>aic</dt><dd><p>the akaike information criterion, with effective degrees of
+        freedom obtained from the trace of the generalized hat matrix
+        depending on the tuning parameter.</p></dd>
+  <dt>bic</dt><dd><p>the bayesian information criterion, with effective degrees of
+        freedom obtained from the trace of the generalized hat matrix
+        depending on the tuning parameter.</p></dd>
   <dt>call</dt><dd><p>the matched call.</p></dd>
   <dt>coef</dt><dd><p>a vector of coefficients of the fitted model.</p></dd>
   <dt>converged</dt><dd><p>a character vector of fit convergence status.</p></dd>
@@ -302,6 +308,7 @@ depending on the type of slope modeled. Other summary methods include:
   <dt>nobs</dt><dd><p>the number of observations.</p></dd>
   <dt>nrFold</dt><dd><p>the number of k-fold cross validation for the cv tuning
         method. Default to k = 5.</p></dd>
+  <dt>rdf</dt><dd><p>the residual degrees of freedom</p></dd>
   <dt>reverse</dt><dd><p>a logical vector indicating the the direction of the
         cumulative probabilities. Default to P(Y&lt;=r).</p></dd>
   <dt>slope</dt><dd><p>a character vector indicating the type of slope parameters
@@ -311,9 +318,8 @@ depending on the type of slope modeled. Other summary methods include:
         the optimal tuning parameter emerged.</p></dd>
   <dt>tuneMethod</dt><dd><p>a character vector specifying the method for choosing an
         optimal shrinkage parameter.</p></dd>
-  <dt>value</dt><dd><p>numeric value of the deviance or the minus log-likelihood of
-        the optimal model for the 'deviance' and the 'finite' tuning methods
-        respectively.</p></dd>
+  <dt>value</dt><dd><p>numeric value of AIC or logLik obtained at the optimal tuning
+        parameter when using <code>aic</code> or <code>finite</code> tuning methods respectively.</p></dd>
   <dt>ylev</dt><dd><p>the number of the response levels.</p></dd>
 
 </dl>
@@ -388,15 +394,15 @@ Ugba et al. (2021) for a detailed discussion on SERP.</p>
 </div><div class='output co'>#&gt; [1] -84.61093</div><div class='input'>
 <span class='co'>## The penalized non-proportional odds model (with Improved estimates)</span>
 <span class='va'>f2</span> <span class='op'>&lt;-</span> <span class='fu'>serp</span><span class='op'>(</span><span class='va'>rating</span> <span class='op'>~</span> <span class='va'>temp</span> <span class='op'>+</span> <span class='va'>contact</span>, slope <span class='op'>=</span> <span class='st'>"penalize"</span>,
-           link <span class='op'>=</span> <span class='st'>"logit"</span>, reverse <span class='op'>=</span> <span class='cn'>TRUE</span>, tuneMethod <span class='op'>=</span> <span class='st'>"deviance"</span>,
+           link <span class='op'>=</span> <span class='st'>"logit"</span>, reverse <span class='op'>=</span> <span class='cn'>TRUE</span>, tuneMethod <span class='op'>=</span> <span class='st'>"aic"</span>,
            lambdaGrid <span class='op'>=</span> <span class='fl'>10</span><span class='op'>^</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='op'>-</span><span class='fl'>1</span>, length.out<span class='op'>=</span><span class='fl'>5</span><span class='op'>)</span>, data <span class='op'>=</span> <span class='va'>wine</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/stats/coef.html'>coef</a></span><span class='op'>(</span><span class='va'>f2</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; (Intercept):1 (Intercept):2 (Intercept):3 (Intercept):4    tempwarm:1 
-#&gt;      1.261904     -1.068827     -3.916412     -6.309229      3.720177 
+#&gt;      1.342671     -1.236068     -3.513122     -5.050240      2.518993 
 #&gt;    tempwarm:2    tempwarm:3    tempwarm:4  contactyes:1  contactyes:2 
-#&gt;      2.159986      2.919414      4.175753      1.614363      1.374229 
+#&gt;      2.461986      2.554007      2.609441      1.526984      1.518964 
 #&gt;  contactyes:3  contactyes:4 
-#&gt;      1.686261      1.159738 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>f2</span>, type <span class='op'>=</span> <span class='st'>"class"</span><span class='op'>)</span>
+#&gt;      1.536791      1.465075 </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>f2</span>, type <span class='op'>=</span> <span class='st'>"class"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;  [1] 2 2 3 3 3 3 4 4 2 2 3 3 3 3 4 4 2 2 3 3 3 3 4 4 2 2 3 3 3 3 4 4 2 2 3 3 3 3
 #&gt; [39] 4 4 2 2 3 3 3 3 4 4 2 2 3 3 3 3 4 4 2 2 3 3 3 3 4 4 2 2 3 3 3 3 4 4
 #&gt; Levels: 1 2 3 4 5</div><div class='input'>

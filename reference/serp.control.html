@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Control parameters for serp fit — serp.control • serp</title>
+<title>Control parameters for a fitted serp object — serp.control • serp</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Control parameters for serp fit — serp.control" />
+<meta property="og:title" content="Control parameters for a fitted serp object — serp.control" />
 <meta property="og:description" content="Default control parameters for 'serp' fit. User-supplied control parameters
 could be specified in the main function." />
 
@@ -73,7 +73,7 @@ could be specified in the main function." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">serp</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.9001</span>
       </span>
     </div>
 
@@ -112,7 +112,7 @@ could be specified in the main function." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Control parameters for serp fit</h1>
+    <h1>Control parameters for a fitted serp object</h1>
     <small class="dont-index">Source: <a href='https://github.com/ejikeugba/serp/blob/master/R/serp.control.R'><code>R/serp.control.R</code></a></small>
     <div class="hidden name"><code>serp.control.Rd</code></div>
     </div>
@@ -125,7 +125,7 @@ could be specified in the main function.</p>
     <pre class="usage"><span class='fu'>serp.control</span><span class='op'>(</span>
              maxits <span class='op'>=</span> <span class='fl'>5e01</span>,
              eps <span class='op'>=</span> <span class='fl'>1e-07</span>,
-             maxpen <span class='op'>=</span> <span class='fl'>1e05</span>,
+             maxpen <span class='op'>=</span> <span class='fl'>1e07</span>,
              trace <span class='op'>=</span> <span class='fl'>0L</span>,
              maxAdjIter <span class='op'>=</span> <span class='fl'>5e0</span>,
              max.half.iter <span class='op'>=</span> <span class='fl'>1e01</span>,
@@ -209,8 +209,34 @@ to get during iteration to prevent numerical instability .</p></td>
     <div class='dont-index'><p><code><a href='serp.html'>serp</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># See serp() documentation for examples.</span>
-
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/ejikeugba/serp'>serp</a></span><span class='op'>)</span>
+<span class='fu'><a href='serp.html'>serp</a></span><span class='op'>(</span><span class='va'>rating</span> <span class='op'>~</span> <span class='va'>contact</span>, slope <span class='op'>=</span> <span class='st'>"parallel"</span>, link <span class='op'>=</span> <span class='st'>"logit"</span>,
+     control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>maxits <span class='op'>=</span> <span class='fl'>2e01</span>, eps<span class='op'>=</span><span class='fl'>1e-05</span>, trace <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>,
+     data <span class='op'>=</span> <span class='va'>wine</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; iter:   max|grad|    logLik
+#&gt;    1:   6.333e+00    100.12594  
+#&gt; 	delta: -2.021e+00 6.378e-02 1.600e+00 2.803e+00 -1.149e+00
+#&gt; 	step: -5.746e-01 -5.746e-01 -5.746e-01 -5.746e-01 1.149e+00
+#&gt;    2:   1.232e+00    99.95626  
+#&gt; 	delta: -2.133e+00 4.191e-02 1.711e+00 2.969e+00 -1.203e+00
+#&gt; 	step: 1.120e-01 2.188e-02 -1.102e-01 -1.663e-01 5.389e-02
+#&gt;    3:   4.850e-02    99.95591  
+#&gt; 	delta: -2.139e+00 4.258e-02 1.714e+00 2.979e+00 -1.207e+00
+#&gt; 	step: 6.676e-03 -6.785e-04 -3.863e-03 -9.377e-03 3.824e-03
+#&gt;    4:   3.209e-04    99.95591  
+#&gt; 	delta: -2.139e+00 4.257e-02 1.714e+00 2.979e+00 -1.207e+00
+#&gt; 	step: 3.566e-05 1.308e-05 2.791e-06 -2.395e-05 2.596e-05
+#&gt; 
+#&gt; Successful convergence!  Absolute and relative convergence criteria satisfied</div><div class='output co'>#&gt; 
+#&gt; call:
+#&gt; serp(formula = rating ~ contact, link = "logit", slope = "parallel", 
+#&gt;     data = wine, control = list(maxits = 20, eps = 1e-05, trace = 2))
+#&gt; 
+#&gt; coefficients:
+#&gt; (Intercept):1 (Intercept):2 (Intercept):3 (Intercept):4    contactyes 
+#&gt;   -2.13933037    0.04257146    1.71448721    2.97874484   -1.20695403 
+#&gt; 
+#&gt; loglik: -99.95591   aic: 209.9118 </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

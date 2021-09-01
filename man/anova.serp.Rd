@@ -2,21 +2,23 @@
 % Please edit documentation in R/serp.anova.R
 \name{anova.serp}
 \alias{anova.serp}
-\title{ANOVA method for an object of class 'serp'}
+\title{ANOVA method for a fitted serp object}
 \usage{
 \method{anova}{serp}(object, ..., test = c("Chisq", "none"))
 }
 \arguments{
-\item{object}{An object of class 'serp'.}
+\item{object}{An object of class \code{serp}.}
 
 \item{...}{additional arguments.}
 
 \item{test}{type of test to be conducted.}
 }
 \value{
-An ANOVA table with the following components:
+An ANOVA table with the following components on display:
 \describe{
   \item{model}{the respective model aliases.}
+  \item{slope}{type of slope fitted, which may be any of, unparallel, parallel,
+        or partial slope.}
   \item{no.par}{the no of parameters in the model.}
   \item{AIC}{the akaike information criterion.}
   \item{logLik}{the realized log-likelihood.}
@@ -27,12 +29,18 @@ An ANOVA table with the following components:
 }
 }
 \description{
-Provides an ANOVA table for comparing two or more 'serp' objects.
+Provides a likelihood ratio test for comparing two or more \code{serp} objects. This
+does not currently support model(s) with penalized slope.
 }
 \examples{
-# See serp() documentation for examples.
+library(serp)
+m1 <- serp(rating ~ temp + contact, slope = "parallel", link = "logit",
+           data = wine)
+m2 <- update(m1, ~ contact)
+anova(m1, m2)
 
 }
 \seealso{
-\code{\link{serp}}
+\code{\link{serp}}, \code{\link{confint.serp}}, \code{\link{vcov.serp}},
+\code{\link{errorMetrics}}
 }

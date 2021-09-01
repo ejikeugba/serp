@@ -2,12 +2,12 @@
 % Please edit documentation in R/serp.method.R
 \name{BIC.serp}
 \alias{BIC.serp}
-\title{BIC for an object of class 'serp'}
+\title{BIC for a fitted serp object}
 \usage{
 \method{BIC}{serp}(object, ...)
 }
 \arguments{
-\item{object}{An object of class 'serp'.}
+\item{object}{An object of class \code{serp}.}
 
 \item{...}{additional arguments.}
 }
@@ -15,12 +15,18 @@
 A single numeric value of the model.
 }
 \description{
-Returns the bayesian information criterion of a fitted
-object of class 'serp'
+Returns the bayesian information criterion of a fitted object of class
+\code{serp}. For the penalized slopes, the effective degrees of freedom (edf)
+is obtained from the trace of the generalized hat matrix which depends on
+the tuning parameter.
 }
 \examples{
-# See serp() documentation for examples.
+library(serp)
+m <- serp(rating ~ temp + contact, slope = "parallel", link = "loglog",
+          data = wine)
+BIC(m)
 }
 \seealso{
-\code{\link{serp}}
+\code{\link{serp}}, \code{\link{AIC.serp}}, \code{\link{coef.serp}},
+\code{\link{logLik.serp}},
 }

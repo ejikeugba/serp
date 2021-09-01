@@ -2,12 +2,12 @@
 % Please edit documentation in R/serp.vcov.R
 \name{vcov.serp}
 \alias{vcov.serp}
-\title{Variance covariance matrix for a serp object}
+\title{Variance covariance matrix for a fitted serp object}
 \usage{
 \method{vcov}{serp}(object, ...)
 }
 \arguments{
-\item{object}{An object of class 'serp'.}
+\item{object}{An object of class \code{serp}.}
 
 \item{...}{additional arguments.}
 }
@@ -15,12 +15,18 @@
 A variance covariance matrix of a fitted model.
 }
 \description{
-Provides the Variance covariance matrix of an object of class 'serp'.
+Provides the Variance covariance matrix of an object of class \code{serp}.
 }
 \examples{
-# See serp() documentation for examples.
+library(serp)
+m <- serp(rating ~ temp + contact, slope = "parallel", link = "logit",
+           data = wine)
+vcov(m)
 
 }
 \seealso{
 \code{\link{serp}}
+
+\code{\link{serp}}, \code{\link{anova.serp}}, \code{\link{confint.serp}},
+\code{\link{errorMetrics}}
 }

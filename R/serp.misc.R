@@ -358,6 +358,7 @@ dvfun <- function(lambda, globalEff, x, y, startval, xlst, xMat, yMtx,
                   nL, obs, npar, linkf, link, vnull,control, slope, wt,
                   tuneMethod, m, mslope, Terms)
 {
+  rr <- NA
   tryCatch({
     rr <- serp.fit(lambda, x, y, wt, startval, xlst,
                    xMat, yMtx, nL, obs, npar, linkf, link,

@@ -1,3 +1,10 @@
+# serp 0.2.0.9001
+- update function included in namespace
+- examples included in the different function documentation
+- shrinkage parameter upper limit set to 1e10 in serp.control
+- bug fix in test function
+
+---
 # serp 0.2.0.9000 
 - deviance tuning option in serp tuneMethod now replaced by AIC 
 - serp output includes residual degrees of freedom (rdf)

@@ -2,12 +2,12 @@
 % Please edit documentation in R/serp.method.R
 \name{coef.serp}
 \alias{coef.serp}
-\title{Coefficients for a serp object}
+\title{Coefficients for a fitted serp object}
 \usage{
 \method{coef}{serp}(object, ...)
 }
 \arguments{
-\item{object}{An object of class serp.}
+\item{object}{An object of class \code{serp}.}
 
 \item{...}{additional arguments.}
 }
@@ -15,11 +15,16 @@
 A vector of model coefficients.
 }
 \description{
-Returns the coefficients of a fitted object of class 'serp'
+Returns the coefficients of a fitted object of class \code{serp}.
 }
 \examples{
-# See serp() documentation for examples.
+library(serp)
+m <- serp(rating ~ temp + contact, slope = "parallel", link = "loglog",
+          data = wine)
+coef(m)
+
 }
 \seealso{
-\code{\link{serp}}
+\code{\link{serp}}, \code{\link{AIC.serp}}, \code{\link{BIC.serp}},
+\code{\link{logLik.serp}}
 }

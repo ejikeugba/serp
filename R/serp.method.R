@@ -1,14 +1,12 @@
-#' Print method for object of class 'serp'
+#' Print method for a fitted serp object
 #'
 #' Prints out a vector of coefficients of the fitted model with some
 #' additional goodness-of-fit measures.
 #'
-#' @param x An object of class 'serp'.
+#' @param x An object of class \code{serp}.
 #' @param ... additional arguments.
 #' @return No return value
-#' @seealso \code{\link{serp}}
-#' @examples
-#' # See serp() documentation for examples.
+#' @seealso \code{\link{serp}}, \code{\link{print.summary.serp}}
 #'
 #' @export
 #'
@@ -28,7 +26,7 @@ print.serp <- function(x, ...)
 
   if (max.tun){
     cat("\n")
-    cat("* minimum tuning criterion obtained at lambda upper limit\n")
+    cat("* optimal tuning obtained at lambda grid upper limit\n")
   }
   na.ac <- length(object$na.action)
   if (na.ac > 0){
@@ -40,17 +38,14 @@ print.serp <- function(x, ...)
 }
 
 
-#' Print method for object of class 'summary.serp'
+#' Print method for an object of class summary.serp
 #'
-#' Prints the data frame returned by the \code{summary.serp} method.
+#' Prints out the information supplied via \code{summary.serp} method.
 #'
-#' @param x An object of class 'summary.serp'.
+#' @param x An object of class \code{summary.serp}.
 #' @param ... additional arguments.
 #' @return No return value
-#' @seealso \code{\link{serp}}
-#'
-#' @examples
-#' # See serp() documentation for examples.
+#' @seealso \code{\link{serp}}, \code{\link{print.serp}}
 #'
 #' @export
 #'
@@ -80,7 +75,7 @@ print.summary.serp <- function(x, ...){
   if (object$slope == 'penalize') max.tun <- penalty.print(object, max.tun)
   if (max.tun){
     cat("\n")
-    cat("* minimum tuning criterion obtained at lambda upper limit\n")
+    cat("* optimal tuning obtained at lambda grid upper limit\n")
   }
   if (na.ac > 0){
     cat("\n")
@@ -92,27 +87,33 @@ print.summary.serp <- function(x, ...){
 
 
 
-#' Summary method for a serp object.
+#' Summary method for a fitted serp object.
 #'
-#' Summarizes the results of the fitted model in a dataframe.
+#' This function summarizes the result of a fitted serp object in a dataframe.
 #'
-#' @param object An object of class serp.
+#' @param object An object of class \code{serp}.
 #' @param ... Not used. Additional summary arguments.
 #' @return
-#' an object of class "summary.serp", a list (depending on the type of
-#' \code{slope} used). All components from object are already defined
-#' in the \code{\link{serp}} function.
+#' an object of class \code{summary.serp}. A list (depending on the type of
+#' \code{slope} used) of all model components defined in the \code{\link{serp}},
+#' function with additional components listed below.
 #' \describe{
 #'   \item{coefficients}{the matrix of coefficients, standard errors,
 #'         z-values and p-values.}
+#'   \item{null.deviance}{the deviance for the intercept only model.}
+#'   \item{null.logLik}{the log-likelihood for the intercept only model.}
 #'   \item{penalty}{list of penalization information obtained with
 #'         \code{slope} set to "penalize".}
 #'   \item{expcoefs}{the exponentiated coefficients.}
 #' }
-#'
-#' @seealso \code{\link{serp}}
+#' @seealso \code{\link{anova.serp}}, \code{\link{predict.serp}},
+#' \code{\link{confint.serp}}, \code{\link{vcov.serp}}, \code{\link{errorMetrics}}
 #' @examples
-#' # See serp() documentation for examples.
+#' library(serp)
+#' m <- serp(rating ~ temp + contact, slope = "penalize",
+#'            reverse = TRUE, link = "logit", tuneMethod = "user",
+#'            lambda = 0, data = wine)
+#' summary(m)
 #' @export
 #'
 summary.serp <- function(object, ...){
@@ -149,6 +150,9 @@ summary.serp <- function(object, ...){
                     tuneMethod = noquote(tun), value = h1, lambda = h2)
     object$penalty <- penalty
   }
+  null <- update(object, ~1)
+  object$null.logLik <- null$logLik
+  object$null.deviance <- null$deviance
   object$hessian <- H
   object$coefficients <- coefs
   object$expcoefs <- expcoefs
@@ -156,21 +160,35 @@ summary.serp <- function(object, ...){
   object
 }
 
-#' Predict method for object of class 'serp'.
+#' Prediction from fitted serp model
 #'
-#' Returns the predicted probabilities, link and class
-#' for an object of class 'serp..
+#' This function takes a fitted \code{serp} object produced by serp() and
+#' produces predicted values. Type of predictions returned include response,
+#' link and class. Prediction is also possible with new set of values having
+#' the same column names as in the original values used for the model fit.
 #'
-#' @param object An object of class serp.
+#' @param object An object of class \code{serp}.
 #' @param type could be any of these: response, link or terms.
 #' @param newdata fresh dataset with all relevant variables.
 #' @param ... additional arguments.
 #' @return A vector of predicted classes with \code{type} equal to 'class'
 #' or a dataframe of predicted values for \code{type} equal to 'response'
-#' or 'link'.
-#' @seealso \code{\link{serp}}
+#' and 'link'.
+#' @seealso \code{\link{anova.serp}}, \code{\link{summary.serp}},
+#' \code{\link{confint.serp}}, \code{\link{vcov.serp}}, \code{\link{errorMetrics}}
 #' @examples
-#' # See serp() documentation for examples.
+#' library(serp)
+#' m <- serp(rating ~ temp + contact, slope = "penalize",
+#'            reverse = TRUE, link = "logit", tuneMethod = "user",
+#'            lambda = 1, data = wine)
+#'
+#' head(predict(m, type = "link"))
+#' head(predict(m, type = "response"))
+#' predict(m, type = "class")
+#'
+#' n.wine <- wine[1:20,]
+#' predict(m, newdata = n.wine, type = "class")
+#'
 #' @export
 #'
 predict.serp <- function(
@@ -188,7 +206,6 @@ predict.serp <- function(
   depvar <- object$model[,1L]
   xpred <- model.matrix(object$Terms, object$model)
   if (!is.factor(depvar)) depvar <- factor(depvar)
-
   if (!(is.null(newdata))){
     newnames <- colnames(newdata)
     oldnames <- all.vars(object$Terms)
@@ -248,18 +265,24 @@ predict.serp <- function(
 }
 
 
-#' AIC for an object of class 'serp'
+#' AIC for a fitted serp object
 #'
-#' Returns the akaike information criterion of a fitted
-#' object of class 'serp'
+#' Returns the akaike information criterion of a fitted object of class
+#' \code{serp}. For the penalized slope, the effective degrees of freedom (edf)
+#' is obtained from the trace of the generalized hat matrix which depends on
+#' the tuning parameter.
 #'
-#' @param object An object of class 'serp'.
+#' @param object An object of class \code{serp}.
 #' @param k fixed value equal to 2.
 #' @param ... additional arguments.
 #' @return A single numeric value of the model AIC.
-#' @seealso \code{\link{serp}}
+#' @seealso \code{\link{serp}}, \code{\link{BIC.serp}}, \code{\link{coef.serp}},
+#' \code{\link{logLik.serp}},
 #' @examples
-#' # See serp() documentation for examples.
+#' library(serp)
+#' m <- serp(rating ~ temp + contact, slope = "parallel", link = "probit",
+#'           data = wine)
+#' AIC(m)
 #' @export
 #'
 AIC.serp <- function (object, ..., k=2)
@@ -269,17 +292,23 @@ AIC.serp <- function (object, ..., k=2)
 }
 
 
-#' BIC for an object of class 'serp'
+#' BIC for a fitted serp object
 #'
-#' Returns the bayesian information criterion of a fitted
-#' object of class 'serp'
+#' Returns the bayesian information criterion of a fitted object of class
+#' \code{serp}. For the penalized slopes, the effective degrees of freedom (edf)
+#' is obtained from the trace of the generalized hat matrix which depends on
+#' the tuning parameter.
 #'
-#' @param object An object of class 'serp'.
+#' @param object An object of class \code{serp}.
 #' @param ... additional arguments.
 #' @return A single numeric value of the model.
-#' @seealso \code{\link{serp}}
+#' @seealso \code{\link{serp}}, \code{\link{AIC.serp}}, \code{\link{coef.serp}},
+#' \code{\link{logLik.serp}},
 #' @examples
-#' # See serp() documentation for examples.
+#' library(serp)
+#' m <- serp(rating ~ temp + contact, slope = "parallel", link = "loglog",
+#'           data = wine)
+#' BIC(m)
 #' @export
 #'
 BIC.serp <- function (object, ...)
@@ -289,16 +318,21 @@ BIC.serp <- function (object, ...)
 }
 
 
-#' Coefficients for a serp object
+#' Coefficients for a fitted serp object
 #'
-#' Returns the coefficients of a fitted object of class 'serp'
+#' Returns the coefficients of a fitted object of class \code{serp}.
 #'
-#' @param object An object of class serp.
+#' @param object An object of class \code{serp}.
 #' @param ... additional arguments.
 #' @return A vector of model coefficients.
-#' @seealso \code{\link{serp}}
+#' @seealso \code{\link{serp}}, \code{\link{AIC.serp}}, \code{\link{BIC.serp}},
+#' \code{\link{logLik.serp}}
 #' @examples
-#' # See serp() documentation for examples.
+#' library(serp)
+#' m <- serp(rating ~ temp + contact, slope = "parallel", link = "loglog",
+#'           data = wine)
+#' coef(m)
+#'
 #' @export
 #'
 coef.serp <- function(object, ...)
@@ -307,16 +341,20 @@ coef.serp <- function(object, ...)
 }
 
 
-#' Log-likelihood for a serp object.
+#' Log-likelihood for a fitted serp object
 #'
-#' Returns the Log-likelihood for a fitted object of class 'serp'
+#' Returns the Log-likelihood for a fitted object of class \code{serp}.
 #'
-#' @param object An object of class serp.
+#' @param object An object of class \code{serp}.
 #' @param ... additional arguments.
 #' @return A single numeric value of model log-likelihood
-#' @seealso \code{\link{serp}}
+#' @seealso \code{\link{serp}}, \code{\link{AIC.serp}}, \code{\link{BIC.serp}},
+#' \code{\link{coef.serp}}
 #' @examples
-#' # See serp() documentation for examples.
+#' library(serp)
+#' m <- serp(rating ~ temp + contact, slope = "parallel", link = "loglog",
+#'           data = wine)
+#' logLik(m)
 #' @export
 #'
 logLik.serp <- function(object, ...)

@@ -2,12 +2,12 @@
 % Please edit documentation in R/serp.method.R
 \name{logLik.serp}
 \alias{logLik.serp}
-\title{Log-likelihood for a serp object.}
+\title{Log-likelihood for a fitted serp object}
 \usage{
 \method{logLik}{serp}(object, ...)
 }
 \arguments{
-\item{object}{An object of class serp.}
+\item{object}{An object of class \code{serp}.}
 
 \item{...}{additional arguments.}
 }
@@ -15,11 +15,15 @@
 A single numeric value of model log-likelihood
 }
 \description{
-Returns the Log-likelihood for a fitted object of class 'serp'
+Returns the Log-likelihood for a fitted object of class \code{serp}.
 }
 \examples{
-# See serp() documentation for examples.
+library(serp)
+m <- serp(rating ~ temp + contact, slope = "parallel", link = "loglog",
+          data = wine)
+logLik(m)
 }
 \seealso{
-\code{\link{serp}}
+\code{\link{serp}}, \code{\link{AIC.serp}}, \code{\link{BIC.serp}},
+\code{\link{coef.serp}}
 }

@@ -2,12 +2,12 @@
 % Please edit documentation in R/serp.method.R
 \name{print.summary.serp}
 \alias{print.summary.serp}
-\title{Print method for object of class 'summary.serp'}
+\title{Print method for an object of class summary.serp}
 \usage{
 \method{print}{summary.serp}(x, ...)
 }
 \arguments{
-\item{x}{An object of class 'summary.serp'.}
+\item{x}{An object of class \code{summary.serp}.}
 
 \item{...}{additional arguments.}
 }
@@ -15,12 +15,8 @@
 No return value
 }
 \description{
-Prints the data frame returned by the \code{summary.serp} method.
-}
-\examples{
-# See serp() documentation for examples.
-
+Prints out the information supplied via \code{summary.serp} method.
 }
 \seealso{
-\code{\link{serp}}
+\code{\link{serp}}, \code{\link{print.serp}}
 }

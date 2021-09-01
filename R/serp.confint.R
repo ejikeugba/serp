@@ -1,16 +1,21 @@
-#' Confidence interval for an object of class 'serp'
+#' Confidence interval for a fitted serp object
 #'
-#' Provides the confidence interval of estimates for an object of class 'serp'.
+#' Provides the confidence interval of estimates for an object of class \code{serp}.
 #'
-#' @param object An object of class 'serp'.
+#' @param object An object of class \code{serp}.
 #' @param parm unused argument.
 #' @param level significance level.
 #' @param ... additional arguments.
 #' @return A matrix of the the confidence intervals of fitted model.
-#' @seealso \code{\link{serp}}
+#' @seealso
+#' \code{\link{serp}}, \code{\link{anova.serp}}, \code{\link{vcov.serp}},
+#' \code{\link{errorMetrics}}
 #'
 #' @examples
-#' # See serp() documentation for examples.
+#' library(serp)
+#' m <- serp(rating ~ temp + contact, slope = "parallel", link = "logit",
+#'            data = wine)
+#' confint(m)
 #'
 #' @export
 #'

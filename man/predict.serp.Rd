@@ -2,12 +2,12 @@
 % Please edit documentation in R/serp.method.R
 \name{predict.serp}
 \alias{predict.serp}
-\title{Predict method for object of class 'serp'.}
+\title{Prediction from fitted serp model}
 \usage{
 \method{predict}{serp}(object, type = c("link", "response", "class"), newdata = NULL, ...)
 }
 \arguments{
-\item{object}{An object of class serp.}
+\item{object}{An object of class \code{serp}.}
 
 \item{type}{could be any of these: response, link or terms.}
 
@@ -18,15 +18,29 @@
 \value{
 A vector of predicted classes with \code{type} equal to 'class'
 or a dataframe of predicted values for \code{type} equal to 'response'
-or 'link'.
+and 'link'.
 }
 \description{
-Returns the predicted probabilities, link and class
-for an object of class 'serp..
+This function takes a fitted \code{serp} object produced by serp() and
+produces predicted values. Type of predictions returned include response,
+link and class. Prediction is also possible with new set of values having
+the same column names as in the original values used for the model fit.
 }
 \examples{
-# See serp() documentation for examples.
+library(serp)
+m <- serp(rating ~ temp + contact, slope = "penalize",
+           reverse = TRUE, link = "logit", tuneMethod = "user",
+           lambda = 1, data = wine)
+
+head(predict(m, type = "link"))
+head(predict(m, type = "response"))
+predict(m, type = "class")
+
+n.wine <- wine[1:20,]
+predict(m, newdata = n.wine, type = "class")
+
 }
 \seealso{
-\code{\link{serp}}
+\code{\link{anova.serp}}, \code{\link{summary.serp}},
+\code{\link{confint.serp}}, \code{\link{vcov.serp}}, \code{\link{errorMetrics}}
 }

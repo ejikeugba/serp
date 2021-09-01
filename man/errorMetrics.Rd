@@ -36,7 +36,8 @@ good a categorical model is compare to competing models.
 }
 \description{
 Calculates performance metrics of fitted categorical models,
-including binary and multi-categorical models.
+including binary and multi-categorical models. Metrics calculated include the
+brier score, log loss and misclassification error.
 }
 \examples{
 
@@ -61,5 +62,6 @@ errorMetrics(actual=y, predicted=p2, model= "binary", type = "misclass")
 
 }
 \seealso{
-\code{\link{serp}}
+\code{\link{serp}}, \code{\link{anova.serp}}, \code{\link{confint.serp}},
+\code{\link{vcov.serp}}
 }

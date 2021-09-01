@@ -102,6 +102,7 @@
 #' @importFrom stats qcauchy
 #' @importFrom stats qlogis
 #' @importFrom stats qnorm
+#' @importFrom stats update
 #' @seealso \code{\link{anova.serp}}, \code{\link{summary.serp}},
 #' \code{\link{predict.serp}}, \code{\link{confint.serp}},
 #' \code{\link{vcov.serp}}, \code{\link{errorMetrics}}
@@ -149,7 +150,8 @@
 #' category-specific effects associated with the response turn towards a
 #' common global effect. SERP could also be applied to a semi-parallel model
 #' with only the category-specific part of the model penalized. See,
-#' Ugba et al. (2021) for a detailed discussion on SERP.
+#' Ugba et al. (2021) for a discussion and an application of SERP in an
+#' empirical study.
 #'
 #' @references
 #' McCullagh, P. (1980). Regression Models for Ordinal Data.
@@ -221,26 +223,34 @@
 #' }
 #' @export
 #' @examples
-#'
-#' ## The unpenalized non-proportional odds model. (with Unbounded estimates)
+#' require(serp)
+#' ## The unpenalized non-proportional odds model returns unbounded estimates, hence,
+#' ## not fully identifiable.
 #' f1 <- serp(rating ~ temp + contact, slope = "unparallel",
 #'            reverse = TRUE, link = "logit", data = wine)
 #' coef(f1)
-#' logLik(f1)
 #'
-#' ## The penalized non-proportional odds model (with Improved estimates)
+#' ## The penalized non-proportional odds model with a user-supplied lambda gives
+#' ## a fully identified model with bounded estimates. A suitable tuning criterion
+#' ## could as well be used to select lambda (e.g., aic, cv)
 #' f2 <- serp(rating ~ temp + contact, slope = "penalize",
-#'            link = "logit", reverse = TRUE, tuneMethod = "aic",
-#'            lambdaGrid = 10^seq(1, -1, length.out=5), data = wine)
+#'            link = "logit", reverse = TRUE, tuneMethod = "user",
+#'            lambda = 1e1, data = wine)
 #' coef(f2)
-#' predict(f2, type = "class")
 #'
-#' ## The unpenalized proportional odds model (with constrained estimates).
-#' f3 <-  serp(rating ~ temp + contact, slope = "parallel",
+#' ## A penalized partial proportional odds model with one variable set to
+#' ## global effect is also possible.
+#' f3 <- serp(rating ~ temp + contact, slope = "penalize",
+#'            reverse = TRUE, link = "logit", tuneMethod = "user",
+#'            lambda = 2e1, globalEff = ~ temp, data = wine)
+#' coef(f3)
+#'
+#'
+#' ## The unpenalized proportional odds model with constrained estimates. Using a
+#' ## very strong lambda in f2 will result in estimates equal to estimates in f4.
+#' f4 <-  serp(rating ~ temp + contact, slope = "parallel",
 #'             reverse = FALSE, link = "logit", data = wine)
-#' summary(f3)
-#' confint(f3)
-#' errorMetrics(f3)
+#' summary(f4)
 #'
 serp <- function(
   formula,

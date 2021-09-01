@@ -3,7 +3,7 @@
 \docType{data}
 \name{wine}
 \alias{wine}
-\title{Bitterness of wine}
+\title{Bitterness of wine dataset}
 \format{
 A data frame with 72 rows and 6 variables:
  \describe{

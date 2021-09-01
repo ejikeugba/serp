@@ -1,14 +1,20 @@
-#' Variance covariance matrix for a serp object
+#' Variance covariance matrix for a fitted serp object
 #'
-#' Provides the Variance covariance matrix of an object of class 'serp'.
+#' Provides the Variance covariance matrix of an object of class \code{serp}.
 #'
-#' @param object An object of class 'serp'.
+#' @param object An object of class \code{serp}.
 #' @param ... additional arguments.
 #' @seealso \code{\link{serp}}
 #' @return A variance covariance matrix of a fitted model.
 #'
+#' @seealso
+#' \code{\link{serp}}, \code{\link{anova.serp}}, \code{\link{confint.serp}},
+#' \code{\link{errorMetrics}}
 #' @examples
-#' # See serp() documentation for examples.
+#' library(serp)
+#' m <- serp(rating ~ temp + contact, slope = "parallel", link = "logit",
+#'            data = wine)
+#' vcov(m)
 #'
 #' @export
 #'

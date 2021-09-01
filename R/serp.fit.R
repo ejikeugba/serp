@@ -27,7 +27,6 @@ serpfit <- function(x, y, wt, yMtx, link, slope, reverse, control,
   }
   link_reversed <- FALSE
   initial_link <- link
-
   if (link == "cloglog" & reverse == TRUE){
     link_reversed <- TRUE
     link <- "loglog"
@@ -62,6 +61,8 @@ serpfit <- function(x, y, wt, yMtx, link, slope, reverse, control,
      any(lambdaGrid < 0L) || !(length(lambdaGrid) > 1L))
     stop("lambdaGrid must be a non-negative numeric vector of length > 1",
          call. = FALSE)
+  if (any(lambdaGrid > control$lambda.upper.limit))
+    stop("values of lambda above 1e10 are not allowed", call. = FALSE)
   if (slope == "penalize"  && tuneMethod == "user"){
     if (is.null(lambda))
       stop("user-supplied lambda value is required for 'user' tuning",
@@ -69,6 +70,8 @@ serpfit <- function(x, y, wt, yMtx, link, slope, reverse, control,
     if (!is.numeric(lambda) || length(lambda) != 1 || any(lambda < 0))
       stop("lambda should be a single numeric and non-negative value",
            call. = FALSE)
+    if (lambda > control$lambda.upper.limit)
+      stop("values of lambda above 1e10 are not allowed", call. = FALSE)
   }
   ans <- list(model = m)
   if(slope == "penalize"){

@@ -1,4 +1,4 @@
-#' Bitterness of wine
+#' Bitterness of wine dataset
 #'
 #' The \code{wine} dataset adopted from Randall(1989),
 #' represents the outcome of a factorial experiment on factors

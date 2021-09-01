@@ -25,7 +25,7 @@ test_that("cumulative model via serp matches with vglm",
             expect_equal(pred.sp, pred.vm, check.attributes=FALSE,
                          tolerance=tol)
 
-            expect_error(anova.serp(sp, sp),
+            expect_error(serp:::anova.serp(sp, sp),
                          "duplicate object names are not allowed")
 
             rm(sp, vm, pred.sp, pred.vm)
@@ -69,10 +69,10 @@ test_that("cumulative model via serp matches with vglm",
 
             #5# partial or semi-parallel slope with cauchit link
             sp <- serp(rating ~ temp * contact, slope = "partial",
-                       link = "cauchit", globalEff= ~temp, data = wine)
+                       link = "cauchit", globalEff= ~temp, data = serp::wine)
             vm <- vglm(rating ~ temp * contact,
                        family=cumulative(link="cauchitlink", parallel=FALSE ~contact),
-                       data = wine)
+                       data = serp::wine)
             dev.sp <- deviance(sp)
             dev.vm <- deviance(vm)
 

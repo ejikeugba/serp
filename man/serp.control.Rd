@@ -2,12 +2,12 @@
 % Please edit documentation in R/serp.control.R
 \name{serp.control}
 \alias{serp.control}
-\title{Control parameters for serp fit}
+\title{Control parameters for a fitted serp object}
 \usage{
 serp.control(
              maxits = 5e01,
              eps = 1e-07,
-             maxpen = 1e05,
+             maxpen = 1e07,
              trace = 0L,
              maxAdjIter = 5e0,
              max.half.iter = 1e01,
@@ -63,7 +63,10 @@ Default control parameters for 'serp' fit. User-supplied control parameters
 could be specified in the main function.
 }
 \examples{
-# See serp() documentation for examples.
+library(serp)
+serp(rating ~ contact, slope = "parallel", link = "logit",
+     control = list(maxits = 2e01, eps=1e-05, trace = 2),
+     data = wine)
 
 }
 \seealso{

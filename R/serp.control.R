@@ -1,4 +1,4 @@
-#' Control parameters for serp fit
+#' Control parameters for a fitted serp object
 #'
 #' Default control parameters for 'serp' fit. User-supplied control parameters
 #' could be specified in the main function.
@@ -6,7 +6,7 @@
 #' @usage serp.control(
 #'              maxits = 5e01,
 #'              eps = 1e-07,
-#'              maxpen = 1e05,
+#'              maxpen = 1e07,
 #'              trace = 0L,
 #'              maxAdjIter = 5e0,
 #'              max.half.iter = 1e01,
@@ -43,14 +43,17 @@
 #' @return a list of control parameters.
 #' @seealso \code{\link{serp}}
 #' @examples
-#' # See serp() documentation for examples.
+#' library(serp)
+#' serp(rating ~ contact, slope = "parallel", link = "logit",
+#'      control = list(maxits = 2e01, eps=1e-05, trace = 2),
+#'      data = wine)
 #'
 #' @export
 #'
 serp.control <- function(
   maxits = 5e01,
   eps = 1e-07,
-  maxpen = 1e05,
+  maxpen = 1e07,
   trace = 0L,
   maxAdjIter = 5e0,
   max.half.iter = 1e01,
@@ -68,9 +71,12 @@ serp.control <- function(
   if(!(is.numeric(nrFold)) || (nrFold < 2L) || (nrFold > 10L))
     stop("nrFold should be numeric and between 2 and 10 inclusive.",
          call. = FALSE)
+  lambda.upper.limit <- 1e10
+  if (maxpen > lambda.upper.limit)
+    stop("values of lambda above 1e10 are not allowed", call. = FALSE)
   stopcrit <- expression(iter < maxits && sqrt(obs) * abs(objOld - obj)/
                            (abs(objOld) + eps) < eps)
-  int.lambdaGrid <- c(10^seq(5, -2, length.out=grid.length), 0)
+  int.lambdaGrid <- c(10^seq((log(maxpen)/log(10)), -2, length.out=grid.length), 0)
   msg <- structure(list(
     "0" = "Absolute and relative convergence criteria satisfied",
     "1" = "Absolute convergence criterion satisfied, but relative, criterion
@@ -89,5 +95,6 @@ serp.control <- function(
        max.half.iter = as.integer(max.half.iter), msg = msg,
        trace = as.integer(trace), cv.seed = cv.seed,
        grid.length = grid.length, relTol = relTol,
-       int.lambdaGrid = int.lambdaGrid)
+       int.lambdaGrid = int.lambdaGrid,
+       lambda.upper.limit = lambda.upper.limit)
 }

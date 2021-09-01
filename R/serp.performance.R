@@ -1,7 +1,8 @@
 #' Performance metrics for categorical models
 #'
 #' @description Calculates performance metrics of fitted categorical models,
-#' including binary and multi-categorical models.
+#' including binary and multi-categorical models. Metrics calculated include the
+#' brier score, log loss and misclassification error.
 #'
 #' @usage errorMetrics(
 #'              actual,
@@ -26,7 +27,8 @@
 #'}
 #'
 #' @seealso
-#' \code{\link{serp}}
+#' \code{\link{serp}}, \code{\link{anova.serp}}, \code{\link{confint.serp}},
+#' \code{\link{vcov.serp}}
 #'
 #' @examples
 #'

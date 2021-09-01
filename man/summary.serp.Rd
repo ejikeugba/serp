@@ -2,33 +2,40 @@
 % Please edit documentation in R/serp.method.R
 \name{summary.serp}
 \alias{summary.serp}
-\title{Summary method for a serp object.}
+\title{Summary method for a fitted serp object.}
 \usage{
 \method{summary}{serp}(object, ...)
 }
 \arguments{
-\item{object}{An object of class serp.}
+\item{object}{An object of class \code{serp}.}
 
 \item{...}{Not used. Additional summary arguments.}
 }
 \value{
-an object of class "summary.serp", a list (depending on the type of
-\code{slope} used). All components from object are already defined
-in the \code{\link{serp}} function.
+an object of class \code{summary.serp}. A list (depending on the type of
+\code{slope} used) of all model components defined in the \code{\link{serp}},
+function with additional components listed below.
 \describe{
   \item{coefficients}{the matrix of coefficients, standard errors,
         z-values and p-values.}
+  \item{null.deviance}{the deviance for the intercept only model.}
+  \item{null.logLik}{the log-likelihood for the intercept only model.}
   \item{penalty}{list of penalization information obtained with
         \code{slope} set to "penalize".}
   \item{expcoefs}{the exponentiated coefficients.}
 }
 }
 \description{
-Summarizes the results of the fitted model in a dataframe.
+This function summarizes the result of a fitted serp object in a dataframe.
 }
 \examples{
-# See serp() documentation for examples.
+library(serp)
+m <- serp(rating ~ temp + contact, slope = "penalize",
+           reverse = TRUE, link = "logit", tuneMethod = "user",
+           lambda = 0, data = wine)
+summary(m)
 }
 \seealso{
-\code{\link{serp}}
+\code{\link{anova.serp}}, \code{\link{predict.serp}},
+\code{\link{confint.serp}}, \code{\link{vcov.serp}}, \code{\link{errorMetrics}}
 }

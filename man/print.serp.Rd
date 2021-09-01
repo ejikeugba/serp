@@ -2,12 +2,12 @@
 % Please edit documentation in R/serp.method.R
 \name{print.serp}
 \alias{print.serp}
-\title{Print method for object of class 'serp'}
+\title{Print method for a fitted serp object}
 \usage{
 \method{print}{serp}(x, ...)
 }
 \arguments{
-\item{x}{An object of class 'serp'.}
+\item{x}{An object of class \code{serp}.}
 
 \item{...}{additional arguments.}
 }
@@ -18,10 +18,6 @@ No return value
 Prints out a vector of coefficients of the fitted model with some
 additional goodness-of-fit measures.
 }
-\examples{
-# See serp() documentation for examples.
-
-}
 \seealso{
-\code{\link{serp}}
+\code{\link{serp}}, \code{\link{print.summary.serp}}
 }

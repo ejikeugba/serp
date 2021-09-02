@@ -1,7 +1,7 @@
 Type: Package
 Package: serp
 Title: Smooth Effects on Response Penalty for 'CLM'
-Version: 0.2.0.9001
+Version: 0.2.1
 Authors@R: 
     person(given = "Ejike R.",
            family = "Ugba",

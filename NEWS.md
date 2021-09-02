@@ -1,3 +1,7 @@
+# serp 0.2.1
+- submission to CRAN
+
+---
 # serp 0.2.0.9001
 - update function included in namespace
 - examples included in the different function documentation
@@ -10,7 +14,8 @@
 - serp output includes residual degrees of freedom (rdf)
 - function to compute the effective degrees of freedom and rdf from the trace of the generalized hat matrix provided
 - serp.summary documentation has its value segment edited
-- new changes made in serp test functions
+- changes made in serp test functions
+- changes made in README.Rmd and README.md
 
 ---
 # serp 0.2.0

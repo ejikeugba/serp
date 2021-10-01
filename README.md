@@ -24,15 +24,25 @@ status](https://github.com/ejikeugba/serp/workflows/R-CMD-check/badge.svg)](http
 
 Smooth Effects on Response Penalty for CLM
 
-A regularization method for the cumulative link models (CLM). The ‘serp’
-function applies the ‘smooth-effect-on-response penalty’ (SERP) on the
-estimates of the general CLM, causing all subject-specific effects
-associated with each variable in the model to shrink towards a unique
-global effect. Fitting is done using a modified Newton’s method. Several
-standard model performance and descriptive methods are also available.
-See [Ugba et al., 2021](https://doi.org/10.3390/stats4030037) and [Tutz
-and Gertheiss, 2016](https://doi.org/10.1177/1471082X16642560) for more
-details.
+## Overview
+
+The R package `serp` fits cumulative link models (CLMs) with the
+`smooth-effect-on-response penalty (SERP)`. The `cumulative model`
+developed by McCullagh (1980) is probably the most frequently used
+ordinal model in empirical studies. However, the stochastic ordering
+property of the general form of the model poses a very serious challenge
+in most empirical applications of the model. For instance, unstable
+likelihoods with ill-conditioned parameter space are frequently
+encountered during the iterative process. `serp` implements a unique
+regularization method for CLMs that provides the means of smoothing the
+adjacent categories in the model. At extreme shrinkage, SERP causes all
+subject-specific effects associated with each variable in the model to
+shrink towards unique global effects. Fitting is done using a modified
+Newton’s method. Several standard model performance and descriptive
+methods are also available. See [Ugba et al.,
+2021](https://doi.org/10.3390/stats4030037) and [Tutz and Gertheiss,
+2016](https://doi.org/10.1177/1471082X16642560) for further details on
+the implemented penalty.
 
 ## Example
 
@@ -75,9 +85,21 @@ f4 <-  serp(rating ~ temp + contact, slope = "parallel",
 summary(f4)
 ```
 
-## Installation:
+## Installation and Use:
 
-The released version of serp can be installed from
+### Dependencies
+
+Before installing `serp` please note that -
+\[[R](https://cran.r-project.org/bin/windows/base/)\] version 1.1-4 or
+higher is required - few imports are made from the `ordinal` and `stats`
+R packages, thus, pre-installed.
+
+See the Description file for list of all external packages associated
+with `serp`
+
+### Install Instructions
+
+The released version of `serp` can be installed from
 [CRAN](https://cran.r-project.org/package=serp) with:
 
 ``` r
@@ -88,7 +110,7 @@ or the development version from
 [GitHub](https://github.com/ejikeugba/serp) with:
 
 ``` r
-# install.packages("devtools")
+if (!require("devtools")) install.packages("devtools")
 devtools::install_github("ejikeugba/serp")
 ```
 
@@ -98,12 +120,33 @@ devtools::install_github("ejikeugba/serp")
 library(serp)
 ```
 
+## Community Guidelines
+
+-   Contributing:
+    -   Pull requests are welcome and will be included at the discretion
+        of the maintainer. Please submit your contribution to \[serp\]
+        through the list of \[Pull Requests\]!
+-   Reporting issues and/or seeking support:
+    -   Please file a new ticket in the
+        \[[issue](https://github.com/ejikeugba/serp/issues)\] tracker -
+        expect a feedback ASAP!
+
+## Code of Conduct
+
+Please note that `serp` is released with a [Contributor Code of
+Conduct](https://github.com/ejikeugba/serp/blob/master/CODE_OF_CONDUCT.md).
+By contributing to this project, you agree to abide by its terms.
+
 ## References:
 
-Ugba, E. R., Mörlein, D. and Gertheiss, J. (2021). Smoothing in Ordinal
-Regression: An Application to Sensory Data. *Stats*, 4, 616–633.
-<https://doi.org/10.3390/stats4030037>
+McCullagh, P. (1980). Regression Models for Ordinal Data. *Journal of
+the Royal Statistical Society. Series B (Methodological)*, 42,
+pp. 109-142.
 
 Tutz, G. and Gertheiss, J. (2016). Regularized Regression for
 Categorical Data (With Discussion and Rejoinder). *Statistical
 Modelling*, 16, 161-260. <https://doi.org/10.1177/1471082X16642560>
+
+Ugba, E. R., Mörlein, D. and Gertheiss, J. (2021). Smoothing in Ordinal
+Regression: An Application to Sensory Data. *Stats*, 4, 616–633.
+<https://doi.org/10.3390/stats4030037>

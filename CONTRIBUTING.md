@@ -48,11 +48,9 @@ Before you start:
 * It may not be advisable to contribute third party codes to this project. Useful suggestions are nonetheless welcomed.
 * The Pull Requests are thereafter reviewed, with feedbacks communicated as soon as possible.
 
-
 ## Code of Conduct
 
 Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
-
 
 # Additional Resources
 

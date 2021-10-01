@@ -90,7 +90,6 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>Smooth Effects on Response Penalty for CLM</p>
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
@@ -99,7 +98,7 @@
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
-<p>Consider the cumulative logit model of the wine dataset, where the rating of wine bitterness is predicted with the two treatment factors, temperature and contact.</p>
+<p>Consider the cumulative logit model of the <a href="https://ejikeugba.github.io/serp/reference/wine.html">wine dataset</a>, where the rating of wine bitterness is predicted with the two treatment factors, temperature and contact.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## The unpenalized non-proportional odds model returns unbounded estimates, hence,</span>
 <span class="co">## not fully identifiable.</span>
@@ -108,8 +107,8 @@
 <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">f1</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## The penalized non-proportional odds model with a user-supplied lambda gives </span>
-<span class="co">## a fully identified model with bounded estimates. A suitable tuning criterion</span>
-<span class="co">## could as well be used to select lambda (e.g., cv) </span>
+<span class="co">## a fully identified model having bounded estimates. A suitable tuning criterion</span>
+<span class="co">## could as well be used to select lambda (e.g., aic or cv) </span>
 <span class="va">f2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/serp.html">serp</a></span><span class="op">(</span><span class="va">rating</span> <span class="op">~</span> <span class="va">temp</span> <span class="op">+</span> <span class="va">contact</span>, slope <span class="op">=</span> <span class="st">"penalize"</span>,
            link <span class="op">=</span> <span class="st">"logit"</span>, reverse <span class="op">=</span> <span class="cn">TRUE</span>, tuneMethod <span class="op">=</span> <span class="st">"user"</span>,
            lambda <span class="op">=</span> <span class="fl">1e1</span> ,data <span class="op">=</span> <span class="va">wine</span><span class="op">)</span>
@@ -122,20 +121,19 @@
            lambda <span class="op">=</span> <span class="fl">2e1</span>, globalEff <span class="op">=</span> <span class="op">~</span> <span class="va">temp</span>, data <span class="op">=</span> <span class="va">wine</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">f3</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## The unpenalized proportional odds model with constrained estimates. Using a </span>
-<span class="co">## very strong lambda in f2 will result in estimates equal to estimates in f4.</span>
+<code class="sourceCode R"><span class="co">## The unpenalized proportional odds model with constrained estimates. </span>
+<span class="co">## Under estreme shrinkage, estimates in f2 equal those in this model.  </span>
 <span class="va">f4</span> <span class="op">&lt;-</span>  <span class="fu"><a href="reference/serp.html">serp</a></span><span class="op">(</span><span class="va">rating</span> <span class="op">~</span> <span class="va">temp</span> <span class="op">+</span> <span class="va">contact</span>, slope <span class="op">=</span> <span class="st">"parallel"</span>,
             reverse <span class="op">=</span> <span class="cn">FALSE</span>, link <span class="op">=</span> <span class="st">"logit"</span>, data <span class="op">=</span> <span class="va">wine</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">f4</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="installation-and-use" class="section level2">
 <h2 class="hasAnchor">
-<a href="#installation-and-use" class="anchor"></a>Installation and Use:</h2>
+<a href="#installation-and-use" class="anchor"></a>Installation and Use</h2>
 <div id="dependencies" class="section level3">
 <h3 class="hasAnchor">
 <a href="#dependencies" class="anchor"></a>Dependencies</h3>
-<p>Before installing <code>serp</code> please note that - <br><span class="math display">[<em>R</em>](<em>h</em><em>t</em><em>t</em><em>p</em><em>s</em> : //<em>c</em><em>r</em><em>a</em><em>n</em>.<em>r</em> − <em>p</em><em>r</em><em>o</em><em>j</em><em>e</em><em>c</em><em>t</em>.<em>o</em><em>r</em><em>g</em>/<em>b</em><em>i</em><em>n</em>/<em>w</em><em>i</em><em>n</em><em>d</em><em>o</em><em>w</em><em>s</em>/<em>b</em><em>a</em><em>s</em><em>e</em>/)</span><br> version 1.1-4 or higher is required - few imports are made from the <code>ordinal</code> and <code>stats</code> R packages, thus, pre-installed.</p>
-<p>See the Description file for list of all external packages associated with <code>serp</code></p>
+<p>Before installing <code>serp</code> please ensure to have <br><span class="math display">[<em>R</em>](<em>h</em><em>t</em><em>t</em><em>p</em><em>s</em> : //<em>c</em><em>r</em><em>a</em><em>n</em>.<em>r</em> − <em>p</em><em>r</em><em>o</em><em>j</em><em>e</em><em>c</em><em>t</em>.<em>o</em><em>r</em><em>g</em>/<em>b</em><em>i</em><em>n</em>/<em>w</em><em>i</em><em>n</em><em>d</em><em>o</em><em>w</em><em>s</em>/<em>b</em><em>a</em><em>s</em><em>e</em>/)</span><br> version 1.1-4 or higher installed. Moreover, imports from the R <code>ordinal</code> and <code>stats</code> packages requires having these packages prior installed. See the Description file for more details on dependencies.</p>
 </div>
 <div id="install-instructions" class="section level3">
 <h3 class="hasAnchor">
@@ -148,28 +146,18 @@
 <code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ejikeugba/serp"</span><span class="op">)</span></code></pre></div>
 </div>
-</div>
-<div id="loading" class="section level2">
-<h2 class="hasAnchor">
-<a href="#loading" class="anchor"></a>Loading:</h2>
+<div id="loading" class="section level3">
+<h3 class="hasAnchor">
+<a href="#loading" class="anchor"></a>Loading</h3>
+<p>Load <code>serp</code> into R environment with:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ejikeugba/serp">serp</a></span><span class="op">)</span></code></pre></div>
+</div>
 </div>
 <div id="community-guidelines" class="section level2">
 <h2 class="hasAnchor">
 <a href="#community-guidelines" class="anchor"></a>Community Guidelines</h2>
-<ul>
-<li>Contributing:
-<ul>
-<li>Pull requests are welcome and will be included at the discretion of the maintainer. Please submit your contribution to <br><span class="math display"><em>s</em><em>e</em><em>r</em><em>p</em></span><br> through the list of <br><span class="math display"><em>P</em><em>u</em><em>l</em><em>l</em><em>R</em><em>e</em><em>q</em><em>u</em><em>e</em><em>s</em><em>t</em><em>s</em></span><br>!</li>
-</ul>
-</li>
-<li>Reporting issues and/or seeking support:
-<ul>
-<li>Please file a new ticket in the <br><span class="math display">[<em>i</em><em>s</em><em>s</em><em>u</em><em>e</em>](<em>h</em><em>t</em><em>t</em><em>p</em><em>s</em> : //<em>g</em><em>i</em><em>t</em><em>h</em><em>u</em><em>b</em>.<em>c</em><em>o</em><em>m</em>/<em>e</em><em>j</em><em>i</em><em>k</em><em>e</em><em>u</em><em>g</em><em>b</em><em>a</em>/<em>s</em><em>e</em><em>r</em><em>p</em>/<em>i</em><em>s</em><em>s</em><em>u</em><em>e</em><em>s</em>)</span><br> tracker - expect a feedback ASAP!</li>
-</ul>
-</li>
-</ul>
+<p>Pull requests are welcomed and will be included at the discretion of the maintainer. Please submit your contributions to <code>serp</code> through the list of <code>Pull Requests</code>. To report issues and/or seek support, please file a new ticket in the <br><span class="math display">[<em>i</em><em>s</em><em>s</em><em>u</em><em>e</em>](<em>h</em><em>t</em><em>t</em><em>p</em><em>s</em> : //<em>g</em><em>i</em><em>t</em><em>h</em><em>u</em><em>b</em>.<em>c</em><em>o</em><em>m</em>/<em>e</em><em>j</em><em>i</em><em>k</em><em>e</em><em>u</em><em>g</em><em>b</em><em>a</em>/<em>s</em><em>e</em><em>r</em><em>p</em>/<em>i</em><em>s</em><em>s</em><em>u</em><em>e</em><em>s</em>)</span><br> tracker, and expect a feedback ASAP!</p>
 </div>
 <div id="code-of-conduct" class="section level2">
 <h2 class="hasAnchor">
@@ -178,8 +166,9 @@
 </div>
 <div id="references" class="section level2">
 <h2 class="hasAnchor">
-<a href="#references" class="anchor"></a>References:</h2>
-<p>McCullagh, P. (1980). Regression Models for Ordinal Data. <em>Journal of the Royal Statistical Society. Series B (Methodological)</em>, 42, pp. 109-142.</p>
+<a href="#references" class="anchor"></a>References</h2>
+<p>McCullagh, P. (1980). Regression Models for Ordinal Data. <em>Journal of the Royal Statistical Society. Series B (Methodological)</em>, 42, 109-142.</p>
+<p>Randall, J (1989). The analysis of sensory data by generalized linear model. <em>Biometrical Journal</em>, 31, 781–793.</p>
 <p>Tutz, G. and Gertheiss, J. (2016). Regularized Regression for Categorical Data (With Discussion and Rejoinder). <em>Statistical Modelling</em>, 16, 161-260. <a href="https://doi.org/10.1177/1471082X16642560" class="uri">https://doi.org/10.1177/1471082X16642560</a></p>
 <p>Ugba, E. R., Mörlein, D. and Gertheiss, J. (2021). Smoothing in Ordinal Regression: An Application to Sensory Data. <em>Stats</em>, 4, 616–633. <a href="https://doi.org/10.3390/stats4030037" class="uri">https://doi.org/10.3390/stats4030037</a></p>
 </div>

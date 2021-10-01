@@ -22,8 +22,6 @@ status](https://github.com/ejikeugba/serp/workflows/R-CMD-check/badge.svg)](http
 [![status](https://joss.theoj.org/papers/6ebd3b75ea792be908f0dadebd7cf81c/status.svg)](https://joss.theoj.org/papers/6ebd3b75ea792be908f0dadebd7cf81c)
 <!-- badges: end -->
 
-Smooth Effects on Response Penalty for CLM
-
 ## Overview
 
 The R package `serp` fits cumulative link models (CLMs) with the
@@ -46,9 +44,10 @@ the implemented penalty.
 
 ## Example
 
-Consider the cumulative logit model of the wine dataset, where the
-rating of wine bitterness is predicted with the two treatment factors,
-temperature and contact.
+Consider the cumulative logit model of the [wine
+dataset](https://ejikeugba.github.io/serp/reference/wine.html), where
+the rating of wine bitterness is predicted with the two treatment
+factors, temperature and contact.
 
 ``` r
 ## The unpenalized non-proportional odds model returns unbounded estimates, hence,
@@ -60,8 +59,8 @@ coef(f1)
 
 ``` r
 ## The penalized non-proportional odds model with a user-supplied lambda gives 
-## a fully identified model with bounded estimates. A suitable tuning criterion
-## could as well be used to select lambda (e.g., cv) 
+## a fully identified model having bounded estimates. A suitable tuning criterion
+## could as well be used to select lambda (e.g., aic or cv) 
 f2 <- serp(rating ~ temp + contact, slope = "penalize",
            link = "logit", reverse = TRUE, tuneMethod = "user",
            lambda = 1e1 ,data = wine)
@@ -78,24 +77,22 @@ coef(f3)
 ```
 
 ``` r
-## The unpenalized proportional odds model with constrained estimates. Using a 
-## very strong lambda in f2 will result in estimates equal to estimates in f4.
+## The unpenalized proportional odds model with constrained estimates. 
+## Under estreme shrinkage, estimates in f2 equal those in this model.  
 f4 <-  serp(rating ~ temp + contact, slope = "parallel",
             reverse = FALSE, link = "logit", data = wine)
 summary(f4)
 ```
 
-## Installation and Use:
+## Installation and Use
 
 ### Dependencies
 
-Before installing `serp` please note that -
+Before installing `serp` please ensure to have
 \[[R](https://cran.r-project.org/bin/windows/base/)\] version 1.1-4 or
-higher is required - few imports are made from the `ordinal` and `stats`
-R packages, thus, pre-installed.
-
-See the Description file for list of all external packages associated
-with `serp`
+higher installed. Moreover, imports from the R `ordinal` and `stats`
+packages requires having these packages prior installed. See the
+Description file for more details on dependencies.
 
 ### Install Instructions
 
@@ -114,7 +111,9 @@ if (!require("devtools")) install.packages("devtools")
 devtools::install_github("ejikeugba/serp")
 ```
 
-## Loading:
+### Loading
+
+Load `serp` into R environment with:
 
 ``` r
 library(serp)
@@ -122,14 +121,11 @@ library(serp)
 
 ## Community Guidelines
 
--   Contributing:
-    -   Pull requests are welcome and will be included at the discretion
-        of the maintainer. Please submit your contribution to \[serp\]
-        through the list of \[Pull Requests\]!
--   Reporting issues and/or seeking support:
-    -   Please file a new ticket in the
-        \[[issue](https://github.com/ejikeugba/serp/issues)\] tracker -
-        expect a feedback ASAP!
+Pull requests are welcomed and will be included at the discretion of the
+maintainer. Please submit your contributions to `serp` through the list
+of `Pull Requests`. To report issues and/or seek support, please file a
+new ticket in the \[[issue](https://github.com/ejikeugba/serp/issues)\]
+tracker, and expect a feedback ASAP!
 
 ## Code of Conduct
 
@@ -137,11 +133,13 @@ Please note that `serp` is released with a [Contributor Code of
 Conduct](https://github.com/ejikeugba/serp/blob/master/CODE_OF_CONDUCT.md).
 By contributing to this project, you agree to abide by its terms.
 
-## References:
+## References
 
 McCullagh, P. (1980). Regression Models for Ordinal Data. *Journal of
-the Royal Statistical Society. Series B (Methodological)*, 42,
-pp. 109-142.
+the Royal Statistical Society. Series B (Methodological)*, 42, 109-142.
+
+Randall, J (1989). The analysis of sensory data by generalized linear
+model. *Biometrical Journal*, 31, 781–793.
 
 Tutz, G. and Gertheiss, J. (2016). Regularized Regression for
 Categorical Data (With Discussion and Rejoinder). *Statistical

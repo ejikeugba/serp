@@ -93,7 +93,7 @@ Before installing `serp`, it is encouraged to have a recent version of
 expect an automatic installation of the `ordinal` and `stats` R packages
 if not already installed.
 
-### Install Instructions
+### Installation
 
 The released version of `serp` can be installed from
 [CRAN](https://cran.r-project.org/package=serp) with:

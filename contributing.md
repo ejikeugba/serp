@@ -42,7 +42,7 @@ Before you start:
 * Run **all** the tests to assure nothing else was accidentally broken, also keep an eye on the test coverage metric.
 * Commit to git, and then create a PR by running `usethis::pr_push()`, and following the prompts in your browser
     
-## Copyright protection
+## Copyright issues
  
 * On submission, it is crucial your PR include the following statement: You own the copyright on the code being contributed, and you hereby grant `serp` repo cph unlimited license to use this code in this version or any future version of `serp`. You reserve all other rights to the code.
 * It may not be advisable to contribute third party codes to this project. Useful suggestions are nonetheless welcomed.

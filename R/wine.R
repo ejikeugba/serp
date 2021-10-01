@@ -37,7 +37,7 @@
 #' @source Taken from Randall (1989).
 #' @references
 #' Randall, J (1989). The analysis of sensory data by generalized linear
-#'     model. \emph{Biometrical journal 7}, pp. 781--793.
+#'     model. \emph{Biometrical Journal}, 31, 781--793.
 #'
 #' @examples
 #'

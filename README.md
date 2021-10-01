@@ -88,11 +88,10 @@ summary(f4)
 
 ### Dependencies
 
-Before installing `serp` please ensure to have
-\[[R](https://cran.r-project.org/bin/windows/base/)\] version 1.1-4 or
-higher installed. Moreover, imports from the R `ordinal` and `stats`
-packages requires having these packages prior installed. See the
-Description file for more details on dependencies.
+Before installing `serp`, it is encouraged to have a recent version of
+\[[R](https://cran.r-project.org/bin/windows/base/)\] installed. Also
+expect an automatic installation of the `ordinal` and `stats` R packages
+if not already installed.
 
 ### Install Instructions
 

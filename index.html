@@ -91,7 +91,11 @@
 <!-- badges: start -->
 
 <p>Smooth Effects on Response Penalty for CLM</p>
-<p>A regularization method for the cumulative link models (CLM). The ‘serp’ function applies the ‘smooth-effect-on-response penalty’ (SERP) on the estimates of the general CLM, causing all subject-specific effects associated with each variable in the model to shrink towards a unique global effect. Fitting is done using a modified Newton’s method. Several standard model performance and descriptive methods are also available. See <a href="https://doi.org/10.3390/stats4030037">Ugba et al., 2021</a> and <a href="https://doi.org/10.1177/1471082X16642560">Tutz and Gertheiss, 2016</a> for more details.</p>
+<div id="overview" class="section level2">
+<h2 class="hasAnchor">
+<a href="#overview" class="anchor"></a>Overview</h2>
+<p>The R package <code>serp</code> fits cumulative link models (CLMs) with the <code>smooth-effect-on-response penalty (SERP)</code>. The <code>cumulative model</code> developed by McCullagh (1980) is probably the most frequently used ordinal model in empirical studies. However, the stochastic ordering property of the general form of the model poses a very serious challenge in most empirical applications of the model. For instance, unstable likelihoods with ill-conditioned parameter space are frequently encountered during the iterative process. <code>serp</code> implements a unique regularization method for CLMs that provides the means of smoothing the adjacent categories in the model. At extreme shrinkage, SERP causes all subject-specific effects associated with each variable in the model to shrink towards unique global effects. Fitting is done using a modified Newton’s method. Several standard model performance and descriptive methods are also available. See <a href="https://doi.org/10.3390/stats4030037">Ugba et al., 2021</a> and <a href="https://doi.org/10.1177/1471082X16642560">Tutz and Gertheiss, 2016</a> for further details on the implemented penalty.</p>
+</div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
@@ -124,16 +128,26 @@
             reverse <span class="op">=</span> <span class="cn">FALSE</span>, link <span class="op">=</span> <span class="st">"logit"</span>, data <span class="op">=</span> <span class="va">wine</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">f4</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="installation" class="section level2">
+<div id="installation-and-use" class="section level2">
 <h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation:</h2>
-<p>The released version of serp can be installed from <a href="https://cran.r-project.org/package=serp">CRAN</a> with:</p>
+<a href="#installation-and-use" class="anchor"></a>Installation and Use:</h2>
+<div id="dependencies" class="section level3">
+<h3 class="hasAnchor">
+<a href="#dependencies" class="anchor"></a>Dependencies</h3>
+<p>Before installing <code>serp</code> please note that - <br><span class="math display">[<em>R</em>](<em>h</em><em>t</em><em>t</em><em>p</em><em>s</em> : //<em>c</em><em>r</em><em>a</em><em>n</em>.<em>r</em> − <em>p</em><em>r</em><em>o</em><em>j</em><em>e</em><em>c</em><em>t</em>.<em>o</em><em>r</em><em>g</em>/<em>b</em><em>i</em><em>n</em>/<em>w</em><em>i</em><em>n</em><em>d</em><em>o</em><em>w</em><em>s</em>/<em>b</em><em>a</em><em>s</em><em>e</em>/)</span><br> version 1.1-4 or higher is required - few imports are made from the <code>ordinal</code> and <code>stats</code> R packages, thus, pre-installed.</p>
+<p>See the Description file for list of all external packages associated with <code>serp</code></p>
+</div>
+<div id="install-instructions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#install-instructions" class="anchor"></a>Install Instructions</h3>
+<p>The released version of <code>serp</code> can be installed from <a href="https://cran.r-project.org/package=serp">CRAN</a> with:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"serp"</span><span class="op">)</span></code></pre></div>
 <p>or the development version from <a href="https://github.com/ejikeugba/serp">GitHub</a> with:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ejikeugba/serp"</span><span class="op">)</span></code></pre></div>
+</div>
 </div>
 <div id="loading" class="section level2">
 <h2 class="hasAnchor">
@@ -141,11 +155,33 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ejikeugba/serp">serp</a></span><span class="op">)</span></code></pre></div>
 </div>
+<div id="community-guidelines" class="section level2">
+<h2 class="hasAnchor">
+<a href="#community-guidelines" class="anchor"></a>Community Guidelines</h2>
+<ul>
+<li>Contributing:
+<ul>
+<li>Pull requests are welcome and will be included at the discretion of the maintainer. Please submit your contribution to <br><span class="math display"><em>s</em><em>e</em><em>r</em><em>p</em></span><br> through the list of <br><span class="math display"><em>P</em><em>u</em><em>l</em><em>l</em><em>R</em><em>e</em><em>q</em><em>u</em><em>e</em><em>s</em><em>t</em><em>s</em></span><br>!</li>
+</ul>
+</li>
+<li>Reporting issues and/or seeking support:
+<ul>
+<li>Please file a new ticket in the <br><span class="math display">[<em>i</em><em>s</em><em>s</em><em>u</em><em>e</em>](<em>h</em><em>t</em><em>t</em><em>p</em><em>s</em> : //<em>g</em><em>i</em><em>t</em><em>h</em><em>u</em><em>b</em>.<em>c</em><em>o</em><em>m</em>/<em>e</em><em>j</em><em>i</em><em>k</em><em>e</em><em>u</em><em>g</em><em>b</em><em>a</em>/<em>s</em><em>e</em><em>r</em><em>p</em>/<em>i</em><em>s</em><em>s</em><em>u</em><em>e</em><em>s</em>)</span><br> tracker - expect a feedback ASAP!</li>
+</ul>
+</li>
+</ul>
+</div>
+<div id="code-of-conduct" class="section level2">
+<h2 class="hasAnchor">
+<a href="#code-of-conduct" class="anchor"></a>Code of Conduct</h2>
+<p>Please note that <code>serp</code> is released with a <a href="https://github.com/ejikeugba/serp/blob/master/CODE_OF_CONDUCT.md">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
+</div>
 <div id="references" class="section level2">
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References:</h2>
-<p>Ugba, E. R., Mörlein, D. and Gertheiss, J. (2021). Smoothing in Ordinal Regression: An Application to Sensory Data. <em>Stats</em>, 4, 616–633. <a href="https://doi.org/10.3390/stats4030037" class="uri">https://doi.org/10.3390/stats4030037</a></p>
+<p>McCullagh, P. (1980). Regression Models for Ordinal Data. <em>Journal of the Royal Statistical Society. Series B (Methodological)</em>, 42, pp. 109-142.</p>
 <p>Tutz, G. and Gertheiss, J. (2016). Regularized Regression for Categorical Data (With Discussion and Rejoinder). <em>Statistical Modelling</em>, 16, 161-260. <a href="https://doi.org/10.1177/1471082X16642560" class="uri">https://doi.org/10.1177/1471082X16642560</a></p>
+<p>Ugba, E. R., Mörlein, D. and Gertheiss, J. (2021). Smoothing in Ordinal Regression: An Application to Sensory Data. <em>Stats</em>, 4, 616–633. <a href="https://doi.org/10.3390/stats4030037" class="uri">https://doi.org/10.3390/stats4030037</a></p>
 </div>
 </div>
   </div>

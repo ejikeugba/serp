@@ -136,9 +136,11 @@ By contributing to this project, you agree to abide by its terms.
 
 McCullagh, P. (1980). Regression Models for Ordinal Data. *Journal of
 the Royal Statistical Society. Series B (Methodological)*, 42, 109-142.
+<https://doi.org/10.1111/j.2517-6161.1980.tb01109.x>
 
 Randall, J (1989). The analysis of sensory data by generalized linear
 model. *Biometrical Journal*, 31, 781–793.
+<https://doi.org/10.1002/bimj.4710310703>
 
 Tutz, G. and Gertheiss, J. (2016). Regularized Regression for
 Categorical Data (With Discussion and Rejoinder). *Statistical

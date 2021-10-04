@@ -121,8 +121,9 @@ library(serp)
 ## Community Guidelines
 
 Pull requests are welcomed and will be included at the discretion of the
-maintainer. Please submit your contributions to `serp` through the list
-of `Pull Requests`. To report issues and/or seek support, please file a
+maintainer. Please submit your contributions to `serp` through the 
+`Pull Requests` tab, and also take note of the [contributing guidlines](https://github.com/ejikeugba/serp/blob/master/contributing.md). 
+To report issues and/or seek support, please file a
 new ticket in the [issue](https://github.com/ejikeugba/serp/issues)
 tracker, and expect a feedback ASAP!
 

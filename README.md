@@ -89,7 +89,7 @@ summary(f4)
 ### Dependencies
 
 Before installing `serp`, it is encouraged to have a recent version of
-\[[R](https://cran.r-project.org/bin/windows/base/)\] installed. Also
+[R](https://cran.r-project.org/bin/windows/base/) installed. Also
 expect an automatic installation of the `ordinal` and `stats` R packages
 if not already installed.
 

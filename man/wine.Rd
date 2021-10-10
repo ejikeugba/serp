@@ -55,6 +55,7 @@ head(wine)
 }
 \references{
 Randall, J (1989). The analysis of sensory data by generalized linear
-    model. \emph{Biometrical journal 7}, pp. 781--793.
+    model. \emph{Biometrical Journal}, 31, 781--793.
+    https://doi.org/10.1002/bimj.4710310703
 }
 \keyword{dataset}

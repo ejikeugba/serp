@@ -44,7 +44,7 @@ Before you start:
     
 ## Copyright issues
  
-* On submission, it is crucial your PR include the following statement: You own the copyright on the code being contributed, and you hereby grant `serp` repo cph unlimited license to use this code in this version or any future version of `serp`. You reserve all other rights to the code.
+* On submission, it is crucial your PR includes the following statement: You own the copyright on the code being contributed, and you hereby grant `serp` repo cph unlimited license to use this code in this version or any future version of `serp`. You reserve all other rights to the code.
 * It may not be advisable to contribute third party codes to this project. Useful suggestions are nonetheless welcomed.
 * The Pull Requests are thereafter reviewed, with feedbacks communicated as soon as possible.
 

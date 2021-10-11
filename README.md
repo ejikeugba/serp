@@ -123,7 +123,7 @@ library(serp)
 Pull requests are welcomed and will be included at the discretion of the
 maintainer. Please submit your contributions to `serp` through the list
 of `Pull Requests`. To report issues and/or seek support, please file a
-new ticket in the \[[issue](https://github.com/ejikeugba/serp/issues)\]
+new ticket in the [issue](https://github.com/ejikeugba/serp/issues)
 tracker, and expect a feedback ASAP!
 
 ## Code of Conduct

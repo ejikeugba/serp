@@ -240,9 +240,7 @@ test_that("error messages and warnings report properly",
                    reverse = TRUE,
                    lambdaGrid = 10^seq(-1, 2, length.out=2),
                    data = test_data2),
-              "Stochastic ordering assumption failed.
-    Consider using the penalized, parallel or partial slope,
-    or other link functions.")
+              "Stochastic ordering assumption failed. Consider using the penalized, parallel or partial slope, or other link functions.")
 
 
             set.seed(1)

@@ -26,13 +26,13 @@ print.serp <- function(x, ...)
 
   if (max.tun){
     cat("\n")
-    cat("* optimal tuning obtained at lambda grid upper limit\n")
+    message("* optimal tuning obtained at lambda grid upper limit\n")
   }
   na.ac <- length(object$na.action)
   if (na.ac > 0){
     cat("\n")
-    cat("\n---",na.ac,"observation(s) deleted due to ",
-        "missingness","---", "\n")
+    message("\n--- ",na.ac," observation(s) deleted due to ",
+            "missingness ","---", "\n")
   }
   invisible(object)
 }
@@ -75,12 +75,12 @@ print.summary.serp <- function(x, ...){
   if (object$slope == 'penalize') max.tun <- penalty.print(object, max.tun)
   if (max.tun){
     cat("\n")
-    cat("* optimal tuning obtained at lambda grid upper limit\n")
+    message("* optimal tuning obtained at lambda grid upper limit\n")
   }
   if (na.ac > 0){
     cat("\n")
-    cat("\n---",na.ac,"observation(s) deleted due to ",
-        "missingness","---", "\n")
+    message("\n--- ",na.ac," observation(s) deleted due to ",
+            "missingness ","---", "\n")
   }
   invisible(object)
 }

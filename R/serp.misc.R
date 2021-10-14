@@ -471,8 +471,8 @@ penalty.print <- function(object, max.tun)
         max.tun <- TRUE
       } else cat("\nlambda:","    " , h2)
     } else cat("\nlambda:","    " , h2)
-  } else cat("\nno subject-specific effects found, ",
-             "parallel slope(s) returned\n")
+  } else message("\nno subject-specific effects found, ",
+             "parallel slope(s) returned!\n")
   cat("\n")
   return(max.tun)
 }

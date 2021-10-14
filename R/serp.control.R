@@ -79,15 +79,12 @@ serp.control <- function(
   int.lambdaGrid <- c(10^seq((log(maxpen)/log(10)), -2, length.out=grid.length), 0)
   msg <- structure(list(
     "0" = "Absolute and relative convergence criteria satisfied",
-    "1" = "Absolute convergence criterion satisfied, but relative, criterion
-    was not satisfied",
+    "1" = "Absolute convergence criterion satisfied, but relative criterion was not satisfied",
     "2" = "Maximum iteration limit reached",
     "3" = "Maximum number of step-half iteration limit reached",
     "4" = "Maximum number of Newton adjustments reached",
     "5" = "Iteration process abruptly ended",
-    "s" = "  Stochastic ordering assumption failed.
-    Consider using the penalized, parallel or partial slope,
-    or other link functions."
+    "s" = "  Stochastic ordering assumption failed. Consider using the penalized, parallel or partial slope, or other link functions."
   ))
   list(maxits = as.integer(maxits), eps = eps, minP = minP,
        maxpen = maxpen, maxAdjIter = as.integer(maxAdjIter),

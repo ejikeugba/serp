@@ -343,10 +343,10 @@ serp.fit <- function(lambda, x, y, wt, startval, xlst,
     warning(control$msg[as.character("s")])
   msg <- control$msg[as.character(conv)][[1L]]
   if(conv <= 1L && control$trace > 0L && xtrace) {
-    message("\nSuccessful convergence!\n", msg) #, fill = TRUE
+    message("\nSuccessful convergence!\n", msg)
   }
   if(conv > 1 && control$trace > 0L && xtrace) {
-    message("\nOptimization failed!\n", msg) #, fill = TRUE
+    message("\nOptimization failed!\n", msg)
   }
   df <- df.serp(fvalues, xMat, penx, nL)
   res <- c(list(coef = delta, loglik = loglik, info = info, score = score,

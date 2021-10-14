@@ -361,3 +361,4 @@ logLik.serp <- function(object, ...)
 {
   object$logLik
 }
+

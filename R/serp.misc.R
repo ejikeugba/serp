@@ -516,3 +516,4 @@ est.names <- function(coefs, slope, globalEff, colnames.x, x, m, npar,
   }
   coefs
 }
+

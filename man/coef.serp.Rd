@@ -2,9 +2,12 @@
 % Please edit documentation in R/serp.method.R
 \name{coef.serp}
 \alias{coef.serp}
+\alias{coefficients.serp}
 \title{Coefficients for a fitted serp object}
 \usage{
 \method{coef}{serp}(object, ...)
+
+\method{coefficients}{serp}(object, ...)
 }
 \arguments{
 \item{object}{An object of class \code{serp}.}

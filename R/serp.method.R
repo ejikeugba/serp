@@ -339,7 +339,8 @@ coef.serp <- function(object, ...)
 {
   object$coef
 }
-
+#' @rdname coef.serp
+coefficients.serp <- coef.serp
 
 #' Log-likelihood for a fitted serp object
 #'

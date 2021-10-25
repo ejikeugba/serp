@@ -1,15 +1,23 @@
-# serp 0.2.1
+## serp 0.2.2
+- JOSS release
+- minor changes in serp documentation
+- provide coefficient() as an alias for coef()
+- update README.md to include community guidelines and contributors code of conduct
+- 
+
+---
+## serp 0.2.1
 - submission to CRAN
 
 ---
-# serp 0.2.0.9001
+## serp 0.2.0.9001
 - update function included in namespace
 - examples included in the different function documentation
 - shrinkage parameter upper limit set to 1e10 in serp.control
 - bug fix in test function
 
 ---
-# serp 0.2.0.9000 
+## serp 0.2.0.9000 
 - deviance tuning option in serp tuneMethod now replaced by AIC 
 - serp output includes residual degrees of freedom (rdf)
 - function to compute the effective degrees of freedom and rdf from the trace of the generalized hat matrix provided
@@ -18,46 +26,46 @@
 - changes made in README.Rmd and README.md
 
 ---
-# serp 0.2.0
+## serp 0.2.0
 - serp version 0.2.0 release
 
 ---
-# serp 0.1.9.9001
+## serp 0.1.9.9001
 - re-submission to CRAN
 
 ---
-# serp 0.1.9.9000
+## serp 0.1.9.9000
 - fixed all issues spotted out in the last version released on CRAN.  
 
 ---
-# serp 0.1.9
+## serp 0.1.9
 - Submit serp version 0.1.9 to CRAN
 
 ---
-# serp 0.1.8.9007
+## serp 0.1.8.9007
 - updates README.md
 - description gets additional doi
 - references in serp documentation updated
 
 ---
-# serp 0.1.8.9006
+## serp 0.1.8.9006
 - Bugs in tests fixed
 
 ---
-# serp 0.1.8.9005
+## serp 0.1.8.9005
 - tests reconstructed to yield improved unit test coverage.
 - rewrote some of the error and warning messages in key serp functions.
 - Bugs in anova.serp fixed.
 - 
 
 ---
-# serp 0.1.8.9004
+## serp 0.1.8.9004
 - update License in the description 
 - Bugs in the example codes fixed
 - Bugs in test files corrected
 
 ---
-# serp 0.1.8.9003
+## serp 0.1.8.9003
 - Column titles of predicted values with reverse TRUE are corrected.
 - Bugs in the deviance (dvfun) are corrected.
 - serp predict function now handles both single and multiple row input(s).
@@ -72,7 +80,7 @@
 - predicted values in errorMetrics get normalized for greater efficiency.
 
 ---
-# serp 0.1.8.9002
+## serp 0.1.8.9002
 - warning messages in serpfit get updated.
 - Bug in serpfit when specifying gridType corrected.
 - trainError no longer shows up in serp output.
@@ -86,15 +94,15 @@
 - updates in serp.control warning messages.
 
 ---
-# serp 0.1.8.9001
+## serp 0.1.8.9001
 - serp gets a new license.
 
 ---
-# serp 0.1.8.9000
+## serp 0.1.8.9000
 * README.md gets additional badges and a hexagon sticker
 
 ---
-# serp 0.1.8
+## serp 0.1.8
 * package re-submission to CRAN
 
 - reference to methods used in the package is included in the  description field

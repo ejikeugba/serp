@@ -1,29 +1,38 @@
 citHeader("To cite serp in publications use:")
 
-bibentry(bibtype = "Article",
-  title        = "{serp}: An {R} package for smoothing in ordinal regression",
-  author       = person(given = c("Ejike", "R."),
-                        family = "Ugba"),
+citEntry(entry = "Article",
+  title        = "serp: An R package for smoothing in ordinal regression",
+  author       = personList(as.person("Ugba E. R.")),
   journal      = "Journal of Open Source Software",
   year         = "2021",
   volume       = "6",
   number       = "66",
   pages        = "3705",
-  url          = "https://doi.org/10.21105/joss.03705"
+  url          = "https://doi.org/10.21105/joss.03705",
+
+  textVersion  =
+  paste("Ugba, E. R. (2021).",
+        "serp: An R package for smoothing in ordinal regression",
+        "Journal of Open Source Software, 6(66), 3705.",
+        "https://doi.org/10.21105/joss.03705")
 )
 
-bibentry(bibtype = "Article",
+
+citEntry(entry = "Article",
   title        = "Smoothing in ordinal regression: An application to sensory data",
-  author       = c(person(given = c("Ejike", "R."),
-                          family = "Ugba"),
-                   person(given = c("Daniel"),
-                          family = "{M{\"o}rlein}"),
-                   person(given = c("Jan"),
-                          family = "Gertheiss")),
+  author       = personList(as.person("Ugba E. R."),
+                            as.person("{M{\"o}rlein} D."),
+                            as.person("Gertheiss J.")),
   journal      = "Stats",
   year         = "2021",
   volume       = "4",
   number       = "3",
   pages        = "616--633",
-  url          = "https://doi.org/10.3390/stats4030037"
+  url          = "https://doi.org/10.3390/stats4030037",
+
+  textVersion  =
+  paste("Ugba, E. R., Mörlein, D., and Gertheiss, J. (2021).",
+        "Smoothing in ordinal regression: An application to sensory data.",
+        "Stats, 4(3), 616--633.", "https://doi.org/10.3390/stats4030037")
 )
+

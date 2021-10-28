@@ -1,6 +1,6 @@
 citHeader("To cite serp in publications use:")
 
-citEntry(entry = "Article",
+bibentry(bibtype = "Article",
   title        = "{serp}: An {R} package for smoothing in ordinal regression",
   author       = person(given = c("Ejike", "R."),
                         family = "Ugba"),
@@ -12,7 +12,7 @@ citEntry(entry = "Article",
   url          = "https://doi.org/10.21105/joss.03705"
 )
 
-citEntry(entry = "Article",
+bibentry(bibtype = "Article",
   title        = "Smoothing in ordinal regression: An application to sensory data",
   author       = c(person(given = c("Ejike", "R."),
                           family = "Ugba"),

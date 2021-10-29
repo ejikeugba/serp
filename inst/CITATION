@@ -1,4 +1,4 @@
-citHeader("To cite serp in publications use:")
+citHeader("To cite serp package in publications use:")
 
 citEntry(entry = "Article",
   title        = "serp: An R package for smoothing in ordinal regression",

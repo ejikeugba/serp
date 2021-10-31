@@ -7,7 +7,7 @@
 \usage{
 \method{coef}{serp}(object, ...)
 
-\method{coefficients}{serp}(object, ...)
+coefficients.serp(object, ...)
 }
 \arguments{
 \item{object}{An object of class \code{serp}.}

@@ -4,7 +4,7 @@
 \alias{logLik.serp}
 \title{Log-likelihood for a fitted serp object}
 \usage{
-\method{logLik}{serp}(object, ...)
+logLik.serp(object, ...)
 }
 \arguments{
 \item{object}{An object of class \code{serp}.}

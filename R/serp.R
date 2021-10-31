@@ -337,14 +337,9 @@ serp <- function(
     tuneMethod <- "user"
     lambda <- 0L
   } else vnull <- FALSE
-  if (is.null(dim(x))){
-    x <- cbind(x)
-    colnames(x) <- colnames(m)[-1L]
-  }
   cons <- attr(x, "contrasts")
   mslope <- slope
   nvar <- ifelse(!vnull, dim(x)[2L] - 1L, dim(x)[2L])
-  if (obs != dim(x)[1L]) stop("variable lengths unequal")
   yMtx <- yMx(y, obs, nL)
   ans <- serpfit(x, y, wt, yMtx, link, slope, reverse, control,
                  Terms, lambda, lambdaGrid, gridType, tuneMethod,

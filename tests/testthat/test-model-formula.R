@@ -33,4 +33,10 @@ test_that("response exist, is not in predictor or in 'GlobalEff'",
          slope = "penalize", reverse=TRUE, tuneMethod = "cv",
          globalEff = ~rating, data = wine),
     "response not allowed in 'globalEff'")
+
+  expect_error(
+    serp(rating ~ temp + contact, link = "logit",
+         slope = "penalize", reverse=TRUE, tuneMethod = "aic",
+         globalEff = ~"rating", data = wine),
+    "variable name in quotes not allowed in globalEff")
 })

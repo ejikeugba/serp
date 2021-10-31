@@ -4,7 +4,7 @@
 \alias{confint.serp}
 \title{Confidence interval for a fitted serp object}
 \usage{
-\method{confint}{serp}(object, ..., parm, level = 0.95)
+confint.serp(object, ..., parm, level = 0.95)
 }
 \arguments{
 \item{object}{An object of class \code{serp}.}

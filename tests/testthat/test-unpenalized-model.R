@@ -25,7 +25,7 @@ test_that("cumulative model via serp matches with vglm",
             expect_equal(pred.sp, pred.vm, check.attributes=FALSE,
                          tolerance=tol)
 
-            expect_error(serp:::anova.serp(sp, sp),
+            expect_error(anova.serp(sp, sp),
                          "duplicate object names are not allowed")
 
             rm(sp, vm, pred.sp, pred.vm)
@@ -69,14 +69,14 @@ test_that("cumulative model via serp matches with vglm",
 
             #5# partial or semi-parallel slope with cauchit link
             sp <- serp(rating ~ temp * contact, slope = "partial",
-                       link = "cauchit", globalEff= ~temp, data = serp::wine)
+                       link = "cauchit", globalEff= ~ temp, data = wine)
             vm <- vglm(rating ~ temp * contact,
                        family=cumulative(link="cauchitlink", parallel=FALSE ~contact),
-                       data = serp::wine)
+                       data = wine)
             dev.sp <- deviance(sp)
             dev.vm <- deviance(vm)
 
-            cof.sp <- summary(sp)$coefficient[,1L]
+            cof.sp <- coef(sp)
             cof.vm <- coef(vm)
             expect_equal(cof.sp, cof.vm, check.attributes=FALSE,
                          tolerance=1e-06)
@@ -90,7 +90,17 @@ test_that("cumulative model via serp matches with vglm",
               serp(rating ~ temp * contact, slope = "partial",
                    link = "cauchit", data = wine),
               "'globalEff' is unspecified")
+            expect_error(
+              serp(rating ~ temp * contact, slope = "partial",
+                   link = "cauchit", globalEff= ~1, data = wine),
+              "wrong input in 'globalEff'")
 
+            sdat <- wine
+            sdat$extra <- 1:72
+            expect_error(
+              serp(rating ~ temp * contact, slope = "partial",
+                   link = "cauchit", globalEff= ~extra, data = sdat),
+              "unknown variable in globalEff")
 
-            rm(sp, vm, dev.sp, dev.vm, cof.sp, cof.vm, tol)
+            rm(sp, vm, dev.sp, dev.vm, cof.sp, cof.vm, sdat, tol)
           })

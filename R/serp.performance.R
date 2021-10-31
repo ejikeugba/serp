@@ -1,29 +1,29 @@
-#' Performance metrics for categorical models
+#' Performance metrics for categorical response models
 #'
-#' @description Calculates performance metrics of fitted categorical models,
-#' including binary and multi-categorical models. Metrics calculated include the
-#' brier score, log loss and misclassification error.
+#' @description Calculates the performance metrics of fitted binary and
+#' multi-categorical response models. Available measures include: brier score,
+#' logloss and misclassification error.
 #'
 #' @usage errorMetrics(
 #'              actual,
 #'              predicted,
-#'              model= c("multiclass", "binary"),
 #'              type= c("brier", "logloss", "misclass"),
-#'              eps=.Machine$double.eps)
+#'              control = list())
 #' @param actual vector of actual values observed
 #' @param predicted predicted probability matrix of a categorical model or a
 #'   vector of fitted values for binary models.
-#' @param model specifies whether multi-categorical or binary model
-#' @param type specifies type of error metrics
-#' @param eps a near-zero value introduced only if the fitted probabilities go
-#'   beyond a specified threshold. It helps to minimize the chances of running
-#'   into numerical problems.
-#' @return A numeric value of computed performance metric determining how
-#' good a categorical model is compare to competing models.
+#' @param type specifies the type of error metrics.
+#' @param control A list of control parameters to replace default values
+#'   returned by \code{serp.control}. 'misclass.thresh' resets the default
+#'   misclassification error threshold, while 'minP' assigns a near-zero constant
+#'   value to the predicted values beyond certain threshold, to forestall chances
+#'   of numerical problems.
+#' @return A numeric value of the selected error type determining how
+#' good a categorical model compares to competing models.
 #' \describe{
-#'   \item{brier}{the brier score of fitted model.}
-#'   \item{logloss}{the logloss of fitted model.}
-#'   \item{misclass}{the misclassification error of fitted model.}
+#'   \item{value}{the value of error measure computed.}
+#'   \item{type}{the error measure used: any of brier, logLoss or misclassification error.}
+#'   \item{threshold}{the misclassification threshold.}
 #'}
 #'
 #' @seealso
@@ -32,43 +32,48 @@
 #'
 #' @examples
 #'
-#' f1 <- serp(rating ~ temp + contact, tuneMethod = "user",
-#' slope = "penalize", lambda = 0.3, reverse = TRUE, link = "logit",
-#' data = wine)
-#' errorMetrics(f1, type = "brier")
-#' errorMetrics(f1, type = "logloss")
-#' errorMetrics(f1, type = "misclass")
+#' require(serp)
 #'
-#' ## For non-serp object of class, 'actual'  and 'predicted' values
-#' ## must be provided
-#' set.seed(1)
-#' y <- as.factor(rbinom(50,1,0.5))
-#' xx <- runif(50)
-#' f2 <- glm(y ~ xx, family = binomial(link="logit"))
-#' p2 <- f2$fitted.values
+#' m1 <- serp(rating ~ temp + contact, slope = "parallel", link = "logit", data = wine)
+#' errorMetrics(m1, type = "brier")
 #'
-#' errorMetrics(actual=y, predicted=p2, model= "binary", type = "brier")
-#' errorMetrics(actual=y, predicted=p2, model= "binary", type = "logloss")
-#' errorMetrics(actual=y, predicted=p2, model= "binary", type = "misclass")
+#' ## objects of class other than \code{serp} require the actual
+#' ## observations with corresponding predicted values supplied.
+#'
+#' set.seed(2)
+#' n <- 50
+#' y <- as.factor(rbinom(n, 1, 0.5))
+#' m2 <- glm(y ~ rnorm(n), family = binomial())
+#' ft <- m2$fitted.values
+#'
+#' errorMetrics(actual=y, predicted=ft, type = "logloss")
+#' errorMetrics(actual=y, predicted=ft, type = "misclass")
+#'
+#' ## Reset classification threshold
+#' errorMetrics(actual=y, predicted=ft, type = "misclass",
+#' control = list(misclass.thresh=0.4))
 #'
 #' @export
 #'
 errorMetrics <- function(
   actual,
   predicted,
-  model = c("multiclass", "binary"),
   type = c("brier", "logloss", "misclass"),
-  eps = .Machine$double.eps)
+  control = list())
 {
-  model <- match.arg(model)
   type <- match.arg(type)
+  control <- do.call("serp.control", control)
   y <- actual
   if (inherits(y, "serp")){
     obj <- y
     y <- factor(y$model[,1L])
     pred_y <- obj$fitted.values
+  } else {
+    if (missing(actual) || missing(predicted))
+      stop("please provide actual and predicted values of fit!")
+    y <- actual
+    pred_y <- predicted
   }
-  else pred_y <- predicted
   if (!is.factor(y))
     stop("'actual' must be a factor")
   y <- droplevels(y)
@@ -77,7 +82,8 @@ errorMetrics <- function(
   NAs <- 0
   if (nL < 2)
     stop("actual observations must have two or more levels")
-  if (model=="multiclass"){
+  category <- if (nL > 2) "multiclass" else "binary"
+  if (category=="multiclass"){
     if (is.null(ncol(pred_y)))
       stop("supply either a matrix or ",
            "dataframe of fitted values")
@@ -103,11 +109,12 @@ errorMetrics <- function(
     NAs <- obs - newobs
     obs <- newobs
   }
+  eps <- control$minP
   pred_y[pred_y < eps] <- eps
   pred_y[pred_y > 1-eps] <- 1-eps
-  pred_y <- if (model=="multiclass") pred_y/rowSums(pred_y) else pred_y
+  pred_y <- if (category=="multiclass") pred_y/rowSums(pred_y) else pred_y
   switch(
-    model,
+    category,
     binary={
       if (type=="brier"){
         y <- as.integer(y) - 1L
@@ -119,8 +126,7 @@ errorMetrics <- function(
       if (type=="misclass"){
         y <- factor(y)
         ylevs <- levels(y)
-        rr <- factor(max.col(pred_y), levels = seq_along(ylevs),
-                     labels = ylevs)
+        rr <- ifelse(pred_y > control$misclass.thresh, 1, 0)
         value <- mean(y!=rr)}
     },
     multiclass={
@@ -143,5 +149,10 @@ errorMetrics <- function(
     })
   if (NAs > 0)
     warning(NAs," ", "observation(s) deleted ","due to missingness")
-  value
+
+  res <- list(value=value, type=type)
+  if (category == "binary" && type == "misclass")
+    res$threshold <- control$misclass.thresh
+  class(res) <- "errorMetrics"
+  res
 }

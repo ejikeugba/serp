@@ -4,7 +4,7 @@
 \alias{vcov.serp}
 \title{Variance covariance matrix for a fitted serp object}
 \usage{
-\method{vcov}{serp}(object, ...)
+vcov.serp(object, ...)
 }
 \arguments{
 \item{object}{An object of class \code{serp}.}
@@ -20,7 +20,7 @@ Provides the Variance covariance matrix of an object of class \code{serp}.
 \examples{
 library(serp)
 m <- serp(rating ~ temp + contact, slope = "parallel", link = "logit",
-           data = wine)
+           data = serp::wine)
 vcov(m)
 
 }

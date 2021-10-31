@@ -345,8 +345,7 @@ cvfun <- function(lambda, x, y, nrFold, linkf, link, m, slope, globalEff,
         ts.y <- droplevels(ts.y)
         pr <- pr[, which(dplv %in% lv), drop = FALSE]
       }
-      pm <- errorMetrics(ts.y, pr, type = cverror)
-
+      pm <- errorMetrics(ts.y, pr, type = cverror)$value
     } else pm <- NA
     err[r, ] <- pm
   }
@@ -442,37 +441,33 @@ penalty.print <- function(object, max.tun)
       h1 <- round(as.numeric(object$value), 6L)
     h2 <- round(as.numeric(object$lambda), 5L)
   }
-  cat("\nRegularization Info:")
-  if (!length(colnames(object$model)[-1L]) ==
-      length(object$globalEff)){
-    cat("\npenalty:", "  "," SERP")
-    cat("\ntuneMethod:","" , tun)
-    if (tun == "cv"){
-      cat("\ncvMetric:",  "  ", object$cvMetric)
-      cat("\ntestError:"," " , h1)
+  cat(crayon::green("\nRegularization Info:"))
+  cat("\npenalty:", "  "," SERP")
+  cat("\ntuneMethod:","" , tun)
+  if (tun == "cv"){
+    cat("\ncvMetric:",  "  ", object$cvMetric)
+    cat("\ntestError:"," " , h1)
+  }
+  if (tun == "finite"){
+    if (is.na(h1)) cat("\nvalue:","     " , h1)
+    else cat("\nvalue:","    " , h1)
+  }
+  if (tun == "aic" || tun == "user")
+    cat("\nvalue:","     " , h1)
+  if (tun == "cv" || tun == "aic"){
+    if (is.null(object$gridType)){
+      len.lamG <- length(object$lambdaGrid)
+      max.lam <- round(max(object$lambdaGrid))
+    } else {
+      len.lamG <- 2L
+      max.lam <- round(object$control$maxpen)
     }
-    if (tun == "finite"){
-      if (is.na(h1)) cat("\nvalue:","     " , h1)
-      else cat("\nvalue:","    " , h1)
-    }
-    if (tun == "aic" || tun == "user")
-      cat("\nvalue:","     " , h1)
-    if (tun == "cv" || tun == "aic"){
-      if (is.null(object$gridType)){
-        len.lamG <- length(object$lambdaGrid)
-        max.lam <- round(max(object$lambdaGrid))
-      } else {
-        len.lamG <- 2L
-        max.lam <- round(object$control$maxpen)
-      }
-      if (!is.na(h2) && len.lamG > 1L &&
-          round(h2) >= max.lam){
-        cat("\nlambda:","    " , h2,'*')
-        max.tun <- TRUE
-      } else cat("\nlambda:","    " , h2)
+    if (!is.na(h2) && len.lamG > 1L &&
+        round(h2) >= max.lam){
+      cat("\nlambda:","    " , h2,'*')
+      max.tun <- TRUE
     } else cat("\nlambda:","    " , h2)
-  } else message("\nno subject-specific effects found, ",
-             "parallel slope(s) returned!\n")
+  } else cat("\nlambda:","    " , h2)
   cat("\n")
   return(max.tun)
 }
@@ -516,4 +511,3 @@ est.names <- function(coefs, slope, globalEff, colnames.x, x, m, npar,
   }
   coefs
 }
-

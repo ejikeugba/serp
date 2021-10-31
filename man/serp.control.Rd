@@ -15,6 +15,7 @@ serp.control(
              nrFold = 5e0,
              cv.seed = 1e01,
              grid.length = 5e01,
+             misclass.thresh = 5e-01,
              minP = .Machine$double.eps,
              ...)
 }
@@ -49,6 +50,9 @@ tuning.}
 
 \item{grid.length}{the length of the discrete lambda grid for the penalty
 method.}
+
+\item{misclass.thresh}{to reset the classification threshold in
+\code{errorMetrics} when \code{type} is 'misclass'.}
 
 \item{minP}{A near zero minimum value the fitted probabilities are allowed
 to get during iteration to prevent numerical instability .}

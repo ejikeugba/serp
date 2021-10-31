@@ -13,7 +13,7 @@
 #' @examples
 #' library(serp)
 #' m <- serp(rating ~ temp + contact, slope = "parallel", link = "logit",
-#'            data = wine)
+#'            data = serp::wine)
 #' vcov(m)
 #'
 #' @export
@@ -25,11 +25,8 @@ vcov.serp <- function(object, ...){
   mlist <- list(object, ...)
   mc <- unlist(lapply(mlist, class))
   mclass <- all(mc == "serp")
-  if (!mclass) stop("input must be an object(s) of class 'serp'")
+  if (!mclass) stop("input must be an object of class 'serp'")
   if (length(mc) > 1L) stop("one object at a time allowed", call. = FALSE)
-
-  if (!inherits(object, "serp"))
-    stop("not a \"serp\" object", call. = FALSE)
   H <- cbind(object$hess[,seq_len(ncol(object$hess))])
   cholHx <- try(chol(H), silent = TRUE)
   if (inherits(cholHx, "try-error"))

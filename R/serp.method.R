@@ -15,10 +15,10 @@ print.serp <- function(x, ...)
   if (!inherits(x, "serp"))
     stop("input must be an object of class 'serp'", call. = FALSE)
   object <- x
-  cat("\ncall:\n")
+  cat(crayon::green("\ncall:\n"))
   print(object$call)
   max.tun <- FALSE
-  cat("\ncoefficients:\n")
+  cat(crayon::green("\ncoefficients:\n"))
   print(object$coef)
   cat("\nloglik:", object$logLik, " ","aic:", object$aic, "\n")
 
@@ -28,6 +28,11 @@ print.serp <- function(x, ...)
     cat("\n")
     message("* optimal tuning obtained at lambda grid upper limit\n")
   }
+  if (!length(colnames(object$model)[-1L])==0L){
+    if (length(colnames(object$model)[-1L]) ==
+        length(object$globalEff)) message("\nno subject-specific effects found, ",
+                                          "parallel slope returned!\n")
+  }
   na.ac <- length(object$na.action)
   if (na.ac > 0){
     cat("\n")
@@ -36,7 +41,6 @@ print.serp <- function(x, ...)
   }
   invisible(object)
 }
-
 
 #' Print method for an object of class summary.serp
 #'
@@ -53,14 +57,14 @@ print.summary.serp <- function(x, ...){
   if (!inherits(x, "summary.serp"))
     stop("input must be an object of class 'serp'", call. = FALSE)
   object <- x
-  cat("\ncall:\n")
+  cat(crayon::green("\ncall:\n"))
   print(object$call)
   max.tun <- FALSE
   nL <- object$ylev
   coef <- as.data.frame(object$coefficients)
   df <- object$rdf
   na.ac <- length(object$na.action)
-  cat("\nCoefficients:\n")
+  cat(crayon::green("\nCoefficients:\n"))
   printCoefmat(coef, digits = 4L, signif.stars = TRUE,
                na.print = "NA", P.values = TRUE, has.Pvalue = TRUE,
                signif.legend = TRUE)
@@ -69,7 +73,7 @@ print.summary.serp <- function(x, ...){
   cat("\nAIC:", object$aic)
   cat("\n")
   if (!ncol(object$model) == 1L){
-    cat("\nExponentiated coefficients:\n")
+    cat(crayon::green("\nExponentiated coefficients:\n"))
     print(object$expcoefs)
   }
   if (object$slope == 'penalize') max.tun <- penalty.print(object, max.tun)
@@ -77,15 +81,18 @@ print.summary.serp <- function(x, ...){
     cat("\n")
     message("* optimal tuning obtained at lambda grid upper limit\n")
   }
-  if (na.ac > 0){
+  if (!length(colnames(object$model)[-1L])==0L){
+    if (length(colnames(object$model)[-1L]) ==
+        length(object$globalEff)) message("\nno subject-specific effects found, ",
+                                          "parallel slope returned!\n")
+  }
+    if (na.ac > 0){
     cat("\n")
     message("\n--- ",na.ac," observation(s) deleted due to ",
             "missingness ","---", "\n")
   }
   invisible(object)
 }
-
-
 
 #' Summary method for a fitted serp object.
 #'
@@ -264,6 +271,36 @@ predict.serp <- function(
   pred
 }
 
+#' Print method for an object of class errorMetrics
+#'
+#' Prints out a vector of calculated error value of fitted model.
+#'
+#' @param x An object of class \code{errorMetrics}.
+#' @param ... additional arguments.
+#' @return No return value
+#' @seealso \code{\link{errorMetrics}}
+#' @export
+#'
+print.errorMetrics <- function(x, ...)
+{
+  if (!inherits(x, "errorMetrics"))
+    stop("supports only object of class 'errorMetrics'", call. = FALSE)
+  if (x$type == "brier")
+  {
+    cat(crayon::blue("\nBrier Score:", "\n"))
+    cat(x$value, "\n")
+  }
+  else if (x$type == "logloss")
+  {
+    cat(crayon::blue("\nLogLoss:", "\n"))
+    cat(x$value, "\n")
+  }
+  else if (x$type == "misclass")
+  {
+    cat(crayon::blue("\nMisclassification Error:", "\n"))
+    cat(x$value, "\n")
+  }
+}
 
 #' AIC for a fitted serp object
 #'
@@ -291,7 +328,6 @@ AIC.serp <- function (object, ..., k=2)
   -2 * object$logLik + k * edf
 }
 
-
 #' BIC for a fitted serp object
 #'
 #' Returns the bayesian information criterion of a fitted object of class
@@ -316,7 +352,6 @@ BIC.serp <- function (object, ...)
   edf <- object$edf
   -2 * object$logLik + log(object$nobs) * edf
 }
-
 
 #' Coefficients for a fitted serp object
 #'
@@ -362,4 +397,3 @@ logLik.serp <- function(object, ...)
 {
   object$logLik
 }
-

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Performance metrics for categorical models — errorMetrics • serp</title>
+<title>Performance metrics for categorical response models — errorMetrics • serp</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,10 @@
 
 
 
-<meta property="og:title" content="Performance metrics for categorical models — errorMetrics" />
-<meta property="og:description" content="Calculates performance metrics of fitted categorical models,
-including binary and multi-categorical models. Metrics calculated include the
-brier score, log loss and misclassification error." />
+<meta property="og:title" content="Performance metrics for categorical response models — errorMetrics" />
+<meta property="og:description" content="Calculates the performance metrics of fitted binary and
+multi-categorical response models. Available measures include: brier score,
+logloss and misclassification error." />
 
 
 
@@ -74,7 +74,7 @@ brier score, log loss and misclassification error." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">serp</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9000</span>
       </span>
     </div>
 
@@ -113,23 +113,22 @@ brier score, log loss and misclassification error." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Performance metrics for categorical models</h1>
+    <h1>Performance metrics for categorical response models</h1>
     <small class="dont-index">Source: <a href='https://github.com/ejikeugba/serp/blob/master/R/serp.performance.R'><code>R/serp.performance.R</code></a></small>
     <div class="hidden name"><code>errorMetrics.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Calculates performance metrics of fitted categorical models,
-including binary and multi-categorical models. Metrics calculated include the
-brier score, log loss and misclassification error.</p>
+    <p>Calculates the performance metrics of fitted binary and
+multi-categorical response models. Available measures include: brier score,
+logloss and misclassification error.</p>
     </div>
 
     <pre class="usage"><span class='fu'>errorMetrics</span><span class='op'>(</span>
              <span class='va'>actual</span>,
              <span class='va'>predicted</span>,
-             model<span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"multiclass"</span>, <span class='st'>"binary"</span><span class='op'>)</span>,
              type<span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"brier"</span>, <span class='st'>"logloss"</span>, <span class='st'>"misclass"</span><span class='op'>)</span>,
-             eps<span class='op'>=</span><span class='va'>.Machine</span><span class='op'>$</span><span class='va'>double.eps</span><span class='op'>)</span></pre>
+             control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -144,28 +143,26 @@ brier score, log loss and misclassification error.</p>
 vector of fitted values for binary models.</p></td>
     </tr>
     <tr>
-      <th>model</th>
-      <td><p>specifies whether multi-categorical or binary model</p></td>
-    </tr>
-    <tr>
       <th>type</th>
-      <td><p>specifies type of error metrics</p></td>
+      <td><p>specifies the type of error metrics.</p></td>
     </tr>
     <tr>
-      <th>eps</th>
-      <td><p>a near-zero value introduced only if the fitted probabilities go
-beyond a specified threshold. It helps to minimize the chances of running
-into numerical problems.</p></td>
+      <th>control</th>
+      <td><p>A list of control parameters to replace default values
+returned by <code>serp.control</code>. 'misclass.thresh' resets the default
+misclassification error threshold, while 'minP' assigns a near-zero constant
+value to the predicted values beyond certain threshold, to forestall chances
+of numerical problems.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A numeric value of computed performance metric determining how
-good a categorical model is compare to competing models.</p><dl>
-  <dt>brier</dt><dd><p>the brier score of fitted model.</p></dd>
-  <dt>logloss</dt><dd><p>the logloss of fitted model.</p></dd>
-  <dt>misclass</dt><dd><p>the misclassification error of fitted model.</p></dd>
+    <p>A numeric value of the selected error type determining how
+good a categorical model compares to competing models.</p><dl>
+  <dt>value</dt><dd><p>the value of error measure computed.</p></dd>
+  <dt>type</dt><dd><p>the error measure used: any of brier, logLoss or misclassification error.</p></dd>
+  <dt>threshold</dt><dd><p>the misclassification threshold.</p></dd>
 
 </dl>
 
@@ -176,25 +173,35 @@ good a categorical model is compare to competing models.</p><dl>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='va'>f1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='serp.html'>serp</a></span><span class='op'>(</span><span class='va'>rating</span> <span class='op'>~</span> <span class='va'>temp</span> <span class='op'>+</span> <span class='va'>contact</span>, tuneMethod <span class='op'>=</span> <span class='st'>"user"</span>,
-slope <span class='op'>=</span> <span class='st'>"penalize"</span>, lambda <span class='op'>=</span> <span class='fl'>0.3</span>, reverse <span class='op'>=</span> <span class='cn'>TRUE</span>, link <span class='op'>=</span> <span class='st'>"logit"</span>,
-data <span class='op'>=</span> <span class='va'>wine</span><span class='op'>)</span>
-<span class='fu'>errorMetrics</span><span class='op'>(</span><span class='va'>f1</span>, type <span class='op'>=</span> <span class='st'>"brier"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.6613498</div><div class='input'><span class='fu'>errorMetrics</span><span class='op'>(</span><span class='va'>f1</span>, type <span class='op'>=</span> <span class='st'>"logloss"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 1.18257</div><div class='input'><span class='fu'>errorMetrics</span><span class='op'>(</span><span class='va'>f1</span>, type <span class='op'>=</span> <span class='st'>"misclass"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.7083333</div><div class='input'>
-<span class='co'>## For non-serp object of class, 'actual'  and 'predicted' values</span>
-<span class='co'>## must be provided</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>
-<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span><span class='op'>(</span><span class='fl'>50</span>,<span class='fl'>1</span>,<span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>xx</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>50</span><span class='op'>)</span>
-<span class='va'>f2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>y</span> <span class='op'>~</span> <span class='va'>xx</span>, family <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span><span class='op'>(</span>link<span class='op'>=</span><span class='st'>"logit"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>p2</span> <span class='op'>&lt;-</span> <span class='va'>f2</span><span class='op'>$</span><span class='va'>fitted.values</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/ejikeugba/serp'>serp</a></span><span class='op'>)</span>
 
-<span class='fu'>errorMetrics</span><span class='op'>(</span>actual<span class='op'>=</span><span class='va'>y</span>, predicted<span class='op'>=</span><span class='va'>p2</span>, model<span class='op'>=</span> <span class='st'>"binary"</span>, type <span class='op'>=</span> <span class='st'>"brier"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.244247</div><div class='input'><span class='fu'>errorMetrics</span><span class='op'>(</span>actual<span class='op'>=</span><span class='va'>y</span>, predicted<span class='op'>=</span><span class='va'>p2</span>, model<span class='op'>=</span> <span class='st'>"binary"</span>, type <span class='op'>=</span> <span class='st'>"logloss"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.6818895</div><div class='input'><span class='fu'>errorMetrics</span><span class='op'>(</span>actual<span class='op'>=</span><span class='va'>y</span>, predicted<span class='op'>=</span><span class='va'>p2</span>, model<span class='op'>=</span> <span class='st'>"binary"</span>, type <span class='op'>=</span> <span class='st'>"misclass"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.54</div><div class='input'>
+<span class='va'>m1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='serp.html'>serp</a></span><span class='op'>(</span><span class='va'>rating</span> <span class='op'>~</span> <span class='va'>temp</span> <span class='op'>+</span> <span class='va'>contact</span>, slope <span class='op'>=</span> <span class='st'>"parallel"</span>, link <span class='op'>=</span> <span class='st'>"logit"</span>, data <span class='op'>=</span> <span class='va'>wine</span><span class='op'>)</span>
+<span class='fu'>errorMetrics</span><span class='op'>(</span><span class='va'>m1</span>, type <span class='op'>=</span> <span class='st'>"brier"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #0000BB;'>
+#&gt; Brier Score: 
+#&gt; </span>0.6658793 </div><div class='input'>
+<span class='co'>## objects of class other than \code{serp} require the actual</span>
+<span class='co'>## observations with corresponding predicted values supplied.</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>)</span>
+<span class='va'>n</span> <span class='op'>&lt;-</span> <span class='fl'>50</span>
+<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Binomial.html'>rbinom</a></span><span class='op'>(</span><span class='va'>n</span>, <span class='fl'>1</span>, <span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>m2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>y</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span>, family <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>ft</span> <span class='op'>&lt;-</span> <span class='va'>m2</span><span class='op'>$</span><span class='va'>fitted.values</span>
+
+<span class='fu'>errorMetrics</span><span class='op'>(</span>actual<span class='op'>=</span><span class='va'>y</span>, predicted<span class='op'>=</span><span class='va'>ft</span>, type <span class='op'>=</span> <span class='st'>"logloss"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #0000BB;'>
+#&gt; LogLoss: 
+#&gt; </span>0.6670221 </div><div class='input'><span class='fu'>errorMetrics</span><span class='op'>(</span>actual<span class='op'>=</span><span class='va'>y</span>, predicted<span class='op'>=</span><span class='va'>ft</span>, type <span class='op'>=</span> <span class='st'>"misclass"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #0000BB;'>
+#&gt; Misclassification Error: 
+#&gt; </span>0.34 </div><div class='input'>
+<span class='co'>## Reset classification threshold</span>
+<span class='fu'>errorMetrics</span><span class='op'>(</span>actual<span class='op'>=</span><span class='va'>y</span>, predicted<span class='op'>=</span><span class='va'>ft</span>, type <span class='op'>=</span> <span class='st'>"misclass"</span>,
+control <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>misclass.thresh<span class='op'>=</span><span class='fl'>0.4</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #0000BB;'>
+#&gt; Misclassification Error: 
+#&gt; </span>0.44 </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -73,7 +73,7 @@ could be specified in the main function." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">serp</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9000</span>
       </span>
     </div>
 
@@ -133,6 +133,7 @@ could be specified in the main function.</p>
              nrFold <span class='op'>=</span> <span class='fl'>5e0</span>,
              cv.seed <span class='op'>=</span> <span class='fl'>1e01</span>,
              grid.length <span class='op'>=</span> <span class='fl'>5e01</span>,
+             misclass.thresh <span class='op'>=</span> <span class='fl'>5e-01</span>,
              minP <span class='op'>=</span> <span class='va'>.Machine</span><span class='op'>$</span><span class='va'>double.eps</span>,
              <span class='va'>...</span><span class='op'>)</span></pre>
 
@@ -191,6 +192,11 @@ tuning.</p></td>
 method.</p></td>
     </tr>
     <tr>
+      <th>misclass.thresh</th>
+      <td><p>to reset the classification threshold in
+<code>errorMetrics</code> when <code>type</code> is 'misclass'.</p></td>
+    </tr>
+    <tr>
       <th>minP</th>
       <td><p>A near zero minimum value the fitted probabilities are allowed
 to get during iteration to prevent numerical instability .</p></td>
@@ -227,13 +233,13 @@ to get during iteration to prevent numerical instability .</p></td>
 #&gt; 	delta: -2.139e+00 4.257e-02 1.714e+00 2.979e+00 -1.207e+00
 #&gt; 	step: 3.566e-05 1.308e-05 2.791e-06 -2.395e-05 2.596e-05</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Successful convergence!</span>
-#&gt; <span class='message'>Absolute and relative convergence criteria satisfied</span></div><div class='output co'>#&gt; 
+#&gt; <span class='message'>Absolute and relative convergence criteria satisfied</span></div><div class='output co'>#&gt; <span style='color: #00BB00;'>
 #&gt; call:
-#&gt; serp(formula = rating ~ contact, link = "logit", slope = "parallel", 
+#&gt; </span>serp(formula = rating ~ contact, link = "logit", slope = "parallel", 
 #&gt;     data = wine, control = list(maxits = 20, eps = 1e-05, trace = 2))
-#&gt; 
+#&gt; <span style='color: #00BB00;'>
 #&gt; coefficients:
-#&gt; (Intercept):1 (Intercept):2 (Intercept):3 (Intercept):4    contactyes 
+#&gt; </span>(Intercept):1 (Intercept):2 (Intercept):3 (Intercept):4    contactyes 
 #&gt;   -2.13933037    0.04257146    1.71448721    2.97874484   -1.20695403 
 #&gt; 
 #&gt; loglik: -99.95591   aic: 209.9118 </div><div class='input'>

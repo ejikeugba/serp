@@ -4,7 +4,7 @@
 \alias{AIC.serp}
 \title{AIC for a fitted serp object}
 \usage{
-AIC.serp(object, ..., k = 2)
+\method{AIC}{serp}(object, ..., k = 2)
 }
 \arguments{
 \item{object}{An object of class \code{serp}.}

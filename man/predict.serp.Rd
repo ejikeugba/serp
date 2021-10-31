@@ -4,12 +4,7 @@
 \alias{predict.serp}
 \title{Prediction from fitted serp model}
 \usage{
-predict.serp(
-  object,
-  type = c("link", "response", "class"),
-  newdata = NULL,
-  ...
-)
+\method{predict}{serp}(object, type = c("link", "response", "class"), newdata = NULL, ...)
 }
 \arguments{
 \item{object}{An object of class \code{serp}.}

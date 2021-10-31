@@ -4,7 +4,7 @@
 \alias{vcov.serp}
 \title{Variance covariance matrix for a fitted serp object}
 \usage{
-vcov.serp(object, ...)
+\method{vcov}{serp}(object, ...)
 }
 \arguments{
 \item{object}{An object of class \code{serp}.}

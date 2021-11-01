@@ -269,60 +269,87 @@ returned by <code>serp.control</code>. Values not set assume default values.</p>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class <code>serp</code> with the components listed below,
-depending on the type of slope modeled. Other summary methods include:
- <code>summary</code>, <code>coef</code>, <code>predict</code>, <code>vcov</code>,
-<code>anova</code>, <code>errorMetrics</code>, etc.</p>
-<dl>
-  <dt>aic</dt><dd><p>the akaike information criterion, with effective degrees of
-        freedom obtained from the trace of the generalized hat matrix
-        depending on the tuning parameter.</p></dd>
-  <dt>bic</dt><dd><p>the bayesian information criterion, with effective degrees of
-        freedom obtained from the trace of the generalized hat matrix
-        depending on the tuning parameter.</p></dd>
-  <dt>call</dt><dd><p>the matched call.</p></dd>
-  <dt>coef</dt><dd><p>a vector of coefficients of the fitted model.</p></dd>
-  <dt>converged</dt><dd><p>a character vector of fit convergence status.</p></dd>
-  <dt>contrasts</dt><dd><p>(where relevant) the contrasts used in the model.</p></dd>
-  <dt>control</dt><dd><p>list of control parameters from <code>serp.control</code>.</p></dd>
-  <dt>cvMetric</dt><dd><p>the performance metric used for cv tuning.</p></dd>
-  <dt>deviance</dt><dd><p>the residual deviance.</p></dd>
-  <dt>edf</dt><dd><p>the (effective) number of degrees of freedom used by the model</p></dd>
-  <dt>fitted.values</dt><dd><p>the fitted probabilities.</p></dd>
-  <dt>globalEff</dt><dd><p>variable(s) in model treated as global effect(s)</p></dd>
-  <dt>gradient</dt><dd><p>a column vector of gradients for the coefficients at the
-        model convergence.</p></dd>
-  <dt>Hessian</dt><dd><p>the hessian matrix for the coefficients at the model
-        convergence.</p></dd>
-  <dt>iter</dt><dd><p>number of interactions before convergence or non-convergence.</p></dd>
-  <dt>lambda</dt><dd><p>a user-supplied single numeric value for the <code>user</code>
-        tuning tuning method.</p></dd>
-  <dt>lambdaGrid</dt><dd><p>a numeric vector of lambda values used to determine the
-        optimum tuning parameter.</p></dd>
-  <dt>logLik</dt><dd><p>the realized log-likelihood at the model convergence.</p></dd>
-  <dt>link</dt><dd><p>character vector indicating the link function of the fit.</p></dd>
-  <dt>message</dt><dd><p>character vector stating the type of convergence obtained</p></dd>
-  <dt>misc</dt><dd><p>a list to hold miscellaneous fit information.</p></dd>
-  <dt>model</dt><dd><p>model.frame having variables from formula.</p></dd>
-  <dt>na.action</dt><dd><p>(where relevant) information on the treatment of NAs.</p></dd>
-  <dt>nobs</dt><dd><p>the number of observations.</p></dd>
-  <dt>nrFold</dt><dd><p>the number of k-fold cross validation for the cv tuning
-        method. Default to k = 5.</p></dd>
-  <dt>rdf</dt><dd><p>the residual degrees of freedom</p></dd>
-  <dt>reverse</dt><dd><p>a logical vector indicating the the direction of the
-        cumulative probabilities. Default to P(Y&lt;=r).</p></dd>
-  <dt>slope</dt><dd><p>a character vector indicating the type of slope parameters
-        fitted. Default to <code>penalize</code>.</p></dd>
-  <dt>Terms</dt><dd><p>the terms structure describing the model.</p></dd>
-  <dt>testError</dt><dd><p>numeric value of the cross-validated test error at which
-        the optimal tuning parameter emerged.</p></dd>
-  <dt>tuneMethod</dt><dd><p>a character vector specifying the method for choosing an
-        optimal shrinkage parameter.</p></dd>
-  <dt>value</dt><dd><p>numeric value of AIC or logLik obtained at the optimal tuning
-        parameter when using <code>aic</code> or <code>finite</code> tuning methods respectively.</p></dd>
-  <dt>ylev</dt><dd><p>the number of the response levels.</p></dd>
+    
 
-</dl>
+<dt>aic</dt><dd><p>the akaike information criterion, with effective degrees of
+        freedom obtained from the trace of the generalized hat matrix
+        depending on the tuning parameter.</p></dd>
+
+<dt>bic</dt><dd><p>the bayesian information criterion, with effective degrees of
+        freedom obtained from the trace of the generalized hat matrix
+        depending on the tuning parameter.</p></dd>
+
+<dt>call</dt><dd><p>the matched call.</p></dd>
+
+<dt>coef</dt><dd><p>a vector of coefficients of the fitted model.</p></dd>
+
+<dt>converged</dt><dd><p>a character vector of fit convergence status.</p></dd>
+
+<dt>contrasts</dt><dd><p>(where relevant) the contrasts used in the model.</p></dd>
+
+<dt>control</dt><dd><p>list of control parameters from <code>serp.control</code>.</p></dd>
+
+<dt>cvMetric</dt><dd><p>the performance metric used for cv tuning.</p></dd>
+
+<dt>deviance</dt><dd><p>the residual deviance.</p></dd>
+
+<dt>edf</dt><dd><p>the (effective) number of degrees of freedom used by the model</p></dd>
+
+<dt>fitted.values</dt><dd><p>the fitted probabilities.</p></dd>
+
+<dt>globalEff</dt><dd><p>variable(s) in model treated as global effect(s)</p></dd>
+
+<dt>gradient</dt><dd><p>a column vector of gradients for the coefficients at the
+        model convergence.</p></dd>
+
+<dt>Hessian</dt><dd><p>the hessian matrix for the coefficients at the model
+        convergence.</p></dd>
+
+<dt>iter</dt><dd><p>number of interactions before convergence or non-convergence.</p></dd>
+
+<dt>lambda</dt><dd><p>a user-supplied single numeric value for the <code>user</code>
+        tuning tuning method.</p></dd>
+
+<dt>lambdaGrid</dt><dd><p>a numeric vector of lambda values used to determine the
+        optimum tuning parameter.</p></dd>
+
+<dt>logLik</dt><dd><p>the realized log-likelihood at the model convergence.</p></dd>
+
+<dt>link</dt><dd><p>character vector indicating the link function of the fit.</p></dd>
+
+<dt>message</dt><dd><p>character vector stating the type of convergence obtained</p></dd>
+
+<dt>misc</dt><dd><p>a list to hold miscellaneous fit information.</p></dd>
+
+<dt>model</dt><dd><p>model.frame having variables from formula.</p></dd>
+
+<dt>na.action</dt><dd><p>(where relevant) information on the treatment of NAs.</p></dd>
+
+<dt>nobs</dt><dd><p>the number of observations.</p></dd>
+
+<dt>nrFold</dt><dd><p>the number of k-fold cross validation for the cv tuning
+        method. Default to k = 5.</p></dd>
+
+<dt>rdf</dt><dd><p>the residual degrees of freedom</p></dd>
+
+<dt>reverse</dt><dd><p>a logical vector indicating the the direction of the
+        cumulative probabilities. Default to P(Y&lt;=r).</p></dd>
+
+<dt>slope</dt><dd><p>a character vector indicating the type of slope parameters
+        fitted. Default to <code>penalize</code>.</p></dd>
+
+<dt>Terms</dt><dd><p>the terms structure describing the model.</p></dd>
+
+<dt>testError</dt><dd><p>numeric value of the cross-validated test error at which
+        the optimal tuning parameter emerged.</p></dd>
+
+<dt>tuneMethod</dt><dd><p>a character vector specifying the method for choosing an
+        optimal shrinkage parameter.</p></dd>
+
+<dt>value</dt><dd><p>numeric value of AIC or logLik obtained at the optimal tuning
+        parameter when using <code>aic</code> or <code>finite</code> tuning methods respectively.</p></dd>
+
+<dt>ylev</dt><dd><p>the number of the response levels.</p></dd>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -362,6 +389,10 @@ common global effect. SERP could also be applied to a semi-parallel model
 with only the category-specific part of the model penalized. See,
 Ugba et al. (2021) for a discussion and an application of SERP in an
 empirical study.</p>
+<p>An object of class <code>serp</code> with the components listed below,
+depending on the type of slope modeled. Other summary methods include:
+ <code>summary</code>, <code>coef</code>, <code>predict</code>, <code>vcov</code>,
+<code>anova</code>, <code>errorMetrics</code>, etc.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>McCullagh, P. (1980). Regression Models for Ordinal Data.

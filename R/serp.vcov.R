@@ -6,7 +6,6 @@
 #' @param ... additional arguments.
 #' @seealso \code{\link{serp}}
 #' @return A variance covariance matrix of a fitted model.
-#'
 #' @seealso
 #' \code{\link{serp}}, \code{\link{anova.serp}}, \code{\link{confint.serp}},
 #' \code{\link{errorMetrics}}

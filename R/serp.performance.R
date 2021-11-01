@@ -18,13 +18,11 @@
 #'   misclassification error threshold, while 'minP' assigns a near-zero constant
 #'   value to the predicted values beyond certain threshold, to forestall chances
 #'   of numerical problems.
-#' @return A numeric value of the selected error type determining how
+#' @details A numeric value of the selected error type determining how
 #' good a categorical model compares to competing models.
-#' \describe{
-#'   \item{value}{the value of error measure computed.}
-#'   \item{type}{the error measure used: any of brier, logLoss or misclassification error.}
-#'   \item{threshold}{the misclassification threshold.}
-#'}
+#' @return \item{value}{the value of error measure computed.}
+#' @return \item{type}{the error measure used: any of brier, logLoss or misclassification error.}
+#' @return \item{threshold}{the misclassification threshold.}
 #'
 #' @seealso
 #' \code{\link{serp}}, \code{\link{anova.serp}}, \code{\link{confint.serp}},

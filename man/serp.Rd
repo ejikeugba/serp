@@ -94,60 +94,85 @@ returned by \code{serp.control}. Values not set assume default values.}
 \item{...}{additional arguments.}
 }
 \value{
-An object of class \code{serp} with the components listed below,
-depending on the type of slope modeled. Other summary methods include:
- \code{summary}, \code{coef}, \code{predict}, \code{vcov},
-\code{anova}, \code{errorMetrics}, etc.
+\item{aic}{the akaike information criterion, with effective degrees of
+        freedom obtained from the trace of the generalized hat matrix
+        depending on the tuning parameter.}
 
-\describe{
-  \item{aic}{the akaike information criterion, with effective degrees of
+\item{bic}{the bayesian information criterion, with effective degrees of
         freedom obtained from the trace of the generalized hat matrix
         depending on the tuning parameter.}
-  \item{bic}{the bayesian information criterion, with effective degrees of
-        freedom obtained from the trace of the generalized hat matrix
-        depending on the tuning parameter.}
-  \item{call}{the matched call.}
-  \item{coef}{a vector of coefficients of the fitted model.}
-  \item{converged}{a character vector of fit convergence status.}
-  \item{contrasts}{(where relevant) the contrasts used in the model.}
-  \item{control}{list of control parameters from \code{serp.control}.}
-  \item{cvMetric}{the performance metric used for cv tuning.}
-  \item{deviance}{the residual deviance.}
-  \item{edf}{the (effective) number of degrees of freedom used by the model}
-  \item{fitted.values}{the fitted probabilities.}
-  \item{globalEff}{variable(s) in model treated as global effect(s)}
-  \item{gradient}{a column vector of gradients for the coefficients at the
+
+\item{call}{the matched call.}
+
+\item{coef}{a vector of coefficients of the fitted model.}
+
+\item{converged}{a character vector of fit convergence status.}
+
+\item{contrasts}{(where relevant) the contrasts used in the model.}
+
+\item{control}{list of control parameters from \code{serp.control}.}
+
+\item{cvMetric}{the performance metric used for cv tuning.}
+
+\item{deviance}{the residual deviance.}
+
+\item{edf}{the (effective) number of degrees of freedom used by the model}
+
+\item{fitted.values}{the fitted probabilities.}
+
+\item{globalEff}{variable(s) in model treated as global effect(s)}
+
+\item{gradient}{a column vector of gradients for the coefficients at the
         model convergence.}
-  \item{Hessian}{the hessian matrix for the coefficients at the model
+
+\item{Hessian}{the hessian matrix for the coefficients at the model
         convergence.}
-  \item{iter}{number of interactions before convergence or non-convergence.}
-  \item{lambda}{a user-supplied single numeric value for the \code{user}
+
+\item{iter}{number of interactions before convergence or non-convergence.}
+
+\item{lambda}{a user-supplied single numeric value for the \code{user}
         tuning tuning method.}
-  \item{lambdaGrid}{a numeric vector of lambda values used to determine the
+
+\item{lambdaGrid}{a numeric vector of lambda values used to determine the
         optimum tuning parameter.}
-  \item{logLik}{the realized log-likelihood at the model convergence.}
-  \item{link}{character vector indicating the link function of the fit.}
-  \item{message}{character vector stating the type of convergence obtained}
-  \item{misc}{a list to hold miscellaneous fit information.}
-  \item{model}{model.frame having variables from formula.}
-  \item{na.action}{(where relevant) information on the treatment of NAs.}
-  \item{nobs}{the number of observations.}
-  \item{nrFold}{the number of k-fold cross validation for the cv tuning
+
+\item{logLik}{the realized log-likelihood at the model convergence.}
+
+\item{link}{character vector indicating the link function of the fit.}
+
+\item{message}{character vector stating the type of convergence obtained}
+
+\item{misc}{a list to hold miscellaneous fit information.}
+
+\item{model}{model.frame having variables from formula.}
+
+\item{na.action}{(where relevant) information on the treatment of NAs.}
+
+\item{nobs}{the number of observations.}
+
+\item{nrFold}{the number of k-fold cross validation for the cv tuning
         method. Default to k = 5.}
-  \item{rdf}{the residual degrees of freedom}
-  \item{reverse}{a logical vector indicating the the direction of the
+
+\item{rdf}{the residual degrees of freedom}
+
+\item{reverse}{a logical vector indicating the the direction of the
         cumulative probabilities. Default to P(Y<=r).}
-  \item{slope}{a character vector indicating the type of slope parameters
+
+\item{slope}{a character vector indicating the type of slope parameters
         fitted. Default to \code{penalize}.}
-  \item{Terms}{the terms structure describing the model.}
-  \item{testError}{numeric value of the cross-validated test error at which
+
+\item{Terms}{the terms structure describing the model.}
+
+\item{testError}{numeric value of the cross-validated test error at which
         the optimal tuning parameter emerged.}
-  \item{tuneMethod}{a character vector specifying the method for choosing an
+
+\item{tuneMethod}{a character vector specifying the method for choosing an
         optimal shrinkage parameter.}
-  \item{value}{numeric value of AIC or logLik obtained at the optimal tuning
+
+\item{value}{numeric value of AIC or logLik obtained at the optimal tuning
         parameter when using \code{aic} or \code{finite} tuning methods respectively.}
-  \item{ylev}{the number of the response levels.}
-}
+
+\item{ylev}{the number of the response levels.}
 }
 \description{
 Fits cumulative link models (CLMs) with the
@@ -207,6 +232,11 @@ common global effect. SERP could also be applied to a semi-parallel model
 with only the category-specific part of the model penalized. See,
 Ugba et al. (2021) for a discussion and an application of SERP in an
 empirical study.
+
+An object of class \code{serp} with the components listed below,
+depending on the type of slope modeled. Other summary methods include:
+ \code{summary}, \code{coef}, \code{predict}, \code{vcov},
+\code{anova}, \code{errorMetrics}, etc.
 }
 \examples{
 require(serp)

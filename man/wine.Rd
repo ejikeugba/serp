@@ -6,32 +6,37 @@
 \title{Bitterness of wine dataset}
 \format{
 A data frame with 72 rows and 6 variables:
- \describe{
- \item{\code{response}}{
-   scorings of wine bitterness on a 0---100 continuous scale.
- }
- \item{\code{rating}}{
-   ordered factor with 5 levels; a grouped version of \code{response}.
- }
- \item{\code{contact}}{
-   factor with two levels (\code{"no"} and \code{"yes"}).
- }
- \item{\code{temp}}{
-   temperature: factor with two levels.
- }
- \item{\code{judge}}{
-   factor with nine levels.
- }
- \item{\code{bottle}}{
-   factor with eight levels.
- }
-}
 }
 \source{
 Taken from Randall (1989).
 }
 \usage{
 wine
+}
+\value{
+\item{\code{response}}{
+   scorings of wine bitterness on a 0---100 continuous scale.
+ }
+
+\item{\code{rating}}{
+   ordered factor with 5 levels; a grouped version of \code{response}.
+ }
+
+\item{\code{contact}}{
+   factor with two levels (\code{"no"} and \code{"yes"}).
+ }
+
+\item{\code{temp}}{
+   temperature: factor with two levels.
+ }
+
+\item{\code{judge}}{
+   factor with nine levels.
+ }
+
+\item{\code{bottle}}{
+   factor with eight levels.
+ }
 }
 \description{
 The \code{wine} dataset adopted from Randall(1989),

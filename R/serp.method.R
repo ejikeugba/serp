@@ -100,19 +100,18 @@ print.summary.serp <- function(x, ...){
 #'
 #' @param object An object of class \code{serp}.
 #' @param ... Not used. Additional summary arguments.
-#' @return
+#' @details
 #' an object of class \code{summary.serp}. A list (depending on the type of
 #' \code{slope} used) of all model components defined in the \code{\link{serp}},
 #' function with additional components listed below.
-#' \describe{
-#'   \item{coefficients}{the matrix of coefficients, standard errors,
+#' @return \item{coefficients}{the matrix of coefficients, standard errors,
 #'         z-values and p-values.}
-#'   \item{null.deviance}{the deviance for the intercept only model.}
-#'   \item{null.logLik}{the log-likelihood for the intercept only model.}
-#'   \item{penalty}{list of penalization information obtained with
+#' @return \item{null.deviance}{the deviance for the intercept only model.}
+#' @return \item{null.logLik}{the log-likelihood for the intercept only model.}
+#' @return \item{penalty}{list of penalization information obtained with
 #'         \code{slope} set to "penalize".}
-#'   \item{expcoefs}{the exponentiated coefficients.}
-#' }
+#' @return \item{expcoefs}{the exponentiated coefficients.}
+#'
 #' @seealso \code{\link{anova.serp}}, \code{\link{predict.serp}},
 #' \code{\link{confint.serp}}, \code{\link{vcov.serp}}, \code{\link{errorMetrics}}
 #' @examples

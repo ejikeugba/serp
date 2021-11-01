@@ -12,21 +12,25 @@
 \item{...}{Not used. Additional summary arguments.}
 }
 \value{
-an object of class \code{summary.serp}. A list (depending on the type of
-\code{slope} used) of all model components defined in the \code{\link{serp}},
-function with additional components listed below.
-\describe{
-  \item{coefficients}{the matrix of coefficients, standard errors,
+\item{coefficients}{the matrix of coefficients, standard errors,
         z-values and p-values.}
-  \item{null.deviance}{the deviance for the intercept only model.}
-  \item{null.logLik}{the log-likelihood for the intercept only model.}
-  \item{penalty}{list of penalization information obtained with
+
+\item{null.deviance}{the deviance for the intercept only model.}
+
+\item{null.logLik}{the log-likelihood for the intercept only model.}
+
+\item{penalty}{list of penalization information obtained with
         \code{slope} set to "penalize".}
-  \item{expcoefs}{the exponentiated coefficients.}
-}
+
+\item{expcoefs}{the exponentiated coefficients.}
 }
 \description{
 This function summarizes the result of a fitted serp object in a dataframe.
+}
+\details{
+an object of class \code{summary.serp}. A list (depending on the type of
+\code{slope} used) of all model components defined in the \code{\link{serp}},
+function with additional components listed below.
 }
 \examples{
 library(serp)

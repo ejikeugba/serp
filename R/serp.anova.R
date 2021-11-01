@@ -6,19 +6,17 @@
 #' @param object An object of class \code{serp}.
 #' @param ... additional arguments.
 #' @param test type of test to be conducted.
-#' @return An ANOVA table with the following components on display:
-#' \describe{
-#'   \item{model}{the respective model aliases.}
-#'   \item{slope}{type of slope fitted, which may be any of, unparallel, parallel,
+#' @details An ANOVA table with the following components on display:
+#' @return \item{model}{the respective model aliases.}
+#' @return \item{slope}{type of slope fitted, which may be any of, unparallel, parallel,
 #'         or partial slope.}
-#'   \item{no.par}{the no of parameters in the model.}
-#'   \item{AIC}{the akaike information criterion.}
-#'   \item{logLik}{the realized log-likelihood.}
-#'   \item{Test}{the different pair(s) of test(s) conducted.}
-#'   \item{LR.stat}{the computed Likelihood ratio statistic.}
-#'   \item{df}{the degree of freedom.}
-#'   \item{Pr(chi)}{the p-value of test statitic.}
-#' }
+#' @return \item{no.par}{the no of parameters in the model.}
+#' @return \item{AIC}{the akaike information criterion.}
+#' @return \item{logLik}{the realized log-likelihood.}
+#' @return \item{Test}{the different pair(s) of test(s) conducted.}
+#' @return \item{LR.stat}{the computed Likelihood ratio statistic.}
+#' @return \item{df}{the degree of freedom.}
+#' @return \item{Pr(chi)}{the p-value of test statitic.}
 #'
 #' @seealso
 #' \code{\link{serp}}, \code{\link{confint.serp}}, \code{\link{vcov.serp}},
@@ -32,8 +30,6 @@
 #' anova(m1, m2)
 #'
 #' @export
-#'
-#'
 #'
 anova.serp <- function (object, ..., test = c("Chisq", "none"))
 {

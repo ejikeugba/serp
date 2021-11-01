@@ -14,23 +14,31 @@
 \item{test}{type of test to be conducted.}
 }
 \value{
-An ANOVA table with the following components on display:
-\describe{
-  \item{model}{the respective model aliases.}
-  \item{slope}{type of slope fitted, which may be any of, unparallel, parallel,
+\item{model}{the respective model aliases.}
+
+\item{slope}{type of slope fitted, which may be any of, unparallel, parallel,
         or partial slope.}
-  \item{no.par}{the no of parameters in the model.}
-  \item{AIC}{the akaike information criterion.}
-  \item{logLik}{the realized log-likelihood.}
-  \item{Test}{the different pair(s) of test(s) conducted.}
-  \item{LR.stat}{the computed Likelihood ratio statistic.}
-  \item{df}{the degree of freedom.}
-  \item{Pr(chi)}{the p-value of test statitic.}
-}
+
+\item{no.par}{the no of parameters in the model.}
+
+\item{AIC}{the akaike information criterion.}
+
+\item{logLik}{the realized log-likelihood.}
+
+\item{Test}{the different pair(s) of test(s) conducted.}
+
+\item{LR.stat}{the computed Likelihood ratio statistic.}
+
+\item{df}{the degree of freedom.}
+
+\item{Pr(chi)}{the p-value of test statitic.}
 }
 \description{
 Provides a likelihood ratio test for comparing two or more \code{serp} objects. This
 does not currently support model(s) with penalized slope.
+}
+\details{
+An ANOVA table with the following components on display:
 }
 \examples{
 library(serp)

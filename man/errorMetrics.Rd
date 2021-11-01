@@ -25,18 +25,20 @@ value to the predicted values beyond certain threshold, to forestall chances
 of numerical problems.}
 }
 \value{
-A numeric value of the selected error type determining how
-good a categorical model compares to competing models.
-\describe{
-  \item{value}{the value of error measure computed.}
-  \item{type}{the error measure used: any of brier, logLoss or misclassification error.}
-  \item{threshold}{the misclassification threshold.}
-}
+\item{value}{the value of error measure computed.}
+
+\item{type}{the error measure used: any of brier, logLoss or misclassification error.}
+
+\item{threshold}{the misclassification threshold.}
 }
 \description{
 Calculates the performance metrics of fitted binary and
 multi-categorical response models. Available measures include: brier score,
 logloss and misclassification error.
+}
+\details{
+A numeric value of the selected error type determining how
+good a categorical model compares to competing models.
 }
 \examples{
 

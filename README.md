@@ -20,7 +20,6 @@ status](https://ci.appveyor.com/api/projects/status/github/ejikeugba/serp?branch
 [![R build
 status](https://github.com/ejikeugba/serp/workflows/R-CMD-check/badge.svg)](https://github.com/ejikeugba/serp/actions)
 [![status](https://joss.theoj.org/papers/6ebd3b75ea792be908f0dadebd7cf81c/status.svg)](https://joss.theoj.org/papers/6ebd3b75ea792be908f0dadebd7cf81c)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5596864.svg)](https://doi.org/10.5281/zenodo.5596864)
 <!-- badges: end -->
 
 ## Overview

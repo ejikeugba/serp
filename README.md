@@ -37,7 +37,8 @@ adjacent categories in the model. At extreme shrinkage, SERP causes all
 subject-specific effects associated with each variable in the model to
 shrink towards unique global effects. Fitting is done using a modified
 Newton’s method. Several standard model performance and descriptive
-methods are also available. See [Ugba et al.,
+methods are also available. See [Ugba,
+2021](https://doi.org/10.21105/joss.03705), [Ugba et al.,
 2021](https://doi.org/10.3390/stats4030037) and [Tutz and Gertheiss,
 2016](https://doi.org/10.1177/1471082X16642560) for further details on
 the implemented penalty.
@@ -150,3 +151,7 @@ Modelling*, 16, 161-260. <https://doi.org/10.1177/1471082X16642560>
 Ugba, E. R., Mörlein, D. and Gertheiss, J. (2021). Smoothing in Ordinal
 Regression: An Application to Sensory Data. *Stats*, 4, 616–633.
 <https://doi.org/10.3390/stats4030037>
+
+Ugba, E. R. (2021). serp: An R package for smoothing in ordinal
+regression *Journal of Open Source Software*, 6(66), 3705.
+<https://doi.org/10.21105/joss.03705>

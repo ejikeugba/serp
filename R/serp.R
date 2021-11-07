@@ -150,23 +150,27 @@
 #' category-specific effects associated with the response turn towards a
 #' common global effect. SERP could also be applied to a semi-parallel model
 #' with only the category-specific part of the model penalized. See,
-#' Ugba et al. (2021) for a discussion and an application of SERP in an
-#' empirical study.
+#' Ugba (2021), Ugba et al. (2021) for further details and application in
+#' empirical studies.
 #'
 #' @references
-#' McCullagh, P. (1980). Regression Models for Ordinal Data.
-#'     \emph{Journal of the Royal Statistical Society. Series B
-#'     (Methodological)}, 42, pp. 109-142.
-#'     https://doi.org/10.1111/j.2517-6161.1980.tb01109.x
+#' Ugba, E. R. (2021). serp: An R package for smoothing in ordinal regression
+#'     \emph{Journal of Open Source Software}, 6(66), 3705.
+#'     https://doi.org/10.21105/joss.03705
+#'
+#' Ugba, E. R., Mörlein, D. and Gertheiss, J. (2021). Smoothing in Ordinal
+#'     Regression: An Application to Sensory Data. \emph{Stats}, 4, 616–633.
+#'     https://doi.org/10.3390/stats4030037
 #'
 #' Tutz, G. and Gertheiss, J. (2016). Regularized Regression
 #'     for Categorical Data (With Discussion and Rejoinder).
 #'     \emph{Statistical Modelling}, 16, pp. 161-260.
 #'     https://doi.org/10.1177/1471082X16642560
 #'
-#' Ugba, E. R., Mörlein, D. and Gertheiss, J. (2021). Smoothing in Ordinal
-#'     Regression: An Application to Sensory Data. \emph{Stats}, 4, 616–633.
-#'     https://doi.org/10.3390/stats4030037
+#' McCullagh, P. (1980). Regression Models for Ordinal Data.
+#'     \emph{Journal of the Royal Statistical Society. Series B
+#'     (Methodological)}, 42, pp. 109-142.
+#'     https://doi.org/10.1111/j.2517-6161.1980.tb01109.x
 #'
 #' @details An object of class \code{serp} with the components listed below,
 #' depending on the type of slope modeled. Other summary methods include:

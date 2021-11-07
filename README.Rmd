@@ -29,11 +29,11 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 
-## Overview
+#### Overview
 The R package `serp` fits cumulative link models (CLMs) with the `smooth-effect-on-response penalty (SERP)`. The `cumulative model` developed by McCullagh (1980) is probably the most frequently used ordinal model in empirical studies. However, the stochastic ordering property of the general form of the model poses a very serious challenge in most empirical applications of the model. For instance, unstable likelihoods with ill-conditioned parameter space are frequently encountered during the iterative process. `serp` implements a unique regularization method for CLMs that provides the means of smoothing the adjacent categories in the model. At extreme shrinkage, SERP causes all subject-specific effects associated with each variable in the model to shrink towards unique global effects. Fitting is done using a modified Newton's method. Several standard model performance and descriptive methods are also available. See [Ugba et al., 2021](https://doi.org/10.3390/stats4030037) and [Tutz and Gertheiss, 2016](https://doi.org/10.1177/1471082X16642560) for further details on the implemented penalty.
 
 
-## Example
+#### Example
 Consider the cumulative logit model of the [wine dataset](https://ejikeugba.github.io/serp/reference/wine.html), where the rating of wine bitterness is predicted with the two treatment factors, temperature and contact.
 
 ```R
@@ -71,13 +71,13 @@ f4 <-  serp(rating ~ temp + contact, slope = "parallel",
 summary(f4)
 ```
 
-## Installation and Use
+#### Installation and Use
 
-### Dependencies
+##### Dependencies
 Before installing `serp`, it is encouraged to have a recent version of [R](https://cran.r-project.org/bin/windows/base/) installed. Also expect an automatic installation of some few dependencies (e.g. the `ordinal` and `stats` R packages) if not already installed.  
 
 
-### Installation
+##### Installation
 The released version of `serp` can be installed from [CRAN](https://cran.r-project.org/package=serp) with:
 
 ``` r
@@ -91,24 +91,24 @@ if (!require("devtools")) install.packages("devtools")
 devtools::install_github("ejikeugba/serp")
 ```
 
-### Loading
+##### Loading
 Load `serp` into R environment with:
 ```{r, eval = FALSE}
 library(serp)
 ```
 
 
-## Community Guidelines
+#### Community Guidelines
 
 Pull requests are welcomed! Please submit your contributions to `serp` through the list of `Pull Requests`, following the [contributing guidelines](https://ejikeugba.github.io/serp/CONTRIBUTING.html). To report issues and/or seek support, please file a new ticket in the [issue](https://github.com/ejikeugba/serp/issues) tracker, and expect a feedback ASAP! 
 
 
-## Code of Conduct
+#### Code of Conduct
 
 Please note that `serp` is released with a [Contributor Code of Conduct](https://github.com/ejikeugba/serp/blob/master/CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.
 
 
-## References
+#### References
 McCullagh, P. (1980). Regression Models for Ordinal Data. *Journal of the Royal Statistical Society. Series B (Methodological)*, 42, 109-142. https://doi.org/10.1111/j.2517-6161.1980.tb01109.x 
 
 Randall, J (1989). The analysis of sensory data by generalized linear model. *Biometrical Journal*, 31, 781--793. https://doi.org/10.1002/bimj.4710310703

@@ -26,7 +26,8 @@
     with the general model are to a large extent eliminated. Fitting is
     via a modified Newtons method. Several standard model performance and
     descriptive methods are also available. For more details on the penalty
-    implemented here, see, Ugba et al. (2021)' &lt;doi:10.3390/stats4030037&gt; and 
+    implemented here, see, Ugba (2021) &lt;doi:10.21105/joss.03705&gt;, 
+    Ugba et al.' (2021) &lt;doi:10.3390/stats4030037&gt; and 
     Tutz and Gertheiss (2016) &lt;doi:10.1177/1471082X16642560&gt;.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -46,7 +47,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">serp</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9002</span>
       </span>
     </div>
 
@@ -93,7 +94,7 @@
 <div id="overview" class="section level4">
 <h4 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h4>
-<p>The R package <code>serp</code> fits cumulative link models (CLMs) with the <code>smooth-effect-on-response penalty (SERP)</code>. The <code>cumulative model</code> developed by McCullagh (1980) is probably the most frequently used ordinal model in empirical studies. However, the stochastic ordering property of the general form of the model poses a very serious challenge in most empirical applications of the model. For instance, unstable likelihoods with ill-conditioned parameter space are frequently encountered during the iterative process. <code>serp</code> implements a unique regularization method for CLMs that provides the means of smoothing the adjacent categories in the model. At extreme shrinkage, SERP causes all subject-specific effects associated with each variable in the model to shrink towards unique global effects. Fitting is done using a modified Newton’s method. Several standard model performance and descriptive methods are also available. See <a href="https://doi.org/10.3390/stats4030037">Ugba et al., 2021</a> and <a href="https://doi.org/10.1177/1471082X16642560">Tutz and Gertheiss, 2016</a> for further details on the implemented penalty.</p>
+<p>The R package <code>serp</code> fits cumulative link models (CLMs) with the <code>smooth-effect-on-response penalty (SERP)</code>. The <code>cumulative model</code> developed by McCullagh (1980) is probably the most frequently used ordinal model in empirical studies. However, the stochastic ordering property of the general form of the model poses a very serious challenge in most empirical applications of the model. For instance, unstable likelihoods with ill-conditioned parameter space are frequently encountered during the iterative process. <code>serp</code> implements a unique regularization method for CLMs that provides the means of smoothing the adjacent categories in the model. At extreme shrinkage, SERP causes all subject-specific effects associated with each variable in the model to shrink towards unique global effects. Fitting is done using a modified Newton’s method. Several standard model performance and descriptive methods are also available. See <a href="https://doi.org/10.21105/joss.03705">Ugba, 2021</a>, <a href="https://doi.org/10.3390/stats4030037">Ugba et al., 2021</a> and <a href="https://doi.org/10.1177/1471082X16642560">Tutz and Gertheiss, 2016</a> for further details on the implemented penalty.</p>
 </div>
 <div id="example" class="section level4">
 <h4 class="hasAnchor">
@@ -171,6 +172,7 @@
 <p>Randall, J (1989). The analysis of sensory data by generalized linear model. <em>Biometrical Journal</em>, 31, 781–793. <a href="https://doi.org/10.1002/bimj.4710310703" class="uri">https://doi.org/10.1002/bimj.4710310703</a></p>
 <p>Tutz, G. and Gertheiss, J. (2016). Regularized Regression for Categorical Data (With Discussion and Rejoinder). <em>Statistical Modelling</em>, 16, 161-260. <a href="https://doi.org/10.1177/1471082X16642560" class="uri">https://doi.org/10.1177/1471082X16642560</a></p>
 <p>Ugba, E. R., Mörlein, D. and Gertheiss, J. (2021). Smoothing in Ordinal Regression: An Application to Sensory Data. <em>Stats</em>, 4, 616–633. <a href="https://doi.org/10.3390/stats4030037" class="uri">https://doi.org/10.3390/stats4030037</a></p>
+<p>Ugba, E. R. (2021). serp: An R package for smoothing in ordinal regression <em>Journal of Open Source Software</em>, 6(66), 3705. <a href="https://doi.org/10.21105/joss.03705" class="uri">https://doi.org/10.21105/joss.03705</a></p>
 </div>
 </div>
   </div>

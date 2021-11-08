@@ -1,7 +1,7 @@
 Type: Package
 Package: serp
 Title: Smooth Effects on Response Penalty for 'CLM'
-Version: 0.2.2.9002
+Version: 0.2.3
 Authors@R: 
     person(given = "Ejike R.",
            family = "Ugba",
@@ -22,11 +22,11 @@ Description: A regularization method for the cumulative link
     with the general model are to a large extent eliminated. Fitting is
     via a modified Newton's method. Several standard model performance and
     descriptive methods are also available. For more details on the penalty
-    implemented here, see, Ugba (2021) <doi:10.21105/joss.03705>, 
-    'Ugba et al.' (2021) <doi:10.3390/stats4030037> and 
-    Tutz and Gertheiss (2016) <doi:10.1177/1471082X16642560>.
+    implemented here, see, 'Ugba (2021)' <doi:10.21105/joss.03705>, 
+    'Ugba et al. (2021)' <doi:10.3390/stats4030037> and 
+    'Tutz and Gertheiss (2016)' <doi:10.1177/1471082X16642560>.
 License: GPL-2 | file LICENSE
-URL: https://github.com/ejikeugba/serp, https://ejikeugba.github.io/serp
+URL: https://github.com/ejikeugba/serp
 BugReports: https://github.com/ejikeugba/serp/issues
 Depends: 
     R (>= 3.2.0)

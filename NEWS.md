@@ -1,3 +1,12 @@
+## serp 0.2.3
+- CRAN release
+- import from crayon, with colored outputs in returned objects 
+- changes made in serp test for improved test coverage report
+- bug fix in errorMetrics, with model argument also dropped 
+- add print method and class of objects returned by errorMetrics
+- message() replaces cat() where appropriate
+- add citation for serp package
+
 ## serp 0.2.2
 - JOSS release
 - minor changes in serp documentation

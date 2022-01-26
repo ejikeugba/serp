@@ -7,6 +7,7 @@
 - message() replaces cat() where appropriate
 - add citation for serp package
 
+---
 ## serp 0.2.2
 - JOSS release
 - minor changes in serp documentation

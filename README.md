@@ -87,16 +87,9 @@ summary(f4)
 
 #### Installation and Use
 
-##### Dependencies
-
 Before installing `serp`, it is encouraged to have a recent version of
-[R](https://cran.r-project.org/bin/windows/base/) installed. Also expect
-an automatic installation of some few dependencies (e.g. the `ordinal`
-and `stats` R packages) if not already installed.
-
-##### Installation
-
-The released version of `serp` can be installed from
+[R](https://cran.r-project.org/bin/windows/base/) installed. The
+released version of `serp` can be installed from
 [CRAN](https://cran.r-project.org/package=serp) with:
 
 ``` r
@@ -110,8 +103,6 @@ or the development version from
 if (!require("devtools")) install.packages("devtools")
 devtools::install_github("ejikeugba/serp")
 ```
-
-##### Loading
 
 Load `serp` into R environment with:
 

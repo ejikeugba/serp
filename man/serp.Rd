@@ -240,6 +240,7 @@ depending on the type of slope modeled. Other summary methods include:
 }
 \examples{
 require(serp)
+
 ## The unpenalized non-proportional odds model returns unbounded estimates, hence,
 ## not fully identifiable.
 f1 <- serp(rating ~ temp + contact, slope = "unparallel",
@@ -254,7 +255,7 @@ f2 <- serp(rating ~ temp + contact, slope = "penalize",
            lambda = 1e1, data = wine)
 coef(f2)
 
-## A penalized partial proportional odds model with one variable set to
+## A penalized partial proportional odds model with some variables set to
 ## global effect is also possible.
 f3 <- serp(rating ~ temp + contact, slope = "penalize",
            reverse = TRUE, link = "logit", tuneMethod = "user",
@@ -262,8 +263,9 @@ f3 <- serp(rating ~ temp + contact, slope = "penalize",
 coef(f3)
 
 
-## The unpenalized proportional odds model with constrained estimates. Using a
-## very strong lambda in f2 will result in estimates equal to estimates in f4.
+## The unpenalized proportional odds model having constrained estimates can
+## as well be fit. Under extreme shrinkage, estimates in f2 equal those in
+## this model.
 f4 <-  serp(rating ~ temp + contact, slope = "parallel",
             reverse = FALSE, link = "logit", data = wine)
 summary(f4)

@@ -22,7 +22,7 @@ status](https://github.com/ejikeugba/serp/workflows/R-CMD-check/badge.svg)](http
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.03705/status.svg)](https://doi.org/10.21105/joss.03705)
 <!-- badges: end -->
 
-#### Overview
+### Overview
 
 `serp`fits cumulative link models (CLMs) with the
 `smooth-effect-on-response penalty (SERP)`. The `cumulative model`
@@ -43,7 +43,7 @@ methods are also available. See [Ugba,
 2016](https://doi.org/10.1177/1471082X16642560) for further details on
 the implemented penalty.
 
-#### Example
+### Example
 
 Consider the cumulative logit model of the [wine
 dataset](https://ejikeugba.github.io/serp/reference/wine.html), where
@@ -85,7 +85,7 @@ f4 <-  serp(rating ~ temp + contact, slope = "parallel",
 summary(f4)
 ```
 
-#### Installation and Use
+### Installation and Use
 
 Before installing `serp`, it is encouraged to have a recent version of
 [R](https://cran.r-project.org/bin/windows/base/) installed. The
@@ -110,7 +110,7 @@ Load `serp` into R environment with:
 library(serp)
 ```
 
-#### Community Guidelines
+### Community Guidelines
 
 Pull requests are welcomed! Please submit your contributions to `serp`
 through the list of `Pull Requests`, following the [contributing
@@ -119,13 +119,13 @@ report issues and/or seek support, please file a new ticket in the
 [issue](https://github.com/ejikeugba/serp/issues) tracker, and expect a
 feedback ASAP!
 
-#### Code of Conduct
+### Code of Conduct
 
 Please note that `serp` is released with a [Contributor Code of
 Conduct](https://github.com/ejikeugba/serp/blob/master/CODE_OF_CONDUCT.md).
 By contributing to this project, you agree to abide by its terms.
 
-#### References
+### References
 
 McCullagh, P. (1980). Regression Models for Ordinal Data. *Journal of
 the Royal Statistical Society. Series B (Methodological)*, 42, 109-142.

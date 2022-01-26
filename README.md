@@ -24,7 +24,7 @@ status](https://github.com/ejikeugba/serp/workflows/R-CMD-check/badge.svg)](http
 
 #### Overview
 
-The R package `serp` fits cumulative link models (CLMs) with the
+`serp`fits cumulative link models (CLMs) with the
 `smooth-effect-on-response penalty (SERP)`. The `cumulative model`
 developed by McCullagh (1980) is probably the most frequently used
 ordinal model in empirical studies. However, the stochastic ordering
@@ -91,7 +91,8 @@ summary(f4)
 
 Before installing `serp`, it is encouraged to have a recent version of
 [R](https://cran.r-project.org/bin/windows/base/) installed. Also expect
-an automatic installation of some few dependencies.
+an automatic installation of some few dependencies (e.g. the `ordinal`
+and `stats` R packages) if not already installed.
 
 ##### Installation
 

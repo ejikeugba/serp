@@ -19,8 +19,7 @@
 #' @return \item{Pr(chi)}{the p-value of test statitic.}
 #'
 #' @seealso
-#' \code{\link{serp}}, \code{\link{confint.serp}}, \code{\link{vcov.serp}},
-#' \code{\link{errorMetrics}}
+#' \code{\link{serp}}, \code{\link{confint.serp}}, \code{\link{vcov.serp}}
 #'
 #' @examples
 #' library(serp)

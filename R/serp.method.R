@@ -113,7 +113,7 @@ print.summary.serp <- function(x, ...){
 #' @return \item{expcoefs}{the exponentiated coefficients.}
 #'
 #' @seealso \code{\link{anova.serp}}, \code{\link{predict.serp}},
-#' \code{\link{confint.serp}}, \code{\link{vcov.serp}}, \code{\link{errorMetrics}}
+#' \code{\link{confint.serp}}, \code{\link{vcov.serp}}
 #' @examples
 #' library(serp)
 #' m <- serp(rating ~ temp + contact, slope = "penalize",
@@ -181,7 +181,7 @@ summary.serp <- function(object, ...){
 #' or a dataframe of predicted values for \code{type} equal to 'response'
 #' and 'link'.
 #' @seealso \code{\link{anova.serp}}, \code{\link{summary.serp}},
-#' \code{\link{confint.serp}}, \code{\link{vcov.serp}}, \code{\link{errorMetrics}}
+#' \code{\link{confint.serp}}, \code{\link{vcov.serp}}
 #' @examples
 #' library(serp)
 #' m <- serp(rating ~ temp + contact, slope = "penalize",
@@ -268,37 +268,6 @@ predict.serp <- function(
     pred <- factor(max.col(resp), levels = seq_along(ylevs),
                    labels = ylevs)})
   pred
-}
-
-#' Print method for an object of class errorMetrics
-#'
-#' Prints out a vector of calculated error value of fitted model.
-#'
-#' @param x An object of class \code{errorMetrics}.
-#' @param ... additional arguments.
-#' @return No return value
-#' @seealso \code{\link{errorMetrics}}
-#' @export
-#'
-print.errorMetrics <- function(x, ...)
-{
-  if (!inherits(x, "errorMetrics"))
-    stop("supports only object of class 'errorMetrics'", call. = FALSE)
-  if (x$type == "brier")
-  {
-    cat(crayon::blue("\nBrier Score:", "\n"))
-    cat(x$value, "\n")
-  }
-  else if (x$type == "logloss")
-  {
-    cat(crayon::blue("\nLogLoss:", "\n"))
-    cat(x$value, "\n")
-  }
-  else if (x$type == "misclass")
-  {
-    cat(crayon::blue("\nMisclassification Error:", "\n"))
-    cat(x$value, "\n")
-  }
 }
 
 #' AIC for a fitted serp object

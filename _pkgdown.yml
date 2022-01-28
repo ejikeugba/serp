@@ -32,7 +32,6 @@ reference:
   - '`BIC.serp`'
   - '`coef.serp`'
   - '`confint.serp`'
-  - '`errorMetrics`'
   - '`logLik.serp`'
   - '`predict.serp`'
   - '`print.serp`'

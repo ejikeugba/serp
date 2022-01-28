@@ -42,5 +42,5 @@ predict(m, newdata = n.wine, type = "class")
 }
 \seealso{
 \code{\link{anova.serp}}, \code{\link{summary.serp}},
-\code{\link{confint.serp}}, \code{\link{vcov.serp}}, \code{\link{errorMetrics}}
+\code{\link{confint.serp}}, \code{\link{vcov.serp}}
 }

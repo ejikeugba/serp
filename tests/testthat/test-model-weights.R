@@ -10,18 +10,15 @@ test_that("weight argument introduces no error",
             expect_error(
               serp(rating ~ temp + contact, link = "logit",
                    slope = "parallel", reverse=FALSE, weights = c(rep(1,71), NA),
-                   data = wine),
-              "weights should be numeric vector with no NA's")
+                   data = wine))
             expect_error(
               serp(rating ~ temp + contact, link = "logit",
                    slope = "parallel", reverse=FALSE, weights =  c(rep(1,71), -1),
-                   data = wine),
-              "negative weights not allowed")
+                   data = wine))
             expect_error(
               serp(rating ~ temp + contact, link = "logit",
                    slope = "parallel", reverse=FALSE, weights = c(rep(1,71), 0.6),
-                   weight.type = "frequency", data = wine),
-              "frequency weights must be whole numbers")
+                   weight.type = "frequency", data = wine))
             expect_vector(
               serp(rating ~ temp + contact, slope = "parallel",
                    link = "cloglog", reverse=TRUE, weights = rep(1, 72),
@@ -43,8 +40,7 @@ test_that("weight argument introduces no error",
                    gridType = "discrete",
                    weights = runif(nrow(test_data)),
                    reverse = F,
-                   data = test_data),
-              "only frequency weights are allowed in 'cv' tuning."
+                   data = test_data)
             )
 
             rm(test_data, n)
@@ -69,50 +65,22 @@ test_that("trace and errorMeterics work properly",
                                globalEff = ~ temp + contact,
                                control= list(trace=3),
                                data=wine, subset = c(1:30)))
+
             ## checks on errorMetrics
             f1 <- serp(rating ~ temp + contact, link = "logit",
                        slope = "parallel", reverse=FALSE,
                        data = wine)
+            hh <- list()
+            hh$minp <- 1e-02
+            fv <- f1$fitted.values
             expect_error(
-              errorMetrics(f1$model[,1L], f1$model[,1L],type = "brier"),
-              "supply either a matrix or dataframe of fitted values")
-            e1 <- errorMetrics(f1, type = "brier")
-            e2 <- errorMetrics(f1, type = "logloss")
-            e3 <- errorMetrics(f1, type = "misclass")
+              serp:::errorMetrics(f1$model[,1L], fv[,-1L], control = hh,
+                                  type = "brier"))
+            expect_vector(serp:::errorMetrics(f1$model[,1L], fv, control = hh, type = "logloss"))
+            expect_vector(serp:::errorMetrics(f1$model[,1L], fv, control = hh, type = "misclass"))
 
-            ## set.seed(1)
+            set.seed(1)
             y <- sample(c(0,1), 50, replace = TRUE)
             mm <- glm(y ~ rnorm(50))
-            p <- mm$fitted.values
-
-            expect_error(
-              errorMetrics(mm$y, mm$fitted.values, type = "brier"),
-              "'actual' must be a factor")
-            expect_error(
-              errorMetrics(
-                actual = as.factor(mm$y),
-                predicted = mm$fitted.values[-1L]),
-              "unequal lengths of actual and fitted values")
-            expect_error(
-              errorMetrics(mm$y),
-              "please provide actual and predicted values of fit!")
-            yna <- factor(c(y,1))
-            pna <- c(p, NA)
-            y <- factor(mm$y)
-
-            e4 <- errorMetrics(y, p, type = "logloss")
-            e5 <- errorMetrics(y, p, type = "misclass")
-
-            expect_false(any(is.na(c(e1, e2, e3, e4, e5))))
-            expect_vector(suppressWarnings(
-              errorMetrics(yna, pna, type = "brier")$value))
-            expect_output(print.errorMetrics(e1))
-            expect_output(print.errorMetrics(e4))
-            expect_output(print.errorMetrics(e5))
-            expect_error(print.errorMetrics('e5'),
-                          "supports only object of class 'errorMetrics'")
-            expect_error(vcov.serp(mm),
-                         "input must be an object of class 'serp'")
-            rm(e1, e2, e3, e4, e5, y, p, mm, f1)
-
+             expect_error(serp:::vcov.serp(mm))
 })

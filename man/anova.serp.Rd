@@ -49,6 +49,5 @@ anova(m1, m2)
 
 }
 \seealso{
-\code{\link{serp}}, \code{\link{confint.serp}}, \code{\link{vcov.serp}},
-\code{\link{errorMetrics}}
+\code{\link{serp}}, \code{\link{confint.serp}}, \code{\link{vcov.serp}}
 }

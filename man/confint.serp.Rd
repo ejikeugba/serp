@@ -29,6 +29,5 @@ confint(m)
 
 }
 \seealso{
-\code{\link{serp}}, \code{\link{anova.serp}}, \code{\link{vcov.serp}},
-\code{\link{errorMetrics}}
+\code{\link{serp}}, \code{\link{anova.serp}}, \code{\link{vcov.serp}}
 }

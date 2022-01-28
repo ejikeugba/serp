@@ -25,8 +25,7 @@ test_that("cumulative model via serp matches with vglm",
             expect_equal(pred.sp, pred.vm, check.attributes=FALSE,
                          tolerance=tol)
 
-            expect_error(anova.serp(sp, sp),
-                         "duplicate object names are not allowed")
+            expect_error(anova.serp(sp, sp))
 
             rm(sp, vm, pred.sp, pred.vm)
 
@@ -83,24 +82,20 @@ test_that("cumulative model via serp matches with vglm",
 
             expect_error(
               serp(rating ~ temp * contact, slope = "partial",
-                   link = "cauchit", globalEff= "temp", data = wine),
-              "no object of class formula used in globalEff")
+                   link = "cauchit", globalEff= "temp", data = wine))
 
             expect_error(
               serp(rating ~ temp * contact, slope = "partial",
-                   link = "cauchit", data = wine),
-              "'globalEff' is unspecified")
+                   link = "cauchit", data = wine))
             expect_error(
               serp(rating ~ temp * contact, slope = "partial",
-                   link = "cauchit", globalEff= ~1, data = wine),
-              "wrong input in 'globalEff'")
+                   link = "cauchit", globalEff= ~1, data = wine))
 
             sdat <- wine
             sdat$extra <- 1:72
             expect_error(
               serp(rating ~ temp * contact, slope = "partial",
-                   link = "cauchit", globalEff= ~extra, data = sdat),
-              "unknown variable in globalEff")
+                   link = "cauchit", globalEff= ~extra, data = sdat))
 
             rm(sp, vm, dev.sp, dev.vm, cof.sp, cof.vm, sdat, tol)
           })

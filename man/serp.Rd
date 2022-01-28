@@ -236,7 +236,7 @@ empirical studies.
 An object of class \code{serp} with the components listed below,
 depending on the type of slope modeled. Other summary methods include:
  \code{summary}, \code{coef}, \code{predict}, \code{vcov},
-\code{anova}, \code{errorMetrics}, etc.
+\code{anova}, etc.
 }
 \examples{
 require(serp)
@@ -293,5 +293,5 @@ McCullagh, P. (1980). Regression Models for Ordinal Data.
 \seealso{
 \code{\link{anova.serp}}, \code{\link{summary.serp}},
 \code{\link{predict.serp}}, \code{\link{confint.serp}},
-\code{\link{vcov.serp}}, \code{\link{errorMetrics}}
+\code{\link{vcov.serp}}
 }

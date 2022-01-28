@@ -27,6 +27,5 @@ vcov(m)
 \seealso{
 \code{\link{serp}}
 
-\code{\link{serp}}, \code{\link{anova.serp}}, \code{\link{confint.serp}},
-\code{\link{errorMetrics}}
+\code{\link{serp}}, \code{\link{anova.serp}}, \code{\link{confint.serp}}
 }

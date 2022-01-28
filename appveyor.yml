@@ -34,7 +34,6 @@ on_failure:
 
 on_success:
   - Rscript -e "covr::codecov()"
-#  - Rscript -e 'pkgdown::build_site()'
 
 artifacts:
   - path: '*.Rcheck\**\*.log'

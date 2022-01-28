@@ -345,13 +345,55 @@ cvfun <- function(lambda, x, y, nrFold, linkf, link, m, slope, globalEff,
         ts.y <- droplevels(ts.y)
         pr <- pr[, which(dplv %in% lv), drop = FALSE]
       }
-      pm <- errorMetrics(ts.y, pr, type = cverror)$value
+      pm <- errorMetrics(ts.y, pr, control, type = cverror)
     } else pm <- NA
     err[r, ] <- pm
   }
   res <- na.omit(err)
   sum(res)/length(res)
 }
+
+
+errorMetrics <- function(y, prob, control,
+                                 type = c("brier", "logloss", "misclass"))
+{
+
+  type <- match.arg(type)
+  #control <- serp.control()
+  eps <- control$minP
+  prob[prob < eps] <- eps
+  prob[prob > 1-eps] <- 1-eps
+  prob <- prob/rowSums(prob)
+  y <- droplevels(y)
+  nL <- nlevels(y)
+  obs <- length(y)
+  if (nrow(prob) != obs || max(unclass(y)) != ncol(prob)
+      || min(unclass(y)) < 0)
+    stop("levels of actual observations not equal to the number of ",
+         "columns of fitted values, or unequal ",
+         "lengths of observations", call. = FALSE)
+  ym <- matrix(0, nrow=obs, ncol=nL,
+               dimnames=list(NULL, levels(y)))
+  yi <- as.integer(y)
+  ym[cbind(1:obs, yi)] <- 1
+  if (type=="brier"){
+    rs <- rowSums(ym)
+    res <- sum(ym * (1 - prob)^2 + (rs - ym) *
+                 prob^2) / sum(rs)}
+  if (type=="logloss"){
+    res <- -sum(ym * log(prob))/nrow(prob)}
+  if (type=="misclass"){
+    rr <- apply(prob, 1, which.max)
+    rr <- rr - min(rr) + 1L
+    hh <- vapply(seq_len(nrow(ym)), function(i) sum(ym[i, -rr[i]]),
+                 numeric(1))
+    res <- sum(hh) / sum(ym)}
+  res
+}
+
+
+
+
 
 dvfun <- function(lambda, globalEff, x, y, startval, xlst, xMat, yMtx,
                   nL, obs, npar, linkf, link, vnull,control, slope, wt,

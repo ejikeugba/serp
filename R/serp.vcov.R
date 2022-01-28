@@ -7,8 +7,8 @@
 #' @seealso \code{\link{serp}}
 #' @return A variance covariance matrix of a fitted model.
 #' @seealso
-#' \code{\link{serp}}, \code{\link{anova.serp}}, \code{\link{confint.serp}},
-#' \code{\link{errorMetrics}}
+#' \code{\link{serp}}, \code{\link{anova.serp}}, \code{\link{confint.serp}}
+#'
 #' @examples
 #' library(serp)
 #' m <- serp(rating ~ temp + contact, slope = "parallel", link = "logit",

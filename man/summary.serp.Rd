@@ -41,5 +41,5 @@ summary(m)
 }
 \seealso{
 \code{\link{anova.serp}}, \code{\link{predict.serp}},
-\code{\link{confint.serp}}, \code{\link{vcov.serp}}, \code{\link{errorMetrics}}
+\code{\link{confint.serp}}, \code{\link{vcov.serp}}
 }

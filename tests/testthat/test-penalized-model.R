@@ -53,28 +53,19 @@ test_that("estreem shrinkage with serp results to the
             #3# checks on anova, confinct and vcov functions
             expect_equal(coef(sp5), coef(sp6), check.attributes=FALSE,
                          tolerance=tol)
-            expect_error(anova.serp(sp5),
-                         "no anova implementation yet for a single 'serp' object")
+            expect_error(anova.serp(sp5))
             expect_false(inherits(try(anova.serp(sp5, sp6)), 'try-error'))
-            expect_error(anova.serp(lm(rnorm(50) ~ runif(50))),
-                         "object of class other than serp not supported")
-            expect_error(anova.serp(sp3, sp4),
-                         "test not available for model with penalized slope")
-            expect_error(anova.serp(sp5,
-                                    update(sp6, subset = c(1:40))),
-                         "models were not all fitted to the same size of dataset")
+            expect_error(anova.serp(lm(rnorm(50) ~ runif(50))))
+            expect_error(anova.serp(sp3, sp4))
+            expect_error(anova.serp(sp5, update(sp6, subset = c(1:40))))
             expect_vector(length(anova.serp(sp5, sp6, test = "none")))
-            expect_error(confint.serp(sp5, sp6), "one object at a time allowed")
+            expect_error(confint.serp(sp5, sp6))
             expect_false(inherits(try(confint.serp(sp5)), 'try-error'))
-            expect_error(confint.serp(sp5, level = 1.2),
-                         "values of 'level' should lie between 0 and 1")
-            expect_message(confint.serp(sp5, parm = 0.1),
-                           "argument 'parm' ignored")
-            expect_error(confint.serp(lm(rnorm(50) ~ runif(50))),
-                         "input must be an object of class 'serp'")
+            expect_error(confint.serp(sp5, level = 1.2))
+            expect_message(confint.serp(sp5, parm = 0.1))
+            expect_error(confint.serp(lm(rnorm(50) ~ runif(50))))
             expect_false(inherits(try(vcov.serp(sp5)), 'try-error'))
-            expect_error(vcov.serp(sp1, sp2),
-                         "one object at a time allowed")
+            expect_error(vcov.serp(sp1, sp2))
             expect_vector(AIC.serp(sp5))
             expect_vector(BIC.serp(sp5))
             expect_vector(logLik.serp(sp5))
@@ -92,16 +83,14 @@ test_that("lambda is a single numeric and non-negative value and
             expect_error(
               serp(rating ~ temp + contact, slope = "penalize",
                    link = "loglog", reverse = TRUE, tuneMethod = "user",
-                   lambda = c(0.3,5), data = wine, subset = subs),
-              "lambda should be a single numeric and non-negative value")
+                   lambda = c(0.3,5), data = wine, subset = subs))
 
             expect_error(
               serp(rating ~ temp + contact, link = "probit",
                    slope = "penalize", reverse = FALSE,
                    tuneMethod = "aic",
                    lambdaGrid = c(-3,4),
-                   data = wine, subset = subs),
-              "lambdaGrid must be a non-negative numeric vector of length > 1")
+                   data = wine, subset = subs))
 
             expect_vector(
               serp(rating ~ temp + contact, link = "cloglog",
@@ -115,13 +104,9 @@ test_that("lambda is a single numeric and non-negative value and
                    slope = "penalize", reverse = FALSE,
                    tuneMethod = "deviance",
                    lambdaGrid = c(0,1), control = list(trace=-1),
-                   data = wine, subset = subs),
-              "maxits, eps, maxpen, minP, maxAdjIter, max.half.iter and
-  relTol should all be numeric and non-negative")
-            expect_error(serp.control(misclass.thresh = 5),
-                         "misclass.thresh should be numeric and lie between 0 and 1 inclusive")
-            expect_error(serp.control(maxpen = 1e11),
-                         "values of lambda above 1e10 are not allowed")
+                   data = wine, subset = subs))
+            expect_error(serp.control(misclass.thresh = 5))
+            expect_error(serp.control(maxpen = 1e11))
             rm(subs)
           })
 
@@ -131,23 +116,19 @@ test_that("subset indices are positive whole numbers",
             expect_error(
               serp(rating ~ temp + contact, link = "logit",
                    slope = "penalize", reverse=TRUE, subset = c(1, 2, 3, "r"),
-                   data = wine),
-              "subset indices must be positive whole numbers")
+                   data = wine))
             expect_error(
               serp(rating ~ temp + contact, link = "logit",
                    slope = "penalize", reverse=TRUE, subset = c(1, 2, 3, 4.7),
-                   data = wine),
-              "subset indices must be positive whole numbers")
+                   data = wine))
             expect_error(
               serp(rating ~ temp + contact, link = "logit",
                    slope = "penalize", reverse=TRUE, subset = c(1, 2, 3, -5),
-                   data = wine),
-              "subset indices must be positive whole numbers")
+                   data = wine))
             expect_error(
               serp(rating ~ temp + contact, link = "logit",
                    slope = "penalize", reverse=TRUE, subset = c(1, 2, 3, NA),
-                   data = wine),
-              "subset indices must be positive whole numbers")
+                   data = wine))
           })
 
 ## checks on predict function and data subset
@@ -173,8 +154,7 @@ test_that("predict function works properly",
             colnames(wdat) <- 1:6
 
             expect_error(predict(s1, type = 'link',
-                                 newdata = wdat),
-                         "names in newdata do not match previous names")
+                                 newdata = wdat))
 
             rtt <-  wine$rating
             rtt <- data.frame(rating=rtt)
@@ -185,26 +165,6 @@ test_that("predict function works properly",
             pred3 <- predict(s2, type = 'link', newdata=head(wine))
             expect_vector(pred3[1L,])
 
-            expect_error(
-              errorMetrics(
-                actual = wine$rating,
-                predicted = matrix(runif(100), 20,5),
-                type = "brier"),
-              "levels of actual observations not equal to the number of columns of fitted values, or unequal lengths of observations")
-
-            expect_error(
-              errorMetrics(
-                actual = as.factor(rbinom(20,1,0.5)),
-                predicted = matrix(runif(100), 20,5)),
-              "supply a vector of fitted values")
-
-            expect_error(
-              errorMetrics(
-                actual = as.factor(rbinom(100,1,0.5)),
-                predicted = c(runif(98),'x','y')),
-              "supply a numeric vector of fitted values")
-
-
             rm(pred1, pred2, pred3, subs, wdat, rtt, s2)
 
           })
@@ -212,7 +172,7 @@ test_that("predict function works properly",
 ## checks on warning and error messages
 test_that("error messages and warnings report properly",
           {set.seed(1)
-            n <- 10
+            n <- 8
             test_data1 <- data.frame(y= as.ordered(rbinom(n,3, 0.2)),
                                      x1=rnorm(n), x2=runif(n))
             expect_error(
@@ -223,17 +183,12 @@ test_that("error messages and warnings report properly",
                    gridType = "discrete",
                    reverse = F,
                    lambdaGrid = 10^seq(-1, 2, length.out=2),
-                   data = test_data1),
-              "cv tuning did not succeed, try using a different tuneMethod")
+                   data = test_data1))
 
-            expect_error(print.serp(test_data1),
-                         "input must be an object of class 'serp'")
-            expect_error(print.summary.serp(test_data1),
-                         "input must be an object of class 'serp'")
-            expect_error(summary.serp(test_data1),
-                         "input must be an object of class 'serp'")
-            expect_error(predict.serp(test_data1),
-                         "object must be of class \"serp\"")
+            expect_error(print.serp(test_data1))
+            expect_error(print.summary.serp(test_data1))
+            expect_error(summary.serp(test_data1))
+            expect_error(predict.serp(test_data1))
 
             expect_error(
               serp(y ~ x1 + x2,
@@ -241,8 +196,7 @@ test_that("error messages and warnings report properly",
                    link = "logit",
                    tuneMethod = "cv",
                    control = list(nrFold = 1),
-                   data = test_data1),
-              "nrFold should be numeric and between 2 and 10 inclusive.")
+                   data = test_data1))
 
 
             set.seed(1)
@@ -257,24 +211,23 @@ test_that("error messages and warnings report properly",
                    gridType = "discrete",
                    reverse = TRUE,
                    lambdaGrid = 10^seq(-1, 2, length.out=2),
-                   data = test_data2),
-              "Stochastic ordering assumption failed. Consider using the penalized, parallel or partial slope, or other link functions.")
+                   data = test_data2))
 
 
-            set.seed(1)
+            set.seed(11)
             n <- 20
-            test_data3 <- data.frame(y= as.ordered(rbinom(n,3, 0.1)),
+            test_data3 <- data.frame(y= as.ordered(rbinom(n,3, 0.2)),
                                      x1=runif(n), x2=runif(n))
-            expect_error(
+            expect_warning(
               serp(y ~ x1 + x2,
                    slope = "penalize",
                    link = "logit",
-                   tuneMethod = "cv",
+                   tuneMethod = "finite",
                    gridType = "fine",
                    reverse = F,
                    lambdaGrid = 10^seq(-1, 2, length.out=2),
-                   data = test_data3),
-              "cv tuning did not succeed, try using a different tuneMethod")
+                   data = test_data3))
+
 
             set.seed(1)
             n <- 20
@@ -290,8 +243,7 @@ test_that("error messages and warnings report properly",
                            reverse = F,
                            lambdaGrid = 10^seq(-1, 2, length.out=2),
                            control = list(nrFold =2),
-                           data = test_data4),
-              "non-finite log-likelihood persists, increase lambdaGrid upper limit or apply a different tuning method")
+                           data = test_data4))
 
             expect_output(penalty.print(object=mm4, max.tun=TRUE))
             expect_output(print.serp(mm4))
@@ -303,8 +255,7 @@ test_that("error messages and warnings report properly",
                    tuneMethod = "user",
                    reverse = TRUE,
                    lambda,
-                   data = test_data4),
-              "unassigned value in serp function.")
+                   data = test_data4))
 
             expect_vector(
               serp(y ~ 1,
@@ -322,16 +273,14 @@ test_that("error messages and warnings report properly",
                    slope = "penalize",
                    link = "logit",
                    tuneMethod = "user",
-                   data = test_data4),
-              "response must be an ordered factor")
+                   data = test_data4))
 
             expect_error(
               serp(rating ~ temp * contact,
                    slope = "penalize",
                    link = "logit",
                    tuneMethod = "user",
-                   data = wine),
-              "user-supplied lambda value is required for 'user' tuning")
+                   data = wine))
 
             expect_error(
               serp(rating ~ temp * contact,
@@ -339,8 +288,7 @@ test_that("error messages and warnings report properly",
                    link = "logit",
                    tuneMethod = "user",
                    lambda = 1e11,
-                   data = wine),
-              "values of lambda above 1e10 are not allowed")
+                   data = wine))
 
             expect_error(
               serp(rating ~ temp * contact,
@@ -348,29 +296,23 @@ test_that("error messages and warnings report properly",
                    link = "logit",
                    tuneMethod = "aic",
                    lambdaGrid = 10^seq(-1, 12, length.out=2),
-                   data = wine),
-              "values of lambda above 1e10 are not allowed")
-
+                   data = wine))
 
             expect_error(
               serp(rating ~ temp * contact, slope = "partial",
-                   link = "cauchit", globalEff= ~1, data = wine),
-              "wrong input in 'globalEff'")
+                   link = "cauchit", globalEff= ~1, data = wine))
 
             sdat <- wine
             sdat$extra <- 1:72
             expect_error(
               serp(rating ~ temp * contact, slope = "partial",
-                   link = "cauchit", globalEff= ~extra, data = sdat),
-              "unknown variable in globalEff")
-
+                   link = "cauchit", globalEff= ~extra, data = sdat))
 
             test_data4$y <- rbinom(20, 1, 0.5)
             expect_error(
               serp(ordered(y) ~ x1 + x2,
                    slope = "parallel",
-                   link = "logit", data = test_data4),
-              "response must have 3 or more levels")
+                   link = "logit", data = test_data4))
 
             rm(test_data1, test_data2, test_data3, test_data4, n)
           })

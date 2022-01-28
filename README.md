@@ -23,7 +23,7 @@ status](https://github.com/ejikeugba/serp/workflows/R-CMD-check/badge.svg)](http
 
 <!-- badges: end -->
 
-### Overview
+## Overview
 
 `serp` fits cumulative link models (CLMs) with the
 `smooth-effect-on-response penalty (SERP)`. The `cumulative model`

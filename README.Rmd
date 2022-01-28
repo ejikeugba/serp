@@ -30,10 +30,12 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 
-> Smooth-effect-on-response penalty for CLM
+>Smooth Effect on Response Penalty for CLM
 
 ---
+
 __Author:__ [Ejike R. Ugba](https://www.linkedin.com/in/ejikeugba/)
+
 
 
 ### Overview

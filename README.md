@@ -23,7 +23,7 @@ status](https://github.com/ejikeugba/serp/workflows/R-CMD-check/badge.svg)](http
 
 <!-- badges: end -->
 
-> Smooth-effect-on-response penalty for CLM
+> Smooth Effect on Response Penalty for CLM
 
 ------------------------------------------------------------------------
 

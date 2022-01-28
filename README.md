@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# serp <img src='man/figures/hex_logo.png' align="right" height="139" />
+# serp <a href="https://ejikeugba.github.io/serp/"><img src='man/figures/hex_logo.png' align="right" height="139" /></a>
 
 <!-- badges: start -->
 

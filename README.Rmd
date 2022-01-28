@@ -12,13 +12,12 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
+# serp <a href="https://ejikeugba.github.io/serp/"><img src='man/figures/hex_logo.png' align="right" height="139" /></a>
 
 
-# serp <img src='man/figures/hex_logo.png' align="right" height="139" />
 
 
 <!-- badges: start -->
-
 [![Project Status: Active – The project has reached a stable, usable state and is being activelydeveloped](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Codecov test coverage](https://codecov.io/gh/ejikeugba/serp/branch/master/graph/badge.svg)](https://app.codecov.io/gh/ejikeugba/serp?branch=master)
 [![Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/serp)](https://CRAN.R-project.org/package=serp)

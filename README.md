@@ -23,12 +23,6 @@ status](https://github.com/ejikeugba/serp/workflows/R-CMD-check/badge.svg)](http
 
 <!-- badges: end -->
 
-> Smooth Effect on Response Penalty for CLM
-
-------------------------------------------------------------------------
-
-**Author:** [Ejike R. Ugba](https://www.linkedin.com/in/ejikeugba/)
-
 ### Overview
 
 The `serp` R package fits cumulative link models (CLMs) with the

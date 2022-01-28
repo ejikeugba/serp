@@ -94,11 +94,10 @@
 <!-- badges: start -->
 
 <!-- badges: end -->
-<div class="section level3">
-<h3 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
-</h3>
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
 <p><code>serp</code> fits cumulative link models (CLMs) with the <code>smooth-effect-on-response penalty (SERP)</code>. The <code>cumulative model</code> developed by McCullagh (1980) is probably the most frequently used ordinal model in empirical studies. However, the stochastic ordering property of the general form of the model poses a very serious challenge in most empirical applications of the model. For instance, unstable likelihoods with ill-conditioned parameter space are frequently encountered during the iterative process. <code>serp</code> implements a unique regularization method for CLMs that provides the means of smoothing the adjacent categories in the model. At extreme shrinkage, SERP causes all subject-specific effects associated with each variable in the model to shrink towards unique global effects. Fitting is done using a modified Newton’s method. Several standard model performance and descriptive methods are also available. See <a href="https://doi.org/10.21105/joss.03705" class="external-link">Ugba, 2021</a>, <a href="https://doi.org/10.3390/stats4030037" class="external-link">Ugba et al., 2021</a> and <a href="https://doi.org/10.1177/1471082X16642560" class="external-link">Tutz and Gertheiss, 2016</a> for further details on the implemented penalty.</p>
-</div>
 <div class="section level3">
 <h3 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h3>
@@ -163,6 +162,7 @@
 <p>Tutz, G. and Gertheiss, J. (2016). Regularized Regression for Categorical Data (With Discussion and Rejoinder). <em>Statistical Modelling</em>, 16, 161-260. <a href="https://doi.org/10.1177/1471082X16642560" class="external-link uri">https://doi.org/10.1177/1471082X16642560</a></p>
 <p>Ugba, E. R., Mörlein, D. and Gertheiss, J. (2021). Smoothing in Ordinal Regression: An Application to Sensory Data. <em>Stats</em>, 4, 616–633. <a href="https://doi.org/10.3390/stats4030037" class="external-link uri">https://doi.org/10.3390/stats4030037</a></p>
 <p>Ugba, E. R. (2021). serp: An R package for smoothing in ordinal regression <em>Journal of Open Source Software</em>, 6(66), 3705. <a href="https://doi.org/10.21105/joss.03705" class="external-link uri">https://doi.org/10.21105/joss.03705</a></p>
+</div>
 </div>
 </div>
   </div>

@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://ejikeugba.github.io/serp/404.html</loc>
+  </url>
+  <url>
+    <loc>https://ejikeugba.github.io/serp/CODE_OF_CONDUCT.html</loc>
+  </url>
+  <url>
+    <loc>https://ejikeugba.github.io/serp/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://ejikeugba.github.io/serp/authors.html</loc>
+  </url>
+  <url>
+    <loc>https://ejikeugba.github.io/serp/contributing.html</loc>
+  </url>
+  <url>
     <loc>https://ejikeugba.github.io/serp/index.html</loc>
+  </url>
+  <url>
+    <loc>https://ejikeugba.github.io/serp/news/index.html</loc>
   </url>
   <url>
     <loc>https://ejikeugba.github.io/serp/reference/AIC.serp.html</loc>
@@ -19,7 +37,7 @@
     <loc>https://ejikeugba.github.io/serp/reference/confint.serp.html</loc>
   </url>
   <url>
-    <loc>https://ejikeugba.github.io/serp/reference/errorMetrics.html</loc>
+    <loc>https://ejikeugba.github.io/serp/reference/index.html</loc>
   </url>
   <url>
     <loc>https://ejikeugba.github.io/serp/reference/logLik.serp.html</loc>
@@ -28,19 +46,16 @@
     <loc>https://ejikeugba.github.io/serp/reference/predict.serp.html</loc>
   </url>
   <url>
-    <loc>https://ejikeugba.github.io/serp/reference/print.errorMetrics.html</loc>
-  </url>
-  <url>
     <loc>https://ejikeugba.github.io/serp/reference/print.serp.html</loc>
   </url>
   <url>
     <loc>https://ejikeugba.github.io/serp/reference/print.summary.serp.html</loc>
   </url>
   <url>
-    <loc>https://ejikeugba.github.io/serp/reference/serp.html</loc>
+    <loc>https://ejikeugba.github.io/serp/reference/serp.control.html</loc>
   </url>
   <url>
-    <loc>https://ejikeugba.github.io/serp/reference/serp.control.html</loc>
+    <loc>https://ejikeugba.github.io/serp/reference/serp.html</loc>
   </url>
   <url>
     <loc>https://ejikeugba.github.io/serp/reference/summary.serp.html</loc>

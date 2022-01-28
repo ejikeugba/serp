@@ -23,9 +23,15 @@ status](https://github.com/ejikeugba/serp/workflows/R-CMD-check/badge.svg)](http
 
 <!-- badges: end -->
 
-## Overview
+> Smooth-effect-on-response penalty for CLM
 
-`serp` fits cumulative link models (CLMs) with the
+------------------------------------------------------------------------
+
+**Author:** [Ejike R. Ugba](https://www.linkedin.com/in/ejikeugba/)
+
+### Overview
+
+The `serp` R package fits cumulative link models (CLMs) with the
 `smooth-effect-on-response penalty (SERP)`. The `cumulative model`
 developed by McCullagh (1980) is probably the most frequently used
 ordinal model in empirical studies. However, the stochastic ordering

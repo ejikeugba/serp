@@ -17,8 +17,6 @@ knitr::opts_chunk$set(
 # serp <a href="https://ejikeugba.github.io/serp/"><img src='man/figures/hex_logo.png' align="right" height="139" /></a>
 
 
-
-
 <!-- badges: start -->
 [![Project Status: Active – The project has reached a stable, usable state and is being activelydeveloped](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Codecov test coverage](https://codecov.io/gh/ejikeugba/serp/branch/master/graph/badge.svg)](https://app.codecov.io/gh/ejikeugba/serp?branch=master)
@@ -32,8 +30,14 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 
-## Overview
-`serp` fits cumulative link models (CLMs) with the `smooth-effect-on-response penalty (SERP)`. The `cumulative model` developed by McCullagh (1980) is probably the most frequently used ordinal model in empirical studies. However, the stochastic ordering property of the general form of the model poses a very serious challenge in most empirical applications of the model. For instance, unstable likelihoods with ill-conditioned parameter space are frequently encountered during the iterative process. `serp` implements a unique regularization method for CLMs that provides the means of smoothing the adjacent categories in the model. At extreme shrinkage, SERP causes all subject-specific effects associated with each variable in the model to shrink towards unique global effects. Fitting is done using a modified Newton's method. Several standard model performance and descriptive methods are also available. See [Ugba, 2021](https://doi.org/10.21105/joss.03705), [Ugba et al., 2021](https://doi.org/10.3390/stats4030037) and [Tutz and Gertheiss, 2016](https://doi.org/10.1177/1471082X16642560) for further details on the implemented penalty.
+> Smooth-effect-on-response penalty for CLM
+
+---
+__Author:__ [Ejike R. Ugba](https://www.linkedin.com/in/ejikeugba/)
+
+
+### Overview
+The `serp` R package fits cumulative link models (CLMs) with the `smooth-effect-on-response penalty (SERP)`. The `cumulative model` developed by McCullagh (1980) is probably the most frequently used ordinal model in empirical studies. However, the stochastic ordering property of the general form of the model poses a very serious challenge in most empirical applications of the model. For instance, unstable likelihoods with ill-conditioned parameter space are frequently encountered during the iterative process. `serp` implements a unique regularization method for CLMs that provides the means of smoothing the adjacent categories in the model. At extreme shrinkage, SERP causes all subject-specific effects associated with each variable in the model to shrink towards unique global effects. Fitting is done using a modified Newton's method. Several standard model performance and descriptive methods are also available. See [Ugba, 2021](https://doi.org/10.21105/joss.03705), [Ugba et al., 2021](https://doi.org/10.3390/stats4030037) and [Tutz and Gertheiss, 2016](https://doi.org/10.1177/1471082X16642560) for further details on the implemented penalty.
 
 
 ### Example

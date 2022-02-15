@@ -353,13 +353,11 @@ cvfun <- function(lambda, x, y, nrFold, linkf, link, m, slope, globalEff,
   sum(res)/length(res)
 }
 
-
 errorMetrics <- function(y, prob, control,
                                  type = c("brier", "logloss", "misclass"))
 {
 
   type <- match.arg(type)
-  #control <- serp.control()
   eps <- control$minP
   prob[prob < eps] <- eps
   prob[prob > 1-eps] <- 1-eps
@@ -390,10 +388,6 @@ errorMetrics <- function(y, prob, control,
     res <- sum(hh) / sum(ym)}
   res
 }
-
-
-
-
 
 dvfun <- function(lambda, globalEff, x, y, startval, xlst, xMat, yMtx,
                   nL, obs, npar, linkf, link, vnull,control, slope, wt,

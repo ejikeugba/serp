@@ -1,3 +1,9 @@
+## serp 0.2.3.9001
+- errorMetrics() function is modified and no longer exported, an equivalent function with improved functionality is provided by the erroR() function in the gofcat package.
+- fix some dependency induced bugs in the package tests.
+- minor changes in serp documentation.
+
+---
 ## serp 0.2.3
 - CRAN release
 - import from crayon, with colored outputs in returned objects 

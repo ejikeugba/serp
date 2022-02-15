@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">serp</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3.9001</span>
       </span>
     </div>
 
@@ -54,64 +54,66 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.2.3" id="serp-023">serp 0.2.3<small>2021-11-07</small><a class="anchor" aria-label="anchor" href="#serp-023"></a></h2>
-<ul><li>CRAN release</li>
-<li>import from crayon, with colored outputs in returned objects</li>
-<li>changes made in serp test for improved test coverage report</li>
-<li>bug fix in errorMetrics, with model argument also dropped</li>
-<li>add print method and class of objects returned by errorMetrics</li>
-<li>message() replaces cat() where appropriate</li>
-<li>add citation for serp package</li>
+<h2 class="page-header" data-toc-text="0.2.3.9001" id="serp-0239001">serp 0.2.3.9001<a class="anchor" aria-label="anchor" href="#serp-0239001"></a></h2>
+<ul><li>errorMetrics() function is modified and no longer exported, an equivalent function with improved functionality is provided by the erroR() function in the gofcat package.</li>
+<li>fix some dependency induced bugs in the package tests.</li>
+<li>minor changes in serp documentation.</li>
 </ul></div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.2.1" id="serp-021">serp 0.2.1<small>2021-09-01</small><a class="anchor" aria-label="anchor" href="#serp-021"></a></h2>
-<ul><li>submission to CRAN</li>
+<h2 class="page-header" data-toc-text="0.2.2" id="serp-022">serp 0.2.2<a class="anchor" aria-label="anchor" href="#serp-022"></a></h2>
+<ul><li>JOSS release</li>
+<li>minor changes in serp documentation</li>
+<li>provide coefficient() as an alias for coef()</li>
+<li>update README.md to include community guidelines and contributors code of conduct</li>
+<li>
+</li></ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.0.9001" id="serp-0209001">serp 0.2.0.9001<a class="anchor" aria-label="anchor" href="#serp-0209001"></a></h2>
+<ul><li>update function included in namespace</li>
+<li>examples included in the different function documentation</li>
+<li>shrinkage parameter upper limit set to 1e10 in serp.control</li>
+<li>bug fix in test function</li>
 </ul></div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.2.0.9000" id="serp-0209000">serp 0.2.0.9000<a class="anchor" aria-label="anchor" href="#serp-0209000"></a></h2>
-<ul><li>deviance tuning option in serp tuneMethod now replaced by AIC</li>
-<li>serp output includes residual degrees of freedom (rdf)</li>
-<li>function to compute the effective degrees of freedom and rdf from the trace of the generalized hat matrix provided</li>
-<li>serp.summary documentation has its value segment edited</li>
-<li>changes made in serp test functions</li>
-<li>changes made in README.Rmd and README.md</li>
+<h2 class="page-header" data-toc-text="0.2.0" id="serp-020">serp 0.2.0<small>2021-07-25</small><a class="anchor" aria-label="anchor" href="#serp-020"></a></h2>
+<ul><li>serp version 0.2.0 release</li>
 </ul></div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.1.9.9001" id="serp-0199001">serp 0.1.9.9001<a class="anchor" aria-label="anchor" href="#serp-0199001"></a></h2>
-<ul><li>re-submission to CRAN</li>
+<h2 class="page-header" data-toc-text="0.1.9.9000" id="serp-0199000">serp 0.1.9.9000<a class="anchor" aria-label="anchor" href="#serp-0199000"></a></h2>
+<ul><li>fixed all issues spotted out in the last version released on CRAN.</li>
 </ul></div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.1.9" id="serp-019">serp 0.1.9<a class="anchor" aria-label="anchor" href="#serp-019"></a></h2>
-<ul><li>Submit serp version 0.1.9 to CRAN</li>
+<h2 class="page-header" data-toc-text="0.1.8.9007" id="serp-0189007">serp 0.1.8.9007<a class="anchor" aria-label="anchor" href="#serp-0189007"></a></h2>
+<ul><li>updates README.md</li>
+<li>description gets additional doi</li>
+<li>references in serp documentation updated</li>
 </ul></div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.1.8.9006" id="serp-0189006">serp 0.1.8.9006<a class="anchor" aria-label="anchor" href="#serp-0189006"></a></h2>
-<ul><li>Bugs in tests fixed</li>
+<h2 class="page-header" data-toc-text="0.1.8.9005" id="serp-0189005">serp 0.1.8.9005<a class="anchor" aria-label="anchor" href="#serp-0189005"></a></h2>
+<ul><li>tests reconstructed to yield improved unit test coverage.</li>
+<li>rewrote some of the error and warning messages in key serp functions.</li>
+<li>Bugs in anova.serp fixed.</li>
+<li>
+</li></ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.1.8.9003" id="serp-0189003">serp 0.1.8.9003<a class="anchor" aria-label="anchor" href="#serp-0189003"></a></h2>
+<ul><li>Column titles of predicted values with reverse TRUE are corrected.</li>
+<li>Bugs in the deviance (dvfun) are corrected.</li>
+<li>serp predict function now handles both single and multiple row input(s).</li>
+<li>serp.fit iteration algorithm improved.</li>
+<li>commented lines in serp main function removed.</li>
+<li>reverse and linkf arguments moved from main function to serpfit.</li>
+<li>loglog and cloglog links now give correct results with reverse=‘TRUE’.</li>
+<li>long lines of codes in the score function split for easy readability.</li>
+<li>starting values augmented to reflect the different link functions.</li>
+<li>reverse statement removed from cv function.</li>
+<li>reverse.fun is removed from summary.serp function.</li>
+<li>predicted values in errorMetrics get normalized for greater efficiency.</li>
 </ul></div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.1.8.9004" id="serp-0189004">serp 0.1.8.9004<a class="anchor" aria-label="anchor" href="#serp-0189004"></a></h2>
-<ul><li>update License in the description</li>
-<li>Bugs in the example codes fixed</li>
-<li>Bugs in test files corrected</li>
+<h2 class="page-header" data-toc-text="0.1.8.9001" id="serp-0189001">serp 0.1.8.9001<a class="anchor" aria-label="anchor" href="#serp-0189001"></a></h2>
+<ul><li>serp gets a new license.</li>
 </ul></div>
-    <div class="section level2">
-<h2 class="page-header" data-toc-text="0.1.8.9002" id="serp-0189002">serp 0.1.8.9002<a class="anchor" aria-label="anchor" href="#serp-0189002"></a></h2>
-<ul><li>warning messages in serpfit get updated.</li>
-<li>Bug in serpfit when specifying gridType corrected.</li>
-<li>trainError no longer shows up in serp output.</li>
-<li>reverse.fun is now deprecated.</li>
-<li>penalty.print gets slightly reconstructed.</li>
-<li>Bugs in print.summary.serp fixed.</li>
-<li>Summary.serp drops off trainError with some few more adjustments.</li>
-<li>Predict gets reconstructed, also bugs when supplying ‘newdata’ corrected.</li>
-<li>Bugs in anova function fixed with slope type now included in the output.</li>
-<li>anova test for the ‘penalize’ slope currently disabled.</li>
-<li>updates in serp.control warning messages.</li>
-</ul></div>
-    <div class="section level2">
-<h2 class="page-header" data-toc-text="0.1.8.9000" id="serp-0189000">serp 0.1.8.9000<a class="anchor" aria-label="anchor" href="#serp-0189000"></a></h2>
-<ul><li>README.md gets additional badges and a hexagon sticker</li>
-</ul><hr></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.8" id="serp-018">serp 0.1.8<small>2021-01-29</small><a class="anchor" aria-label="anchor" href="#serp-018"></a></h2>
 <ul><li><p>package re-submission to CRAN</p></li>

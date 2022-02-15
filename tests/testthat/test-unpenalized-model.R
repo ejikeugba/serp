@@ -8,7 +8,7 @@ wine <- serp::wine
 test_that("cumulative model via serp matches with vglm",
           {
             if (!is_VGAM_installed) skip("VGAM not installed")
-            tol <- 1e-06
+            tol <- 1e-03
 
             #1# parallel slope with logit link
             sp <- serp(rating ~ temp + contact, slope = "parallel",
@@ -32,9 +32,10 @@ test_that("cumulative model via serp matches with vglm",
             #2# unparallel slope with probit link
             sp <- serp(rating ~ temp + contact, slope = "unparallel",
                        link = "probit", reverse=FALSE, data = wine)
-            vm <- vglm(rating ~ temp + contact,
+
+            vm <- suppressWarnings(vglm(rating ~ temp + contact,
                        family= cumulative(link="probitlink", parallel=FALSE,
-                                          reverse=FALSE), data = wine)
+                                          reverse=FALSE), data = wine))
             fitted.sp <- as.matrix(sp$fitted.values)
             fitted.vm <- as.matrix(vm@fitted.values)
             expect_equal(fitted.sp, fitted.vm, check.attributes=FALSE,
@@ -57,28 +58,28 @@ test_that("cumulative model via serp matches with vglm",
             #4# unparallel slope with reverse logit link
             sp <- serp(rating ~ temp + contact, slope = "unparallel",
                        link = "logit", reverse=TRUE, data = wine)
-            vm <- vglm(rating ~ temp + contact,
+            vm <- suppressWarnings(vglm(rating ~ temp + contact,
                        family=cumulative(link="logitlink", parallel=FALSE,
-                                         reverse=TRUE), data = wine)
-            iter.sp <- sp$iter
-            iter.vm <- vm@iter
-            expect_equal(iter.sp, iter.vm, check.attributes=FALSE,
+                                         reverse=TRUE), data = wine))
+            dev.sp <- deviance(sp)
+            dev.vm <- deviance(vm)
+            expect_equal(dev.sp, dev.vm, check.attributes=FALSE,
                          tolerance=tol)
-            rm(sp, vm, iter.sp, iter.vm)
+            rm(sp, vm, dev.sp, dev.vm)
 
             #5# partial or semi-parallel slope with cauchit link
             sp <- serp(rating ~ temp * contact, slope = "partial",
                        link = "cauchit", globalEff= ~ temp, data = wine)
-            vm <- vglm(rating ~ temp * contact,
+            vm <- suppressWarnings(vglm(rating ~ temp * contact,
                        family=cumulative(link="cauchitlink", parallel=FALSE ~contact),
-                       data = wine)
+                       data = wine))
             dev.sp <- deviance(sp)
             dev.vm <- deviance(vm)
 
             cof.sp <- coef(sp)
             cof.vm <- coef(vm)
             expect_equal(cof.sp, cof.vm, check.attributes=FALSE,
-                         tolerance=1e-06)
+                         tolerance=1e-03)
 
             expect_error(
               serp(rating ~ temp * contact, slope = "partial",

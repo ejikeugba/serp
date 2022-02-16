@@ -31,25 +31,35 @@ R CMD check results
   Found the following files/directories:
     'lastMiKTeXException'
 
-### Explanations on the Notes
-- The suggested misspelled words in DESCRIPTION are all correct.
-- The detritus check seems to be a false positive, no such directory or file exist in the temp directory. This appears to be common on rhub windows, especially with the recent Windows Server 2022.    
-
-
 
 ## win-builder
 
 ### Test environments
-- using platform: x86_64-w64-mingw32 (64-bit), R Under development (unstable) (2022-02-11 r81718 ucrt)
+- using platform: x86_64-w64-mingw32 (64-bit), R Under development (unstable) (2022-02-14 r81736 ucrt)
 
 R CMD check results
 
-Status: OK
+> Possibly misspelled words in DESCRIPTION:
+    CLM (3:47)
+    SERP (12:53)
+    Ugba (25:28, 26:5)
+    al (26:13)
+    et (26:10)
+
+Status: 1 NOTE
 
 
-
-## Further comments
-- All dictated errors and warnings in the previous version are all addressed in the latest version of the package.
 
 ## Downstream dependencies
-- There are currently no downstream dependencies for this package
+- One reverse suggest having everything running smoothly
+
+
+## Explanations on the Notes
+- Suggested misspelled words in DESCRIPTION are all correct.
+- The detritus check seems to be a false positive, no such directory or file exist in the temp directory. This appears to be common on rhub windows, especially with the recent Windows Server 2022.    
+
+
+
+## Issues on previous version
+- Reported errors and warnings in the previous version (v0.1.3), via continuous CRAN checks, have all been fixed in the latest version.
+

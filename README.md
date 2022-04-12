@@ -39,8 +39,8 @@ subject-specific effects associated with each variable in the model to
 shrink towards unique global effects. Fitting is done using a modified
 Newton’s method. Several standard model performance and descriptive
 methods are also available. See [Ugba,
-2021](https://doi.org/10.21105/joss.03705), [Ugba et al.,
-2021](https://doi.org/10.3390/stats4030037) and [Tutz and Gertheiss,
+2021](https://www.researchgate.net/publication/355796737_serp_An_R_package_for_smoothing_in_ordinal_regression), [Ugba et al.,
+2021](https://www.researchgate.net/publication/353406284_Smoothing_in_Ordinal_Regression_An_Application_to_Sensory_Data) and [Tutz and Gertheiss,
 2016](https://doi.org/10.1177/1471082X16642560) for further details on
 the implemented penalty.
 

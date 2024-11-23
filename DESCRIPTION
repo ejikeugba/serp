@@ -36,6 +36,7 @@ Imports:
 Suggests: 
     covr,
     testthat,
+    vctrs,
     VGAM (>= 1.1-4)
 Encoding: UTF-8
 LazyData: True

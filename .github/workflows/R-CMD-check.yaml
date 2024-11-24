@@ -32,6 +32,7 @@ jobs:
       RSPM: ${{ matrix.config.rspm }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
+
     steps:
       - uses: actions/checkout@v2
 
@@ -39,6 +40,11 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew update
+
+      - name: Install pkgconf (macOS only)
+        if: runner.os == 'macOS'
+        run: |
+          brew install pkgconf
 
       - name: Force link pkgconf (macOS only)
         if: runner.os == 'macOS'
@@ -48,6 +54,7 @@ jobs:
       - uses: r-lib/actions/setup-r@v1
         with:
           r-version: ${{ matrix.config.r }}
+          
 
       - uses: r-lib/actions/setup-pandoc@v1
 

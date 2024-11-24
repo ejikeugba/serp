@@ -9,7 +9,7 @@ serpfit <- function(x, y, wt, yMtx, link, slope, reverse, control,
     slope <- 'partial'
   if (slope == 'partial'){
     if (!is.null(globalEff)) {
-      if(class(globalEff) != "formula")
+      if (!inherits(globalEff, "formula"))
         stop("no object of class formula used in globalEff", call. = FALSE)
       if (grepl('["]', c(globalEff)))
         stop("variable name in quotes not allowed in globalEff",

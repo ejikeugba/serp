@@ -40,6 +40,11 @@ jobs:
         run: |
           brew update
 
+      - name: Force link pkgconf (macOS only)
+        if: runner.os == 'macOS'
+        run: |
+          brew link --overwrite pkgconf
+
       - uses: r-lib/actions/setup-r@v1
         with:
           r-version: ${{ matrix.config.r }}

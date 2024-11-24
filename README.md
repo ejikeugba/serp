@@ -10,8 +10,7 @@ state and is being
 activelydeveloped](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Codecov test
 coverage](https://codecov.io/gh/ejikeugba/serp/branch/master/graph/badge.svg)](https://app.codecov.io/gh/ejikeugba/serp?branch=master)
-[![Total
-Downloads](http://cranlogs.r-pkg.org/badges/grand-total/serp)](https://CRAN.R-project.org/package=serp)
+[![Total Downloads](https://img.shields.io/github/downloads/serp/serp/total.svg)](https://CRAN.R-project.org/package=serp)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/serp)](https://CRAN.R-project.org/package=serp)
 [![DOI](https://joss.theoj.org/papers/10.21105/joss.03705/status.svg)](https://doi.org/10.21105/joss.03705)

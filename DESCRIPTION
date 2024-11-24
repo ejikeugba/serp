@@ -37,6 +37,7 @@ Suggests:
     covr,
     testthat,
     tibble,
+    pkgdown,
     VGAM (>= 1.1-4)
 Encoding: UTF-8
 LazyData: True

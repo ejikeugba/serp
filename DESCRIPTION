@@ -37,6 +37,7 @@ Suggests:
     covr,
     testthat,
     tibble,
+    vctrs,
     pkgdown,
     VGAM
 Encoding: UTF-8

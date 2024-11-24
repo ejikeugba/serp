@@ -1,5 +1,6 @@
-# For help debugging build failures open an issue on the RStudio community with the 'github-actions' tag.
-# https://community.rstudio.com/new-topic?category=Package%20development&tags=github-actions
+name: R-CMD-check
+
+# Trigger the workflow on push or pull request to main or master branches
 on:
   push:
     branches:
@@ -9,8 +10,6 @@ on:
     branches:
       - main
       - master
-
-name: R-CMD-check
 
 jobs:
   R-CMD-check:
@@ -22,81 +21,66 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: windows-latest, r: 'release'}
           - {os: macOS-latest, r: 'release'}
-          - {os: ubuntu-20.04, r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
-          - {os: ubuntu-20.04, r: 'devel', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
+          - {os: ubuntu-20.04, r: 'release'}
+          - {os: ubuntu-20.04, r: 'devel'}
+          - {os: windows-latest, r: 'release'}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       RSPM: ${{ matrix.config.rspm }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
-
     steps:
+      # Step 1: Check out the repository
       - uses: actions/checkout@v2
 
-      - name: Update Homebrew (macOS only)
-        if: runner.os == 'macOS'
-        run: |
-          brew update
-
-      - name: Unlink conflicting pkg-config (macOS only)
-        if: runner.os == 'macOS'
-        run: |
-          brew unlink pkg-config@0.29.2 || true
-
-      - name: Install and force-link pkgconf (macOS only)
-        if: runner.os == 'macOS'
-        run: |
-          brew install pkgconf
-          brew link --overwrite pkgconf
-
+      # Step 2: Set up R environment
       - uses: r-lib/actions/setup-r@v1
         with:
           r-version: ${{ matrix.config.r }}
-          
 
-      - uses: r-lib/actions/setup-pandoc@v1
+      # Step 3: Update Package Managers
+      - name: Update Package Managers
+        if: runner.os == 'macOS' || runner.os == 'Linux'
+        run: |
+          if [[ $RUNNER_OS == "macOS" ]]; then
+            brew update
+          else
+            sudo apt-get update
+          fi
 
-      - name: Query dependencies
+      # Step 4: Install System Dependencies
+      - name: Install system dependencies
+        if: runner.os == 'Linux' || runner.os == 'macOS'
+        run: |
+          if [[ $RUNNER_OS == "macOS" ]]; then
+            # Install Homebrew dependencies for macOS
+            brew install qpdf pkgconfig checkbashisms || echo "Dependencies already installed."
+          else
+            # Install Linux dependencies via apt-get
+            sudo apt-get install -y qpdf pkg-config checkbashisms
+          fi
+
+      # Step 5: Install R Dependencies
+      - name: Install R dependencies
         run: |
           install.packages('remotes')
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
-          writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
-        shell: Rscript {0}
-
-      - name: Cache R packages
-        if: runner.os != 'Windows'
-        uses: actions/cache@v2
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
-
-      - name: Install system dependencies
-        if: runner.os == 'Linux'
-        run: |
-          while read -r cmd
-          do
-            eval sudo $cmd
-          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "20.04"))')
-
-      - name: Install dependencies
-        run: |
           remotes::install_deps(dependencies = TRUE)
-          remotes::install_cran("rcmdcheck")
-        shell: Rscript {0}
 
+      # Step 6: Run R CMD Check
       - name: Check
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
-        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
+        run: |
+          rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
+      # Step 7: Upload Check Results (if failure occurs)
       - name: Upload check results
         if: failure()
         uses: actions/upload-artifact@main
         with:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
           path: check
+

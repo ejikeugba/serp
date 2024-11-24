@@ -41,14 +41,15 @@ jobs:
         run: |
           brew update
 
-      - name: Install pkgconf (macOS only)
+      - name: Unlink conflicting pkg-config (macOS only)
+        if: runner.os == 'macOS'
+        run: |
+          brew unlink pkg-config@0.29.2 || true
+
+      - name: Install and force-link pkgconf (macOS only)
         if: runner.os == 'macOS'
         run: |
           brew install pkgconf
-
-      - name: Force link pkgconf (macOS only)
-        if: runner.os == 'macOS'
-        run: |
           brew link --overwrite pkgconf
 
       - uses: r-lib/actions/setup-r@v1

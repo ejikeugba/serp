@@ -39,7 +39,7 @@ Suggests:
     tibble,
     vctrs,
     pkgdown,
-    VGAM
+    VGAM (>= 1.1-8)
 Encoding: UTF-8
 LazyData: True
 RoxygenNote: 7.3.2

@@ -28,7 +28,7 @@ License: GPL-2
 URL: https://github.com/ejikeugba/serp
 BugReports: https://github.com/ejikeugba/serp/issues
 Depends: 
-    R (>= 4.1.0)
+    R (>= 3.2.0)
 Imports: 
     ordinal (>= 2016-12-12),
     crayon,
